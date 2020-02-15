@@ -1,0 +1,755 @@
+syntax = "proto3";
+package game;
+
+// 斗地主开放配置
+// gameType
+// app_id
+// max_rounds 最大局数
+// chips 消耗金币数
+// options 玩法 叫地主 叫分 欢乐斗地主
+
+message CreateRoomRequest {
+    uint32 room_id = 1;  // 6位房间号
+    string owner = 2;  // 房主UUID
+    string kwargs = 3;  // json 创建房间参数，由具体游戏各自解析字段
+    string room_uuid = 4; // 房间唯一标识
+}
+
+message CreateRoomResponse {
+    uint32 code = 1;  // 返回开房结果
+}
+
+//ENTER_HALL = 0x1000  # 进入匹配
+message EnterHallRequest {
+    string player = 1;  // 玩家UUID
+    string info = 2;  // 玩家详细信息
+}
+
+message EnterHallResponse {
+    uint32 code = 1;  // 返回进入匹配结果
+}
+
+
+//ENTER_ROOM = 0x1005  # 进入房间
+message EnterRoomRequest {
+    uint32 room_id = 1;  // 6位房间号
+    string player = 2;  // 玩家UUID
+    string info = 3;  // 玩家详细信息
+    string kwargs = 4;  // JSON字符串 房间相关信息
+}
+
+message EnterRoomResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string owner = 3;  // 房主UUID
+    string kwargs = 4;  // json 创建房间参数，由具体游戏各自解析字段
+    uint32 base_score = 5;  //底分
+    message Player {  // 同房其他玩家信息
+        uint32 seat = 1;  // 座位号
+        string player = 2;  // 玩家UUID
+        string info = 3;  // 玩家详细信息
+        uint32 status = 4;  // 玩家状态
+        bool is_online = 5;  // 是否在线
+        int32 total_score = 6;  // 总分
+    }
+
+    repeated Player player = 6;
+}
+
+// Enter_Room_Other = 0x1015 # 其他玩家进入房间
+message EnterRoomOtherResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    string player = 2;  // 玩家UUID
+    uint32 seat = 3;  // 座位号    
+    string info = 4;  // 玩家详细信息
+    int32 total_score = 5;  // 总分
+}
+
+message EnterRoomWebResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string player = 3;  // 玩家UUID
+    uint32 game_type = 4;
+    uint32 app_id = 5;
+    string server_ip = 6;         // ip
+    int32 server_port = 7;        // 端口
+}
+
+//EXIT_ROOM = 0x1007  # 退出房间
+message ExitRoomRequest {
+    string player = 1;  // 玩家UUID
+}
+
+message ExitRoomResponse {
+    uint32 code = 1;  // 返回退出房间结果
+    string player = 2;  // 玩家UUID
+    int32 is_return_dispatch = 3;  // 0 表示不返回 1 表示返回队列
+}
+
+message ExitRoomWebResponse {
+    uint32 code = 1;  // 返回退出房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string player = 3;  // 玩家UUID
+    uint32 game_type = 4;
+    uint32 app_id = 5;
+}
+
+//DISMISS_ROOM = 0x1006  # 解散房间
+message DismissRoomRequest {}
+
+message DismissRoomResponse {
+    uint32 code = 1;  // 返回解散房间结果
+    uint32 flag = 2;  // 0 房主发起解散 1 投票发起解散
+}
+
+// RETURN_DISPATCH = 0x1040                   # 返回匹配 换桌
+message ReturnDispatchRequest {}
+
+message ReturnDispatchResponse {
+    uint32 code = 1;
+    string player = 2;  // 玩家UUID
+}
+
+// QUIT_DISPATCH = 0x1041                      # 停止匹配
+message QuitDispatchRequest {
+    string player = 1;  // 玩家UUID
+}
+
+message QuitDispatchResponse {
+    uint32 code = 1;
+}
+
+//web 强制解散房间接口
+message DismissRoomWebRequest {
+    uint32 room_id = 1;  // 6位房间号
+    uint32 game_type = 2;
+    uint32 app_id = 3;
+    string owner = 4;
+    string room_uuid = 5;
+}
+
+message DismissRoomWebResponse {
+    uint32 code = 1;  // 返回解散房间结果
+    uint32 room_id = 2;  // 6位房间号
+    uint32 game_type = 3;
+    uint32 app_id = 4;
+    string owner = 5;
+}
+
+// web 查询房间是否存在接口
+message ExistRoomWebRequest {
+	uint32 room_id = 1;
+}
+
+message ExistRoomWebResponse {
+	bool flag = 1;
+}
+
+
+// 退款
+message RefundWebResponse {
+    uint32 code = 1;  
+    uint32 room_id = 2;  // 6位房间号
+    uint32 game_type = 3;
+    uint32 app_id = 4;
+    string owner = 5;
+    string room_uuid = 6;
+}
+
+// SPONSOR_VOTE = 0x1009 发起投票解散房间
+message SponsorVoteResponse {
+    uint32 room_id = 1;  // 6位房间号
+    string sponsor = 3;  // 发起投票玩家UUID
+    uint32 expire_seconds = 4; // 投票超时时间
+}
+
+// VOTE = 0x1037 玩家投票
+message PlayerVoteRequest {
+    bool flag = 1;
+}
+
+// 玩家投票广播
+message PlayerVoteResponse {
+    bool flag = 1;
+    string player = 2;
+}
+
+// HEARTBEAT = 0x000F
+message HeartbeatRequest {}
+
+message HeartbeatResponse {}
+
+
+message Card {
+    uint32 card = 1;  // 牌
+}
+
+
+//RECONNECT = 0x1014  # 玩家断线重连
+message ReconnectResponse {
+    uint32 room_id = 1;  // 6位房间号
+    string kwargs = 2;  // json 创建房间参数，由具体游戏各自解析字段
+    string owner = 3;  // 房主UUID
+    uint32 room_status = 4;  // 房间状态（）
+    uint32 current_round = 5;  // 当前局数
+    string laird_player = 6;  // 地主uuid
+    string discard_player = 7;  // 当前出牌玩家的uuid
+    string rob_player = 8;  // 当前抢地主玩家的uuid
+    repeated Card  three_cards = 9;  // 三张底牌
+    int32 boom_cnt = 10;  // 本局中炸弹次数
+    int32 score = 11;  // 总分
+    int32 base_score = 12;  // 底分
+    int32 laizi_card = 13;  // 赖子牌 是否是赖子桌在上面kwarg里面
+    int32 rounds = 14; // 挑战赛轮数 普通匹配为-1
+    message Player {  // 同房其他玩家信息
+        int32 seat = 1;  // 座位号
+        string player = 2;  // 玩家UUID
+        string info = 3;  // 玩家详细信息
+        uint32 status = 4;  // 玩家状态（0,noready,1,ready,2,playing,3,结算）
+        uint32 is_online = 5;  // 是否在线
+        int32 rob_flag = 6;  // 玩家本局抢地主的决定
+        int32 rob_score = 7;  // 玩家本局抢地主的分数
+        int32 score = 8;  // 玩家本局分数
+        int32 total_score = 9; // 玩家总分
+        int32 boom_cnt = 10;  // 玩家本局炸弹次数
+        int32 is_announced = 11;   // 该玩家是否为明牌
+        int32 multiple = 12;  // 翻倍数
+        repeated Card cards_in_hand = 13;  // 手牌
+        repeated Card cards_discard = 14;  // 打出去的牌
+        repeated Card cards_discard_laizi_converted = 15;  //  打出去的牌 赖子转换过的
+        int32 gold = 16; //  欢乐豆
+    }
+
+    repeated Player player = 15;
+    uint32 code = 16;
+    string prev_discard_player = 17;  // 上个出牌玩家的UUID
+    repeated Card prev_discard_cards = 18;  // 上个玩家出的牌
+    repeated Card prev_discard_cards_laizi_converted = 19;  //  上个玩家出的牌 赖子转换后
+//    uint32 is_pass_for_prev_discard_cards = 18;  // 上个玩家出的牌，是否为pass，1：是pass；2：不是pass
+}
+
+// ONLINE_STATUS = 0x1016  玩家上线离线广播
+message OnlineStatusResponse {
+    string player = 1;  // 玩家UUID
+    bool status = 2;  // 0 离线 1 上线
+}
+
+//READY = 0x1012
+message ReadyRequest {
+    uint32 is_announce = 1;  // 是否明牌开始
+}
+
+
+message ReadyResponse {
+    string player = 1;  // 玩家UUID
+    uint32 is_ready = 2;	//是否准备成功， 1成功  0 不成功。 
+}
+
+//DEAL = 0x2005
+message DealResponse {
+    string first_rob_uuid = 1;  // 第一个可以叫地主的玩家UUID
+    repeated Card cards_in_hand = 2;  // 发的手牌
+    repeated Card three_cards = 3;  // 三张底牌
+}
+
+// GAME_START 0x1023
+message GameStartResponse{}
+
+//Rob = 0x1024  叫地主或叫分
+message RobRequest {
+    uint32 flag = 1;  // 叫地主，欢乐斗地主和叫地主需要，1为叫地主，2为不叫
+    uint32 score = 2;  // 叫分，叫分需要
+}
+message RobResponse {
+    uint32 flag = 1;  // 叫地主，欢乐斗地主和叫地主需要，1为叫地主，2为不叫
+    uint32 score = 2;  // 叫分，叫分需要
+    string player = 3;  // 玩家UUID
+    string next_rob_player = 4;  // 下一个叫玩家UUID，如果为空则表示结束
+    string laird_player = 5;  // 最后成为地主玩家UUID，如果为空且下一个叫地主的玩家也为空，则表示重新发牌，都没叫
+    string prev_rob_player = 6;  // 上一个叫玩家UUID
+}
+
+//DISCARD = 0x1021  出牌
+message DiscardRequest {
+    repeated Card card = 1;  // 如果为空，则表示出的是pass
+    repeated Card converted_laizi_card = 2;     // 普通桌空着 赖子桌为转换后的赖子牌
+}
+// 牌型
+// CARD_TYPE_ERRO = 0  # 非法
+// CARD_TYPE_DANZ = 1  # 单张
+// CARD_TYPE_YDUI = 2  # 一对
+// CARD_TYPE_SANZ = 3  # 三张牌（什么也不带）
+// CARD_TYPE_SDYI = 4  # 三带一（带一张单牌）
+// CARD_TYPE_SDER = 5  # 三带二（带一对）
+// CARD_TYPE_DANS = 6  # 单顺子
+// CARD_TYPE_LDUI = 7  # 连对（双顺子）
+// CARD_TYPE_SANS = 8  # 三顺子，飞机（什么都不带）
+// CARD_TYPE_SSDY = 9  # 三顺子，飞机（带单牌）
+// CARD_TYPE_SSDE = 10  # 三顺子，飞机（带对）
+// CARD_TYPE_ZHAD = 11  # 炸弹
+// CARD_TYPE_HUOJ = 12  # 王炸，火箭
+// CARD_TYPE_SDLZ = 13  # 四带二（带两张单牌）
+// CARD_TYPE_SDLD = 14  # 四带二（带两对）
+// CARD_TYPE_PASS = 15  # pass
+message DiscardResponse {
+    int32 code = 1;
+    repeated Card card = 2;
+    repeated Card converted_laizi_card = 3;     // 普通桌空着 赖子桌为转换后的赖子牌
+    string player = 4;  // 玩家UUID
+    uint32 card_type = 5;
+    string next_discard_player = 6;  // 下一个出牌的玩家uuid
+}
+
+// SYNCHRONISE_CARDS = 0x1011  # 服务端主动同步手牌
+message SynchroniseCardsResponse {
+    repeated Card card = 1;
+}
+
+// ANNOUNCE_CARDS = 0x200B # 明牌
+message AnnounceCardsRequest {
+    uint32 multiple = 1; // 明牌翻的倍数
+    uint32 is_self = 2; // 0为翻所有人 1为翻自己
+}
+
+message AnnounceCardsResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    repeated Card card = 2; // 牌
+    string player = 3;  // 玩家UUID
+}
+
+// MULTIPLE_SCORE = 0x200C # 加倍
+message MultipleScoreResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 multiple = 2; // 该玩家当前是多少倍 底分已经被乘在里面了 不要再算
+    }
+    repeated PlayerData player_data = 2;
+}
+
+//  MULTIPLE_SCORE_INITIAL = 0x 2010只有下面那个发过来才回的 因为客户端要放声音
+message MultipleScoreInitialResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 multiple = 2; // 该玩家当前是多少倍 底分已经被乘在里面了 不要再算
+    }
+    repeated PlayerData player_data = 2;
+    string player_id = 3; // 谁叫的加倍
+    int32 action = 4; // 有没有加倍 1为不加倍 1以上为加几倍
+}
+
+// 点击加倍按钮才发 明牌不要调用
+message MultipleScoreRequest {
+    uint32 multiple = 1; // 加倍翻的倍数
+    uint32 is_self = 2; // 0为翻所有人 1为翻自己
+}
+
+// 加倍阶段开始 0x200F
+message MultiPhaseStartResponse{}
+// 叫加倍结束 地主开牌了 0x200D
+message MultiPhaseEndResponse {}
+
+//0x200E 普通赖子 地赖子
+message GroundLaiziResponse {
+    uint32 mode = 1; //是否为天地癞子 0普通 1天地癞子
+    uint32 card = 2; // 牌 从3开始 11是J 12是Q 依此类推
+}
+
+//SPEAKER = 0x1002  # 超级广播命令
+message SpeakerRequest {
+    string content = 1;
+}
+
+message SpeakerResponse {
+    string player = 1;
+    string content = 2;
+}
+
+
+//SETTLEMENT_FOR_ROUND = 0x2004
+message SettleForRoundResponse {
+    uint32 base_score = 1;  // 当局底分
+    uint32 multiple = 2;  // 当局倍数
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        repeated Card cards_in_hand = 2;  // 玩家手牌
+        int32 score = 3;  // 玩家当局分数
+        int32 total = 4;  // 玩家累计总分
+        uint32 bomb_count = 5;  // 玩家出了的炸弹数
+        int32 is_win = 6;  // 玩家是输是赢,0：未知；1：赢；2：输；
+        
+        uint32 gold = 7;  // 玩家当前金币
+        int32 gold_delta = 8; // 玩家金币差额
+        uint32 exp = 9; // 玩家经验
+        int32 exp_delta = 10; // 玩家经验差额
+        uint32 level = 11; // 玩家等级
+        int32 level_delta = 12; // 玩家等级差额 
+        uint32 continue_win = 13; // 比赛和普通的不一样 
+    }
+    repeated PlayerData player_data = 3;
+    uint32 is_spring = 4;  // 春天或反春；0：没有；1：春天；2：反春
+    uint32 auto_start = 5;  // 0 需要手动点准备 1 不需要
+    uint32 is_match = 6;  // 是否是比赛 1 是 0不是
+}
+//SETTLEMENT_FOR_ROOM = 0x2006
+message SettleForRoomResponse {
+    uint32 flag = 1;  // 判断是正常完成所有局数还是解散房间 0 投票解散结算 1 正常解散
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 seat = 2;  // 玩家座位号
+        int32 total_score = 3;  // 玩家总分
+        int32 top_score = 4;  // 玩家最高分
+        uint32 win_total_cnt = 5;  // 玩家赢牌总次数
+        uint32 is_owner = 6;  // 是否为房主
+        uint32 rewardchip = 7;  // 奖励金币
+        uint32 all_boom_cnt = 8;  // 总炸弹次数
+        uint32 lose_total_cnt = 9;  // 玩家输牌总次数
+    }
+    repeated PlayerData player_data = 2;
+}
+
+//SETTLEMENT_FOR_DRAW 0x2007
+message SettleForDrawResponse {}
+
+// 0x2011 通知客户端扣除每局的入场欢乐豆
+message CostGoldResponse{
+    uint32 gold = 1;
+}
+// 0x2012 欢乐豆不足 推送提示
+message GoldNotEnoughResponse{
+    string player_id = 1; // 金币不足的玩家ID
+    uint32 current_gold = 2; // 当前金币
+    uint32 need_gold = 3; // 所需金币
+}
+
+message EnterMatchViewRequest{
+    string player_id = 1; // 玩家ID
+    string kwargs = 2;  // json 加入房间的相关参数 和匹配相似 game_type 普通/赖子 table_level 新手挑战赛/大师挑战赛...
+}
+
+message EnterMatchViewResponse{
+    uint32 code = 1;
+    uint32 player_num = 2; // 玩家人数
+    uint32 player_num_max = 3; // 凑齐多少人开
+    uint32 is_waiting = 4; // 0 没有排队 1 已在排队 2 已在比赛
+    uint32 game_id = 5;
+    uint32 table_level = 6;
+}
+
+// 加入比赛
+message JoinMatchRequest{
+    string player_id = 1; // 玩家ID
+    string info = 2;      // 玩家详细信息
+    string kwargs = 3;  // json 加入房间的相关参数 和匹配相似 game_type 普通/赖子 table_level 新手挑战赛/大师挑战赛...
+}
+
+// 点加入马上回的
+message JoinMatchResponse{
+    uint32 code = 1;
+    uint32 player_num = 2; // 玩家人数
+    uint32 player_num_max = 3; // 凑齐多少人开
+    message AwardData {
+        uint32 start_rank = 1; //第4名
+        uint32 end_rank = 2; //到第6名
+        uint32 gold = 3; //奖励1000欢乐豆
+    }
+    repeated AwardData award_data = 4;
+    uint32 game_id = 5;
+    uint32 table_level = 6;
+}
+
+// 匹配进房间再回的 和下面MatchStartResponse中间隔着PHP开始和回包
+message JoinMatchRoomResponse{
+    uint32 code = 1;
+    uint32 match_id = 2;
+    uint32 player_num = 3; // 玩家人数
+    uint32 player_num_max = 4; // 凑齐多少人开
+    message AwardData {
+        uint32 start_rank = 1; //第4名
+        uint32 end_rank = 2; //到第6名
+        uint32 gold = 3; //奖励1000欢乐豆
+    }
+    repeated AwardData award_data = 5;
+    uint32 game_id = 6;
+    uint32 table_level = 7;
+}
+
+message MatchPlayerNumResponse{
+    uint32 player_num = 1; // 玩家人数
+    uint32 player_num_max = 2; // 凑齐多少人开
+}
+
+// 比赛开始 先占个位置 EnterRoomResponse肯定要发的 视客户端决定是否需要 扣房费走0x2011 不要进房间扣
+message MatchStartResponse{
+    
+}
+
+// 挑战赛的断线重连
+message MatchReconnectResponse{
+    uint32 match_id = 1;
+    uint32 phase_id = 2;
+    int32 room_id = 3; // -1 表示还在等待
+    int32 score = 4;
+    uint32 player_num_max = 5; // 这场比赛最大人数
+    uint32 player_num = 6; // 还剩多少活人
+    uint32 rank = 7;
+    int32 left_sec = 8;	//该阶段的持续时间
+}
+
+// 退出比赛
+message QuitMatchRequest{
+    string player_id = 1;
+}
+// 挑战赛不要发ExitRoomRequest 如果收到ExitRoomResponse 说明已经在对局了 第一场比赛没开始的话会用错误码打回去
+message QuitMatchResponse{
+    uint32 code = 1;
+    int32 rank = 2; //第几名
+}
+
+// 淘汰
+message KnockOutResponse{
+    int32 rank = 1; //第几名
+    int32 phase = 2; //阶段
+    int32 knock_reason = 3; //1 积分 2 超过回合上限 3排名 9 比赛异常
+    uint32 gold = 4; //奖励1000欢乐豆
+}
+
+// 实时同步名次
+message PlayerRankResponse{
+    int32 rank = 1; // 当前名次
+    uint32 player_num = 2; // 还剩多少人没淘汰
+}
+
+// 淘汰分数更新
+message LimitScoreResponse{
+    uint32 score = 1; // 淘汰分数，只在phase == 2下发。
+}
+
+// 转换比赛阶段
+message MatchPhaseResponse{
+		int32 phase = 1; //转入阶段
+		int32 remain_table = 2; // 还剩几张桌子没有决出结果
+    int32 round = 3; //当前阶段回合限制。
+    int32 left_sec = 4;	//该阶段的持续时间
+}
+
+// 等待该轮比赛结束
+message WaitMatchPhaseEndResponse{
+    int32 remain_table = 1; // 还剩几张桌子没有决出结果    
+    uint32 phase = 2; // 当前处于的阶段
+}
+
+// 比赛结束推送结果
+message MatchEndResponse{
+    int32 rank = 1; //名次
+    message ResultData {
+        int32 rank = 1; //名次
+        string player_id = 2; //玩家ID
+        uint32 gold = 3; //奖励1000欢乐豆
+    }
+    repeated ResultData result = 2;
+}
+
+//清除比赛
+message PM_ClearMatchRequest{
+		uint32 match_id = 1;  //0 清除所有比赛  match_id清除指定match_id的比赛。
+}
+
+
+// 向web汇报负载，每当一个房间开局后向web汇报一次， 每当一个房间大结算完后也汇报一次
+message LoadPlusWebResponse {
+    string addr = 1;
+    uint32 port = 2;
+    uint32 game_id = 3;
+    uint32 table_level = 4;
+}
+
+message LoadMinusWebResponse {
+    string addr = 1;
+    uint32 port = 2;
+    uint32 game_id = 3;
+    uint32 table_level = 4;
+}
+
+// 提供web查询本进程的负载
+message LoadBalanceWebResponse {
+    message Unit {
+        uint32 room_id = 1;  // 6位房间号
+        uint32 room_status = 2; //房间状态
+        repeated string player = 3; // 在房间的玩家UUID
+        string owner = 4;
+        uint32 game_type = 5;
+        uint32 app_id = 6;
+        string room_uuid = 7;
+        uint32 st = 8;
+    }
+    repeated Unit unit = 1;
+}
+
+// 请求用户金币 web
+message UserBalanceRequest
+{
+    string user_id = 1;     // 用户 ID
+    string device_id = 2;   // 设备 ID
+    uint32 app_id = 3;      // APP ID
+    uint32 room_id = 4;     // 房间 ID
+}
+
+// 返回用户金币数据
+message UserBalanceResponse{
+    uint32 code = 1;    // 1 为返回成功
+    string user_id = 2;     // 用户 ID
+    uint32 gold = 3;    // 2 金币数
+    uint32 diamond = 4;    // 3 钻石
+    uint32 level = 5;    // 4 等级
+    uint32 exp = 6;    // 5 经验
+    uint32 battle_counts = 7; // 总场次
+    uint32 battle_win = 8; // 胜利场次
+    uint32 continue_win = 9; // 连胜场次     
+    uint32 match_battle_counts = 10; // 总场次
+    uint32 match_battle_win = 11; // 胜利场次
+    uint32 match_continue_win = 12; // 连胜场次 
+}
+
+// 向游戏服务器请求同步数据
+message CheckGameUserBalanceRequest{
+    string user_id = 1;     // 用户 ID
+    uint32 gold = 2;    //  金币数
+}
+
+message CheckGameUserBalanceResponse{
+    uint32 code = 1;    // 1 为返回成功
+    string user_id = 2;     // 用户 ID
+    uint32 gold = 3;    // 2 金币数
+}
+
+// 游戏开始 同步PHP
+message GameStartWebResponse{
+    uint32 app_id = 1;  // app_id
+    uint32 game_id = 2;  // game_id 暂时没用到
+    uint32 room_id = 3;     // 房间 ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币
+        int32 gold_delta = 3; // 玩家金币差额
+        uint32 exp = 4; // 玩家经验
+        int32 exp_delta = 5; // 玩家经验差额
+        uint32 level = 6; // 玩家等级
+        int32 level_delta = 7; // 玩家等级差额 
+    }
+    repeated PlayerData player_data = 4;    
+}
+
+// 游戏开始 同步PHP 返回
+message GameStartWebResquest{
+    uint32 code = 1;  // 返回码
+    uint32 app_id = 2;  // app_id
+    uint32 game_id = 3;  // game_id 暂时没用到
+    uint32 room_id = 4;     // 房间 ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币       
+        uint32 exp = 3; // 玩家经验
+        uint32 level = 4; // 玩家等级
+    }
+    repeated PlayerData player_data = 5; 
+}
+
+//游戏服务器返回回合结算数据。
+message GS_SettleForRoundRequest {
+    uint32 app_id = 1;  // app_id
+    uint32 game_id = 2;  // game_id 暂时没用到
+    uint32 room_id = 3;     // 房间 ID
+    uint32 match_id = 4;     // 房间 ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币
+        int32 gold_delta = 3; // 玩家金币差额
+        uint32 exp = 4; // 玩家经验
+        int32 exp_delta = 5; // 玩家经验差额
+        uint32 level = 6; // 玩家等级
+        int32 level_delta = 7; // 玩家等级差额 
+        int32 is_winner = 8; //0失败 1胜利
+    }
+    repeated PlayerData player_data = 5;    
+}
+
+//PHP服务器返回给游戏服务器的同步数据。
+message GS_SettleForRoundResponse {
+    uint32 code = 1;  // 返回码
+    uint32 app_id = 2;  // app_id
+    uint32 game_id = 3;  // game_id 暂时没用到
+    uint32 room_id = 4;     // 房间 ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币       
+        uint32 exp = 3; // 玩家经验
+        uint32 level = 4; // 玩家等级
+    }
+    repeated PlayerData player_data = 5;
+}
+
+// 向PHP汇报挑战赛开始 因为可能有大包问题所以可能是一次多个包过去
+message MatchStartWebResponse{
+    uint32 app_id = 1;  // app_id
+    int32 match_id = 2;
+    string host = 3;
+    int32 port = 4;
+    message PlayerData{
+        string player = 1;  // 玩家UUID
+        int32 gold_cost = 2;  // 玩家花费
+    }
+    repeated PlayerData player_data = 5;
+}
+
+// 不管是被淘汰了还是自己退出了还是跨局断线了 都发这个
+message QuitMatchWebResponse{
+    uint32 app_id = 1;  // app_id
+    int32 match_id = 2;
+    string player_id = 3;
+    uint32 rank = 4;  // 玩家名次     
+    uint32 gold = 5; //奖励1000欢乐豆
+    uint32 is_notify = 6; //玩家客户端session可能不存在，告诉PHP。
+    string host = 7;
+    int32 port = 8;
+}
+
+// 比赛结束
+message MatchEndWebResponse{
+    uint32 app_id = 1;  // app_id
+    int32 match_id = 2;
+    string host = 3;
+    int32 port = 4;
+    message PlayerData{
+        string player = 1;  // 玩家UUID
+        uint32 rank = 2;  // 玩家名次     
+        uint32 gold = 3; //奖励1000欢乐豆
+        uint32 is_notify = 4; //玩家客户端session可能不存在，告诉PHP。
+    }
+    repeated PlayerData player_data = 5;
+}
+
+// PHP的回包
+message MatchStartWebRequest{
+    int32 code = 1;
+    int32 match_id = 2;
+}
+
+message QuitMatchWebRequest{
+    int32 code = 1;
+    int32 match_id = 2;
+}
+
+message MatchEndWebRequest{
+    int32 code = 1;
+    int32 match_id = 2;
+}
+
+//php主动查询游戏服务器
+message MaintenanceWebRequest{
+}
+
+message MaintenanceWebResponse{
+    int32 code = 1;
+}

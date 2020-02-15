@@ -1,0 +1,121 @@
+syntax = "proto3";
+package game_public;
+
+// 转转麻将开放配置
+// gameType
+// app_id
+// max_rounds 最大局数
+// has_niao 是否抓鸟
+// chips 消耗金币数
+// options 玩法 红中 点炮胡 七小对
+
+message CreateRoomRequest {
+    uint32 room_id = 1;  // 6位房间号
+    string owner = 2;  // 房主UUID
+    string kwargs = 3;  // json 创建房间参数，由具体游戏各自解析字段
+}
+
+message CreateRoomResponse {
+    uint32 code = 1;  // 返回开房结果
+}
+
+//ENTER_ROOM = 0x1005  # 进入房间
+message EnterRoomRequest {
+    uint32 room_id = 1;  // 6位房间号
+    string player = 2;  // 玩家UUID
+    string info = 3;  // 玩家详细信息
+}
+
+message EnterRoomResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string owner = 3;  // 房主UUID
+    string kwargs = 4;  // json 创建房间参数，由具体游戏各自解析字段
+    uint32 rest_cards = 5; // 剩余牌数
+
+    message Player {  // 同房其他玩家信息
+        uint32 seat = 1;  // 座位号
+        string player = 2;  // 玩家UUID
+        string info = 3;  // 玩家详细信息
+        uint32 status = 4;  // 玩家状态
+        uint32 is_online = 5;  // 是否在线
+        uint32 total_score = 6;  // 玩家累计总分
+    }
+
+    repeated Player player = 6;
+}
+
+// Enter_Room_Other = 0x1015 # 其他玩家进入房间
+message EnterRoomOtherResponse {
+    uint32 code = 1;  // 返回进入房间结果
+    string player = 2;  // 玩家UUID
+    uint32 seat = 3;  // 座位号
+    string info = 4;  // 玩家详细信息
+}
+
+message EnterRoomWebResponse {
+    uint32 code = 1;  // 返回退出房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string player = 3;  // 玩家UUID
+    uint32 game_type = 4;
+    uint32 app_id = 5;
+}
+
+//EXIT_ROOM = 0x1007  # 退出房间
+message ExitRoomRequest {}
+
+message ExitRoomResponse {
+    uint32 code = 1;  // 返回退出房间结果
+    string player = 2;  // 玩家UUID
+}
+
+message ExitRoomWebResponse {
+    uint32 code = 1;  // 返回退出房间结果
+    uint32 room_id = 2;  // 6位房间号
+    string player = 3;  // 玩家UUID
+    uint32 game_type = 4;
+    uint32 app_id = 5;
+}
+
+//DISMISS_ROOM = 0x1006  # 解散房间
+message DismissRoomRequest {}
+
+message DismissRoomResponse {
+    uint32 code = 1;  // 返回解散房间结果
+    uint32 flag = 2;  // 0 房主发起解散 1 投票发起解散
+}
+
+message DismissRoomWebResponse {
+    uint32 code = 1;  // 返回解散房间结果
+    uint32 room_id = 2;  // 6位房间号
+    uint32 game_type = 3;
+    uint32 app_id = 4;
+    string owner = 5;
+}
+
+// 退款
+message RefundWebResponse {
+    uint32 code = 1;  
+    uint32 room_id = 2;  // 6位房间号
+    uint32 game_type = 3;
+    uint32 app_id = 4;
+    string owner = 5;
+}
+
+// SPONSOR_VOTE = 0x1009 发起投票解散房间
+message SponsorVoteResponse {
+    uint32 room_id = 1;  // 6位房间号
+    string sponsor = 3;  // 发起投票玩家UUID
+    uint32 expire_seconds = 4; // 投票超时时间
+}
+
+// VOTE = 0x1037 玩家投票
+message PlayerVoteRequest {
+    bool flag = 1;
+}
+
+// 玩家投票广播
+message PlayerVoteResponse {
+    bool flag = 1;
+    string player = 2;
+}

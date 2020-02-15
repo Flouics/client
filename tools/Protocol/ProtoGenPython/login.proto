@@ -1,0 +1,653 @@
+syntax = "proto3";
+package login;
+
+// 客户端检测请求的数据
+message CheckVersionRequest
+{
+    uint32 app_id = 1;                   // APP ID
+    string ver_id = 2;                  // 版本号
+    uint32 p_id = 3;                    // 平台 ID，1 iOS,2 Android
+}
+
+// 检测返回的数据
+message CheckVersionResponse
+{
+    uint32  code = 1;
+    bool mandatory_update = 2;          // 强制更新
+    string appstore_url = 3;            // Appstore 下载地址
+    string yyb_url = 4;                 // 应用宝下载地址
+    string apk_url = 5;                 // apk 文件下载地址
+}
+
+// 登录请求的数据
+message LoginRequest 
+{
+    string open_id = 1;                 // 唯一标识符
+    int32 channel = 2;                  // 登录标识；1，游客测试；2，手机测试；3，自动登录测试； 4，游客登录；5，手机登录；6，自动登录
+    int32 app_id = 3;                   // APP ID
+    //int32 game_id = 4;                  // 游戏ID，109：转转麻将；111：长沙麻将；112：红中麻将；113：卡五星麻将
+    string open_key = 5;               // 玩吧需要用到。
+    string device_id = 6;               // 设备 ID
+    string ver_id = 7;                  // 客户端版本号
+    string location = 8;                // 用户地理位置
+}
+
+// 登录返回数据
+message LoginResponse 
+{
+    uint32 code = 1;                    // 1 为成功
+    string unick = 2;                   // 用户昵称
+    string olkey = 3;                   // 登录 token
+    uint32 gold = 4;                    // 用户金币
+    uint32 diamond = 5;                    // 钻石
+    uint32 level = 6;                    // 等级
+    uint32 exp = 7;                    // 经验    
+    int32 gender = 8;                   // 用户性别
+    int32 aid = 9;                      // 用户数字 ID
+    string user_id = 10;                 // 用户系统唯一 32 位 ID
+    string avatar_url = 11;              // 用户头像
+    bool registered = 12;                // 是否注册用户
+    int32 score = 13;                   // 用户积分
+    int32 parent_id = 14;               // 用户上级代理 ID
+    string ip = 15;                     // 用户 IP
+    string location = 16;               // 用户地理位置信息
+    bool ios_review = 17;               // iOS 审核
+    bool yyb_review = 18;               // 应用宝审核
+    bool is_maintain = 19;              // 服务器维护状态
+    string maintain_info = 20;          // 维护信息
+    string notice = 21;                 // 显示的公告
+    string iap_verify_url = 22;         // 苹果支付回调地址
+    string share_ico = 23;              // 分享小图标
+    string share_url = 24;              // 分享下载地址
+    uint32 battle_counts = 25;       // 总场次
+    uint32 battle_win = 26;       // 胜利场次
+    uint32 continue_win = 27;       // 连胜
+    uint32 continue_login = 28;       // 连续登录 格式YYYYMMDD01 后两位表示连续多少天登录。
+
+    // 用户当前所在服务器信息，可以为空
+    bool user_reconnection = 29;        // 是否重连
+    uint32 user_room_id = 30;           // 返回房间 ID
+    string user_server_ip = 31;         // ip
+    int32 user_server_port = 32;        // 端口
+    int32 game_id = 33;									// 游戏类型
+    uint32 is_black = 34;               // 是否被屏蔽
+    string update_domain=35;            // 热更域名
+    string login_domain=36;             // 登录域名
+    string pay_domain=37;               // 支付域名
+}
+
+// 请求房间配置
+message RoomConfigRequest
+{
+    int32 app_id = 1;                   // 游戏 ID
+}
+
+// 返回的房间配置
+message RoomConfigResponse
+{
+    uint32 code = 1;                    // 1 为成功
+    repeated string config = 2;                  // 配置数据，JSON 格式
+}
+
+// 请求创建房间
+message RoomCreateRequest
+{
+    int32 app_id = 1;                   // APP ID
+    int32 game_id = 2;                  // 游戏ID，109：转转麻将；111：长沙麻将；112：红中麻将；113：卡五星麻将， 114 歪胡子
+    string user_id = 3;                 // 用户 ID
+    string device_id = 4;               // 设备 ID
+    int32 max_rounds = 5;               // 局数
+    string room_config = 6;             // 房间配置；
+    string core_version = 7;            // 核心版本号
+}
+
+// 返回创建房间数据
+message RoomCreateResponse
+{
+    uint32 code = 1;        // 1 为成功
+    int32 room_id = 2;      // 房间 ID
+    string server_ip = 3;   // 服务器 IP
+    string server_port = 4; // 服务器端口
+    int32 pay_gold = 5;     // 支出金币
+}
+
+// 请求创建房间 Web 2 Web
+message RoomCreateW2WRequest
+{
+    uint32 app_id = 1;      // APP ID
+    string user_id = 2;     // 用户 ID
+    string config = 3;      // 配置数据，JSON 格式
+    uint32 game_id = 4;     // 游戏 ID
+}
+
+// 返回创建房间数据
+message RoomCreateW2WResponse
+{
+    uint32 code = 1;        // 1 为成功
+    uint32 room_id = 2;     // 房间 ID
+    string server_ip = 3;   // 服务器 IP
+    uint32 server_port = 4; // 服务器端口
+    uint32 server_id = 5;   // 服务器 ID
+    string room_uuid = 6;       // 房间唯一 ID
+}
+
+// 请求用户在线数据
+message UserInGameW2WRequest
+{
+    uint32 app_id = 1;      // APP ID
+    string user_id = 2;     // 用户 ID    
+}
+
+// 返回用户在线数据
+message UserInGameW2WResponse
+{
+    uint32 code = 1;        // code 为 1 表示有在线数据，返回在当前在线的服务器信息
+    string room_id = 2;     // 房间 ID
+    string server_ip = 3;   // 服务器 IP
+    uint32 server_port = 4; // 服务器端口
+    uint32 server_id = 5;   // 服务器 ID
+    uint32 game_id = 6;     // 游戏 ID
+}
+
+// 进入房间请求房间数据
+message RoomEnterW2WRequest
+{
+    uint32 app_id = 1;      // App ID
+    uint32 room_id = 2;     // 房间 ID
+    string user_id = 3;     // 用户 ID
+}
+
+// 进入房间返回数据
+message RoomEnterW2WResponse
+{
+    uint32 code = 1;        // code 为 1 表示有在线数据，返回当前房间的服务器信息
+    uint32 server_id = 2;   // 房间所在服务器
+    string server_ip = 3;   // 服务器 IP
+    uint32 server_port = 4; // 服务器端口
+    string room_uuid = 5;   // 房间唯一 ID
+    uint32 game_id = 6;     // 游戏 ID
+}
+
+
+// 请求进入房间数据
+message RoomEnterRequest
+{
+    uint32 app_id = 1;      // APP Id
+    uint32 room_id = 2;     // 房间 ID
+    string user_id = 3;     // 用户 ID
+    string device_id = 4;   // 设备 ID
+    string core_version = 5;    // 核心版本号
+}
+
+// 返回进入房间数据
+message RoomEnterResponse
+{
+    uint32 code = 1;        // 状态 1 为成功；
+    uint32 room_id = 2;     // 房间 ID
+    string server_ip = 3;   // 服务器 IP
+    string server_port = 4; // 服务器端口
+    uint32 game_id = 5;     // 游戏 ID 
+}
+
+
+// 进入大厅请求服务器
+message HallEnterW2WRequest
+{
+    uint32 app_id = 1;      // App ID
+    uint32 game_id = 2;     // 游戏 ID
+    string user_id = 3;     // 用户 ID
+}
+
+// 进入房间返回数据
+message HallEnterW2WResponse
+{
+    uint32 code = 1;        // code 为 1 表示有在线数据，返回当前房间的服务器信息
+    uint32 server_id = 2;   // 房间所在服务器
+    string server_ip = 3;   // 服务器 IP
+    uint32 server_port = 4; // 服务器端口
+}
+
+
+// 请求进入大厅
+message HallEnterRequest
+{
+    uint32 app_id = 1;      // APP Id
+    uint32 game_id = 2;     // 游戏 类型
+    string user_id = 3;     // 用户 ID
+    string device_id = 4;   // 设备 ID
+    string core_version = 5;    // 核心版本号
+}
+
+// 返回进入房间数据
+message HallEnterResponse
+{
+    uint32 code = 1;        // 状态 1 为成功；
+    int32 game_id = 2;     // 游戏 类型
+    string server_ip = 3;   // 服务器 IP
+    string server_port = 4; // 服务器端口   
+}
+
+// 房间列表用户数据
+message RoomListUser
+{
+    string user_name = 1;       // 用户名
+    string avatar_url = 2;      // 头像
+    string point = 3;           // 用户积分
+    string user_id = 4;         // 用户 ID
+    uint32 aid = 5;             // 用户数据 ID
+}
+
+message RoomListW2WRequest
+{
+    uint32 app_id = 1;      // APP Id
+    string user_id = 2;     // 用户 ID
+}
+
+message RoomListW2WResponse
+{
+    uint32 code = 1;        // 1 为成功
+    string room_list = 2;   // 房间数据的 JSON，类似于 {"394338":["user_id_0","user_id_1","user_id_2"],"334338":[]}
+}
+
+// 请求房间列表数据
+message RoomListRequest
+{
+    uint32 app_id = 1;      // APP Id
+    string user_id = 2;     // 用户 ID
+    string device_id = 3;   // 设备 ID
+}
+
+// 房间数据
+message RoomItemData
+{
+    string room_id = 2;                 // 房间ID
+    string config = 3;                  // 房间配置信息
+    repeated RoomListUser user = 4;   // 用户信息
+}
+
+// 战绩数据
+message RecordItemData
+{
+    int32 room_id = 1;                  // 房间 ID
+    int32 game_id = 2;                  // 游戏 ID
+    string record_id = 3;               // 战绩 ID
+    string date_time = 4;               // 日期
+    repeated RoomListUser user = 5;     // 用户信息
+    string disband_uid = 6;             // 解散房间的 uid
+}
+
+// 返回房间数列数据
+message RoomListResponse
+{
+    uint32 code = 1;                                // 1 为成功
+    repeated RoomItemData room_item = 2;            // 2 为数据
+}
+
+// 请求战绩
+message RecordListRequest
+{
+    uint32 app_id = 1;      // APP Id
+    string user_id = 2;     // 用户 ID
+    string device_id = 3;   // 设备 ID
+}
+
+// 返回战绩
+message RecordListResponse
+{
+    uint32 code = 1;                            // 1 为成功
+    repeated RecordItemData record_item = 2;    // 战绩信息
+}
+
+// 用户战绩
+message UserRecord
+{
+    string username = 1;        // 用户昵称
+    string user_id = 2;         // 用户 ID
+    string avatar_url = 3;      // 用户头像
+    string point = 4;           // 用户积分；
+    string flag = 5;
+}
+
+// 战绩数据
+message RecordInfo
+{
+    bool win = 1;
+    uint32 the_round = 2;
+    repeated UserRecord user_info = 3;
+}
+
+// 请求战绩详情
+message RecordInfoRequest
+{
+    uint32 app_id = 1;      // APP Id
+    string user_id = 2;             // 用户 ID
+    string device_id = 3;   // 设备 ID
+    string room_unique_id = 4;      // 房间唯一 ID
+}
+
+// 返回请求战绩详情
+message RecordInfoResponse
+{
+    uint32 code = 1;
+    string datetime = 2;
+    repeated RecordInfo record_info_data = 3;
+    string room_unique_id = 4;  // 房间唯一 ID
+}
+
+
+message CreateRoomRequest
+{
+    uint32 roomId = 1;  // 6位房间号
+    string owner = 2;  // 房主UUID
+    string kwargs = 3;  // json 创建房间参数，由具体游戏各自解析字段
+    string room_uuid = 4;       // 房间唯一 ID
+}
+
+// 请求心跳；http://poker.xnny.com/heartbeat.php
+message HeartbeatRequest
+{
+    string user_id = 1;         // 用户 ID
+    string device_id = 2;       // 设备 ID
+    uint32 app_id = 3;          // 应用 ID
+}
+
+// 返回心跳数据
+message HeartbeatResponse
+{
+    string status = 1;            // 1 为在其它设备登录 T 掉当前登录，或者未登录；2 为金币更新；
+}
+
+// 请求用户金币
+message UserBalanceRequest
+{
+    string user_id = 1;     // 用户 ID
+    string device_id = 2;   // 设备 ID
+    uint32 app_id = 3;      // APP ID
+}
+
+// 返回用户金币数据
+message UserBalanceResponse
+{
+    uint32 code = 1;    // 1 为返回成功
+    uint32 gold = 2;    // 2 金币数
+    uint32 diamond = 3;    // 3 钻石
+    uint32 level = 4;    // 4 等级
+    uint32 exp = 5;    // 5 经验
+}
+
+// 退款
+message RefundWebResponse {
+    uint32 code = 1;
+    uint32 room_id = 2;  // 6位房间号
+    uint32 game_type = 3;
+    uint32 app_id = 4;
+    string owner = 5;
+    string room_uuid = 6;
+}
+
+// 请求回放数据
+message ReplayRequest
+{
+    uint32 app_id = 1;
+    string room_uuid = 2;       // 房间唯一 ID
+    uint32 the_round = 3;       // 局数
+}
+
+// 返回回放数据
+message ReplayResponse
+{
+    uint32 code = 1;    // 1 为返回成功
+    string replay = 2;  // 返回回放 json
+}
+
+// 请求房间回放数据
+message RoomReplayRequest
+{
+    uint32 app_id = 1;
+    uint32 room_id = 2;     // 6位房间号
+}
+
+// 请求邀请信息
+message InvitationInfoRequest
+{
+    uint32 app_id = 1;          // 应用 ID
+    string user_id = 2;         // 用户 ID
+}
+
+// 返回邀请信息
+message InvitationInfoResponse
+{
+    uint32 code = 1;        // 1 为有邀请信息，0 为没有邀请信息
+    string user_nick = 2;   // 上家昵称
+    string avatar_url = 3;  // 上家头像
+    uint32 proxyer_id = 4;  // 用户代理 ID，未成为代理为 0
+}
+
+// 发送短信验证码
+message SendSmsCodeRequest
+{
+    uint32 app_id = 1;          // 应用 ID
+    string user_id = 2;         // 用户 ID
+    string phone_number = 3;    // 手机号
+}
+
+// 返回发短信验证码结果
+message SendSmsCodeResponse
+{
+    uint32 code = 1;    // 1 为返回成功
+}
+
+// 验证短信验证码
+message SmsVerificationRequest
+{
+    uint32 app_id = 1;          // 应用 ID
+    string user_id = 2;         // 用户 ID
+    string phone_number = 3;    // 手机号
+    uint32 sms_code = 4;        // 短信验证码
+}
+
+// 返回短信验证结果
+message SmsVerificationResponse
+{
+    uint32 code = 1;            // 验证成功
+    uint32 new_proxyer_id = 2;  // 返回的代理 ID
+}
+
+// 发起一个房间是否存在的请求
+message ExistRoomW2WRequest {
+    uint32 server_id = 1;
+    uint32 room_id = 2;
+    uint32 app_id = 3;
+}
+
+//获取玩家信息。
+message GetUserInfoRequest {
+    int32 app_id = 1;                   // APP ID
+    string uid = 2;               // 玩家uid 优先判断uid,因为有可能你只有玩家的open_id，而没有uid。
+    string open_id = 3;                 // 玩吧的open_id 如果uid没有，就取open_id,
+}
+
+//获取玩家信息。
+message GetUserInfoResponse {
+		uint32 code = 1;            // 错误码
+    uint32 app_id = 2;                   // APP ID
+    string uid = 3;  // 玩家UUID
+    string open_id = 4;                 // 唯一标识符
+    uint32 gold = 5;  // 玩家当前金币
+    uint32 exp = 6; // 玩家经验
+    uint32 level = 7; // 玩家等级    
+    uint32 battle_counts = 8; // 总场次
+    uint32 battle_win = 9; // 胜利场次
+    uint32 continue_win = 10; // 连胜场次 
+}
+
+//连续登录礼物的领取
+message GetLoginGiftRequest {
+    uint32 app_id = 1;                   // APP ID
+    string uid = 2;  										// 玩家UUID
+    uint32 continue_login = 3;         	// 玩家属性continue_login，蛮发下，万一功能要改呢。
+}
+
+//连续登录礼物的领取
+message GetLoginGiftResponse {
+		uint32 code = 1;            // 错误码	7801已经领取 7802奖励数据有问题
+    uint32 app_id = 2;                 // APP ID
+    string uid = 3;  									// 玩家UUID
+    uint32 continue_login = 4;         	// 玩家属性continue_login，有可能过天了，需要更新。
+    uint32 type = 5;                  // 奖励类型
+    uint32 num = 6;                   // 奖励数量
+}
+
+// 返回房间是否存在
+message ExistRoomW2WResponse {
+    uint32 code = 1;            // 0 表明不存在，1 表明存在
+}
+
+// web 查询房间是否存在接口
+message ExistRoomWebRequest {
+    uint32 room_id = 1;
+}
+
+// 返回房间是否存在接口
+message ExistRoomWebResponse {
+    bool flag = 1;
+}
+//游戏服务器返回回合结算数据。
+message GS_SettleForRoundRequest {
+		uint32 app_id = 1;  // app_id
+    uint32 game_id = 2;  // game_id 暂时没用到
+    uint32 room_id = 3;  // 房间ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币
+        int32 gold_delta = 3; // 玩家金币差额
+        uint32 exp = 4; // 玩家经验
+        int32 exp_delta = 5; // 玩家经验差额
+        uint32 level = 6; // 玩家等级
+        int32 level_delta = 7; // 玩家等级差额 
+        int32 is_winner = 8; // 是否胜利
+    }
+    repeated PlayerData player_data = 4;    
+}
+
+//PHP服务器返回给游戏服务器的同步数据。
+message GS_SettleForRoundResponse {
+		uint32 code = 1;  // 返回码
+    uint32 app_id = 2;  // app_id
+    uint32 game_id = 3;  // game_id 暂时没用到
+    uint32 room_id = 4;  // 房间ID
+    message PlayerData {
+        string player = 1;  // 玩家UUID
+        uint32 gold = 2;  // 玩家当前金币       
+        uint32 exp = 3; // 玩家经验
+        uint32 level = 4; // 玩家等级
+    }
+    repeated PlayerData player_data = 5;
+}
+
+
+// 房间列表
+message MyCacRoom {
+    uint32 cac_id = 1;      // 棋牌室 ID
+    string cac_title = 2;   // 棋牌室标题
+}
+
+// 房间信息
+message CacRoomInfo {
+    uint32 cac_id = 1;      // 棋牌室 ID
+    uint32 game_id = 2;     // 游戏 ID
+    uint32 game_name = 3;   // 游戏名
+    string cac_title = 4;
+    string cac_desc = 5;    // 棋牌室描述
+    uint32 show_id = 6;     // 显示的 ID
+    uint32 in_game = 7;     // 进行中的游戏数
+    uint32 used_room = 8;   // 已经消耗的房间数
+    uint32 surplus_room = 9;   // 未使用房间数
+    uint32 state = 10;      // 状态，1 正在使用；0 清空房间；
+}
+
+// 棋牌室信息，返回是棋牌室状态
+message CacRoomStateRequest {
+    uint32 aid = 1;                         // 用户 ID
+}
+
+message CacRoomStateResponse {
+    uint32 code = 1;            // 返回信息，
+    uint32 state = 2;           // 1 代理可以开房，2 代理不可以开房；3 普通玩家可以进入棋牌室，4 普通玩家无法进入棋牌室，5 普通玩家被代理拉黑
+    uint32 player_num = 3;      // 返回棋牌室
+    uint32 gold = 4;            // 棋牌室需要的金币
+}
+
+// 请求代理棋牌室列表
+message MyCacRoomListRequest {
+    uint32 aid = 1;     // 代理 ID
+}
+
+// 返回代理棋牌室列表
+message MyCacRoomListResponse {
+    uint32 code = 1;            // 返回信息，
+    repeated MyCacRoom my_cac_room = 2;     // 房间列表
+    CacRoomInfo cac_room_info = 3;          // 第一个房间信息
+}
+
+// 请求棋牌室信息
+message CacRoomInfoRequest {
+    uint32 cac_id = 1;          // 棋牌室 ID
+    string uid = 2;             // 请求的用户id
+}
+
+// 返回棋牌室信息
+message CacRoomInfoResponse {
+    uint32 code = 1;                // 返回状态
+    CacRoomInfo cac_room_info = 2;  // 返回房间信息
+}
+
+// 请求创建棋牌室
+message CreateCacRoomRequest {
+    uint32 aid = 1;         // 创建者 ID
+    uint32 game_id = 2;     // 创建的游戏 ID
+    uint32 begin_num = 3;   // 开局人数
+    string room_conf = 4;   // 房间配置
+}
+
+// 返回创建棋牌室结果
+message CreateCacRoomResponse {
+    uint32 code = 1;                // 返回状态
+    uint32 cac_id = 2;              // 返回棋牌室 ID
+}
+
+// 请求加入棋牌室
+message JoinCacRequest {
+    uint32 aid = 1;
+    uint32 cac_id = 2;      // 棋牌室 ID
+}
+
+// 返回加入棋牌室数据
+message JoinCacResponse {
+    uint32 code = 1;
+    uint32 room_id = 2;         // 房间 ID
+    string server_ip = 3;       // 服务器 IP
+    uint32 server_port = 4;     // 服务器端口
+}
+
+// 请求棋牌室战绩
+message CacRecordRequest {
+    uint32 cac_id = 1;
+}
+
+// 返回战绩数据
+message CacRecordResponse {
+    uint32 code = 1;
+    repeated RoomItemData room_item = 2;    // 房间数据
+}
+
+// 用户请求棋牌室列表
+message CacRoomListRequest {
+    uint32 aid = 1;
+}
+
+// 返回棋牌室列表
+message CacRoomListResponse {
+    uint32 code = 1;
+    repeated CacRoomInfo cac_room_info = 2;
+}
