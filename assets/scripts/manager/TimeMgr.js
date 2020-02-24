@@ -129,6 +129,6 @@ TimeMgr.prototype.getMonthDay = function (year, month) {
     return month_day_enum[month_index];
 },
 
-    module.exports = function () {
-        return new TimeMgr();
-    };
+module.exports = function () {
+    return new TimeMgr();
+};

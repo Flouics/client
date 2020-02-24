@@ -42,6 +42,7 @@ cc.Class({
         app.audioMgr = app.audioMgr || require('AudioMgr')();
         app.asyncTaskMgr = app.asyncTaskMgr || require('AsyncTaskMgr')();
         app.poolMgr = app.poolMgr || require('PoolMgr')();
+        app.moduleMgr = app.moduleMgr || require('ModuleMgr')();
 
         app.timeMgr = app.timeMgr || require('TimeMgr')();
         app.dataMgr = app.dataMgr || require('DataMgr')();
