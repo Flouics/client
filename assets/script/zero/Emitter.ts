@@ -44,7 +44,6 @@ export default class Emitter {
     *
     * @param {String} event
     * @param {Function} cb
-    * @return {Emitter}
     * @api public
     */
     once(event:string, cb:Function) {
@@ -54,7 +53,6 @@ export default class Emitter {
             cb.apply(this, arguments);
         }
         this.on(event, cb.toString(),on,null);
-        return this;
     };
 
     /**

@@ -8,6 +8,13 @@ export default class Proxy {
     }
     init(){
 
-    }  
+    }
+    onHttpMsg(cmd:string,data:any){
+        cc.log(cmd,data);
+    }
+
+    onSocketMsg(cmd:string,data:any){
+        cc.log(cmd,data);
+    }
 }
 
