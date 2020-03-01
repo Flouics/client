@@ -1,6 +1,6 @@
 ﻿var basePath = '/resources/music/';
 var AUDIO_TYPE = '.mp3';
-var app = window.app
+var global = window;
 export default class AudioMgr{
     _curMusic:any = null;
     _urls:string[] = [];
@@ -17,7 +17,7 @@ export default class AudioMgr{
             musicVolume: 1,
             effectVolume: 1,
         }
-        var localData = app.dbMgr._getJsonItem(app.dbMgr.Enum.AUDIO_SETTING);
+        var localData = global.app.dbMgr._getJsonItem(global.app.dbMgr.Enum.AUDIO_SETTING);
         if (localData) {
             for (var key in localData) {
                 if (ret.hasOwnProperty(key)) {
@@ -29,7 +29,7 @@ export default class AudioMgr{
     };
     
    saveSettingData () {
-        app.dbMgr._setJsonItem(app.dbMgr.Enum.AUDIO_SETTING, this.settingData);
+        global.app.dbMgr._setJsonItem(global.app.dbMgr.Enum.AUDIO_SETTING, this.settingData);
     };
     
    init () {
@@ -96,9 +96,9 @@ export default class AudioMgr{
         return this.playMusicUrl(url, loop);
     };
     
-   stopMusic (isReleaseData:boolean = false) {
+   stopMusic () {
         this._curMusic = null;
-        return cc.audioEngine.stopMusic(isReleaseData);
+        return cc.audioEngine.stopMusic();
     };
     
     //开、关音乐
@@ -135,15 +135,13 @@ export default class AudioMgr{
     };
     
     //音效。多轨
-   playEffectUrl (url:string, loop:boolean = false, volume?:number,cb?:Function) {
+   playEffectUrl (url:string, loop:boolean = false,cb?:Function) {
         if (this.settingData.isEffectOpen == 0) {
             return;
         }
-        if (loop == undefined) loop = false;
-        if (volume == undefined) volume = this.settingData.effectVolume;
-    
+        if (loop == undefined) loop = false;    
         this.getAudioClip(url, function (audioClip) {
-            var audioId = cc.audioEngine.playEffect(audioClip, loop, volume);
+            var audioId = cc.audioEngine.playEffect(audioClip, loop);
             if(!!cb) cb(audioId);
         });
         return true;
@@ -151,7 +149,7 @@ export default class AudioMgr{
     
    playEffect (name:string, loop?:boolean, volume?:number,cb?:Function) {
         var url = this.getUrl(name);
-        return this.playEffectUrl(url, loop, volume,cb);
+        return this.playEffectUrl(url, loop,cb);
     };
     
    stopEffect (audioId?:number) {
@@ -162,7 +160,7 @@ export default class AudioMgr{
     };
     
    stopAllEffects () {
-        if (cc.sys.os == cc.sys.OS_ANDROID || cc.sys.os == cc.sys.isBrowser) {
+        if (cc.sys.os == cc.sys.OS_ANDROID || cc.sys.isBrowser) {
             cc.audioEngine.stopAll();
             this.rewindMusic();
         } else {
@@ -183,7 +181,7 @@ export default class AudioMgr{
     };
     
     //设置音效的音量
-   setEffectsVolume (volume:string) {
+   setEffectsVolume (volume:number) {
         return cc.audioEngine.setEffectsVolume(volume);
     };
     

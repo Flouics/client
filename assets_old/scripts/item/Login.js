@@ -32,12 +32,12 @@ cc.Class({
     },
 
     loginGuest: function (event) {
-        var isClickCD = app.buttonCtrl.isClickToFast(event.target);
+        var isClickCD = global.app.buttonCtrl.isClickToFast(event.target);
         if (isClickCD) {
             var data = {
                 loginType: LoginType.Guest,
-                openId: app.config.device_id,
-                openKey: app.config.device_id,
+                openId: global.app.config.device_id,
+                openKey: global.app.config.device_id,
                 pf: 'test'
             }
             this.login(data);
@@ -45,7 +45,7 @@ cc.Class({
     },
 
     login: function () {
-        app.httpMgr.sendMessage(app.httpMgr.CMD.PHP_CMD_LOGIN, data);
+        global.app.httpMgr.sendMessage(global.app.httpMgr.CMD.PHP_CMD_LOGIN, data);
     },
 
 

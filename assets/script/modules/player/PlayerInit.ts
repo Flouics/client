@@ -1,6 +1,6 @@
 import PlayerProxy from "./PlayerProxy";
 import PlayerCommand from "./PlayerCommand";
-var app = window.app
+var global = window;
 export default class Init {
     proxy:PlayerProxy;
     cmd:PlayerCommand;

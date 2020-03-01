@@ -20,11 +20,11 @@ export default class SoundMgr{
      */
     playSound(name:string, isLoop:boolean = false) {
         if (Array.isArray(name)) {
-            name = app.toolKit.getRandFromArray(name);
+            name = global.app.toolKit.getRandFromArray(name);
         }
     
         if (name) {
-            return app.audioMgr.playEffect(name, isLoop);
+            return global.app.audioMgr.playEffect(name, isLoop);
         } else {
             return null;
         }

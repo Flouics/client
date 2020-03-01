@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/8/17.
  */
-var app = window.app
+var global = window;
 class Data {
     data: { [key: string]: any } = {};
     ids: any[] = [];
@@ -81,7 +81,7 @@ function mapData(fields: any, item: any) {
                 var temp = [];
                 for (var index = 0; index < va.length; index++) {
                     var value = va[index];
-                    if (app.toolKit.isNum(value)) {
+                    if (global.app.toolKit.isNum(value)) {
                         value = Number(value);
                     }
                     temp.push(value);
@@ -90,7 +90,7 @@ function mapData(fields: any, item: any) {
             }
         }
         else {
-            if (app.toolKit.isNum(va)) {
+            if (global.app.toolKit.isNum(va)) {
                 va = Number(va);
             }
             else {

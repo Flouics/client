@@ -1,3 +1,6 @@
+import DialogBase from "../zero/DialogBase";
+import BaseView from "../zero/BaseView";
+
 var RES_ENUM = {
     WINDOW: {
         loadingAm: "prefab/dialog/loadingAm",
@@ -9,12 +12,8 @@ var RES_ENUM = {
     ITEM: {},
     EFFECT: {},
 };
-var app = window.app;
-app.RES_WINDOW = RES_ENUM.WINDOW;
-app.RES_ITEM = RES_ENUM.ITEM;
-app.RES_EFFECT = RES_ENUM.EFFECT;
-
-export default class WindowManager {
+var global = window;
+export default class WindowMgr {
     creatingCB = {};
     ui = {};
     
@@ -83,7 +82,7 @@ export default class WindowManager {
             var time2 = new Date().getTime();
             cc.log('open ui cost:', uiName, time2 - time1);
             if (!!ui) {
-                var baseUI = ui.getComponent(cc.DialogBase);
+                var baseUI = ui.getComponent(DialogBase);
                 if (!!baseUI) {
                     baseUI.show();
                 } else {
@@ -97,14 +96,14 @@ export default class WindowManager {
     };
     
     // 预加载
-    preload (uiName, cb) {
-        var parent = app.nd_uiPool;
+    preload (uiName:string, cb?:Function) {
+        var parent = global.app.nd_uiPool;
         this.create(uiName, function (err, ui) {
             if (err) {
                 cc.error('preload ui failed ', uiName, err);
                 return;
             } else {
-                var baseUI = ui.getComponent(cc.DialogBase);
+                var baseUI = ui.getComponent(DialogBase);
                 if (!!baseUI && baseUI.init) {
                     baseUI.init();
                 }
@@ -139,11 +138,11 @@ export default class WindowManager {
         }
     
         if (ui.isValid) {
-            var baseUI = ui.getComponent(cc.DialogBase);
+            var baseUI = ui.getComponent(DialogBase);
             if (!!baseUI) {
                 baseUI.hide();
             } else {
-                var baseView = ui.getComponent(cc.BaseView);
+                var baseView = ui.getComponent(BaseView);
                 if (!!baseView) {
                     baseView.hide();
                 } else {
@@ -165,7 +164,7 @@ export default class WindowManager {
         var ui_list = [];
         for (var name in this.ui) {
             var uiNode = this.ui[name];
-            var baseUI = uiNode.getComponent(cc.DialogBase);
+            var baseUI = uiNode.getComponent(DialogBase);
             if (baseUI && baseUI.index >= level * 100) {
                 ui_list.push(baseUI);
             }
@@ -190,7 +189,7 @@ export default class WindowManager {
         var ui_list = [];
         for (var name in this.ui) {
             var uiNode = this.ui[name];
-            var baseUI = uiNode.getComponent(cc.DialogBase);
+            var baseUI = uiNode.getComponent(DialogBase);
             if (baseUI && baseUI.node.active && baseUI.index == zIndex && baseUI != exceptUI) {
                 ui_list.push(baseUI);
             }

@@ -23,7 +23,7 @@ cc.Class({
     hotUpdateCheck: function () {
         this.loadEvents = {'loadtxt': false};
         //先不加进度条，就一个文本。
-        app.dataMgr.tryLoadAllTable(function () {
+        global.app.dataMgr.tryLoadAllTable(function () {
             this.loadEvents.loadtxt = true;
             this.loadGame();
         }.bind(this));
@@ -36,17 +36,17 @@ cc.Class({
     preLoad: function () {
         var res = [
         ];
-        app.loadingMgr.preLoadRes(res);
+        global.app.loadingMgr.preLoadRes(res);
         var prefabs = [
-            app.RES_WINDOW.rankInfo  
+            res_enum.WINDOW.rankInfo  
         ];
-        app.loadingMgr.preLoadPrefab(prefabs);
+        global.app.loadingMgr.preLoadPrefab(prefabs);
         cc.director.preloadScene('game');
     },
 
     setVersion: function () {
-        if (app.config.version) {
-            this.lb_version.string = app.config.version;
+        if (global.app.config.version) {
+            this.lb_version.string = global.app.config.version;
         } else {
             this.lb_version.string = '1.0.0';
         }
@@ -66,16 +66,16 @@ cc.Class({
     },
 
     onClickStart: function () {
-        var version = app.dbMgr._getItem(app.dbMgr.Enum.LAST_VERSION);
-        if (version != app.config.version) {
-            app.dbMgr._setItem(app.dbMgr.Enum.LAST_VERSION, app.config.version);
+        var version = global.app.dbMgr._getItem(global.app.dbMgr.Enum.LAST_VERSION);
+        if (version != global.app.config.version) {
+            global.app.dbMgr._setItem(global.app.dbMgr.Enum.LAST_VERSION, global.app.config.version);
             this.nd_tip.active = true;
         }
 
-        app.sceneMgr.loadScene('game');
+        global.app.sceneMgr.loadScene('game');
     },
 
     onClickRankInfo: function () {
-        app.extension.openFaceBookRankInfo();
+        global.app.extension.openFaceBookRankInfo();
     },
 });

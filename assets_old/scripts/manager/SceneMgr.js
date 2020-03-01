@@ -23,19 +23,19 @@ SceneMgr.prototype.loadScene = function (sceneName, cb) {
     var self = this;
     var sceneAction = function () {
         cc.log('endAction, start loadScene', new Date().getTime());
-        var uiRoot = app.windowMgr.getUIRoot();
+        var uiRoot = global.app.windowMgr.getUIRoot();
         uiRoot.removeAllChildren();
         // 停止当前音乐
         self.isLoading = cc.director.loadScene(sceneName, function () {
             self.isLoading = false;
-            app.loadingMgr.stopAnimation();
+            global.app.loadingMgr.stopAnimation();
             cc.log('end loadScene', sceneName, new Date().getTime());
             if (cb) {
                 cb();
             }
         });
     }
-    app.loadingMgr.playAnimation(0.2);
+    global.app.loadingMgr.playAnimation(0.2);
     cc.director.preloadScene(sceneName, function (error) {
         if (error) {
             self.isLoading = false;

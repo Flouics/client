@@ -16,7 +16,7 @@ var HttpMessageCallback = {
                 break;
 
             default:
-                app.toolKit.showTip((dicionCode[code]) ? dicionCode[code] : "请求出错,错误代码:" + code);
+                global.app.toolKit.showTip((dicionCode[code]) ? dicionCode[code] : "请求出错,错误代码:" + code);
                 flag = false;
 
         }
@@ -30,24 +30,24 @@ var HttpMessageCallback = {
         var code = data.getCode();
         if (1 != code) {
             var content = dicionCode[code] ? dicionCode[code] : "请求出错,错误代码:" + code
-            app.toolKit.openMsgBox(content, app.restart, app.restart);
+            global.app.toolKit.openMsgBox(content, global.app.restart, global.app.restart);
             return;
         }
         do {
             // 系统维护
             var isMaintain = data.getIsMaintain();
             if (isMaintain) {
-                app.toolKit.openMsgBox('系统维护。', app.exit, app.exit);
+                global.app.toolKit.openMsgBox('系统维护。', global.app.exit, global.app.exit);
                 break;
             }
 
             // 存用户数据
-            app.userData.initUserInfo(data);
+            global.app.userData.initUserInfo(data);
             // 存热更及登录数据
-            //app.serverMgr.initServerData(data);
+            //global.app.serverMgr.initServerData(data);
 
-            //app.userTask.initTaskInfo();
-            //app.rank.setRankRewardFlag(data.getRankFlag());
+            //global.app.userTask.initTaskInfo();
+            //global.app.rank.setRankRewardFlag(data.getRankFlag());
 
 
             var isRecon = data.getUserReconnection();//存储玩家信息
@@ -55,20 +55,20 @@ var HttpMessageCallback = {
                 var roomId = data.getUserRoomId();
                 var serverIp = data.getUserServerIp();
                 var serverPort = data.getUserServerPort();
-                app.userData.currentGameId = data.getGameId();
-                app.userData.current_table_level = data.getTableLevel();
+                global.app.userData.currentGameId = data.getGameId();
+                global.app.userData.current_table_level = data.getTableLevel();
 
-                if (app.toolKit.isValidString(serverIp) && parseInt(serverPort, 10)) {
+                if (global.app.toolKit.isValidString(serverIp) && parseInt(serverPort, 10)) {
                     cc.log("------[http]重新连接 ", serverIp, ":", serverPort, ":", roomId);
-                    app.userData.setReconnectData(true, roomId, serverIp, serverPort);
+                    global.app.userData.setReconnectData(true, roomId, serverIp, serverPort);
                     game.socketMgr.connect(serverIp, serverPort);
                 } else {
-                    app.toolKit.showTip("重连数据获取失败");
+                    global.app.toolKit.showTip("重连数据获取失败");
                 }
                 break;
             }
             // 进入大厅
-            app.sceneMgr.loadScene("lobbyCache");
+            global.app.sceneMgr.loadScene("lobbyCache");
         } while (0);
     },
     // 心跳回调
@@ -78,7 +78,7 @@ var HttpMessageCallback = {
         if (!data || data.getStatus().length < HEARTBEAT_STATUS_COUNT)
             return;
         //todo 处理    
-        app.httpMgr.emit(app.httpMgr.CMD.PHP_CMD_HEARTBEAT, {type: 3, status: status});
+        global.app.httpMgr.emit(global.app.httpMgr.CMD.PHP_CMD_HEARTBEAT, {type: 3, status: status});
     },
 
     // 返回用户金币数据
@@ -111,8 +111,8 @@ var HttpMessageCallback = {
         info.status = data.getStatus();
         info.reward_flag = data.getRewardFlag();
 
-        app.userData.setBalance(info);
-        app.httpMgr.emit(app.httpMgr.CMD.PHP_CMD_USER_BALANCE, info);
+        global.app.userData.setBalance(info);
+        global.app.httpMgr.emit(global.app.httpMgr.CMD.PHP_CMD_USER_BALANCE, info);
     },
 
     // 支付心跳
@@ -122,16 +122,16 @@ var HttpMessageCallback = {
         cc.log("------[httpcb]支付心跳返回:", status)
 
         if (0 != status) {
-            app.httpMgr.stopPayHearBeat();
+            global.app.httpMgr.stopPayHearBeat();
             if (1 != status)
-                app.toolKit.showTip("支付返回:", status);
+                global.app.toolKit.showTip("支付返回:", status);
         }
-        app.schedule()
+        global.app.schedule()
         // 0未支付，1成功，
         if (1 == status) {
-            app.unschedule("payHeartBeat");
+            global.app.unschedule("payHeartBeat");
             cc.log("支付成功");
-            app.httpMgr.sendMessage(app.httpMgr.CMD.PHP_CMD_USER_BALANCE)
+            global.app.httpMgr.sendMessage(global.app.httpMgr.CMD.PHP_CMD_USER_BALANCE)
         }
     },
 };

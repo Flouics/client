@@ -6,7 +6,7 @@ cc.Class({
 
     playSound: function () {
         if (this.soundName && this.soundName.length > 0) {
-            app.audioMgr.playEffect(this.soundName);
+            global.app.audioMgr.playEffect(this.soundName);
         }
     }
 });

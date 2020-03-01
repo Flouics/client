@@ -62,14 +62,14 @@ export default class Lunar {
         function e2c() {
             var total:any, m:any, n:any, k:any;
             var isEnd = false;
-            var tmp = theDate.getYear();
+            var tmp = theDate.getFullYear();
             if (tmp < 1900) tmp += 1900;
             total = (tmp - 2001) * 365
                 + Math.floor((tmp - 2001) / 4)
                 + madd[theDate.getMonth()]
                 + theDate.getDate()
                 - 23;
-            if (theDate.getYear() % 4 == 0 && theDate.getMonth() > 1)
+            if (theDate.getFullYear() % 4 == 0 && theDate.getMonth() > 1)
                 total++;
             for (m = 0; ; m++) {
                 k = (CalendarData[m] < 0xfff) ? 11 : 12;

@@ -2,7 +2,7 @@ var localStorageEnum = {
     AUDIO_SETTING: 'audio_setting',
     ACCOUNT_INFO: 'ACCOUNT_INFO',
 };
-var app = window.app
+var global = window;
 export default class DBMgr{
     ls:any = cc.sys.localStorage;
     Enum:any = localStorageEnum;
@@ -94,7 +94,7 @@ export default class DBMgr{
     
     //防止不同用户之间用户数据冲突
     getKey (key:string) {
-        var uid = app.userData.uid || 'someone';
+        var uid = global.app.userData.uid || 'someone';
         var key_prefix = uid.slice(0, 7);
         return key_prefix + key;
     };

@@ -5,7 +5,7 @@ var HttpCmd = {
     PHP_CMD_SIGN_CODE: '/api/getValidateCode.do',
 };
 
-var app = window.app;
+var global = window;
 export default class HttpMgr {
     _reqHttpList: any[] = []; //网络请求——键值对队列
     _isReqHttpIng: boolean = false; //当前是否还有网络请求还在进行
@@ -90,7 +90,7 @@ export default class HttpMgr {
 
         // 心跳不走loading
         if (this.no_play_anim_proto_list.indexOf(cmd) == -1) {
-            app.loadingMgr.playAnimation();
+            global.app.loadingMgr.playAnimation();
         }
     };
 
@@ -116,7 +116,7 @@ export default class HttpMgr {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 self._isReqHttpIng = false;
-                app.loadingMgr.stopAnimation();
+                global.app.loadingMgr.stopAnimation();
 
                 if (_method == "POST") {
                     try {
@@ -157,7 +157,7 @@ export default class HttpMgr {
             xmlhttp.send();
         }
 
-        var connecttoFail () {
+        var connecttoFail = function () {
             if (xmlhttp)
                 xmlhttp.abort();
             cc.error('time out', _url, _param);
@@ -172,7 +172,7 @@ export default class HttpMgr {
         if (this._login_server) {
             return this._login_server;
         }
-        var serverType = app.config.server_type;
+        var serverType = global.app.config.server_type;
         var serverConfig = this._server_conf[serverType];
         this._login_server = serverConfig.login_server;
         return this._login_server;

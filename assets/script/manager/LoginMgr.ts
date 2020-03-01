@@ -1,4 +1,4 @@
-var app = window.app;
+var global = window;
 export default class LoginMgr {
     _is_login:boolean = false;
     _req_list_map = {};
@@ -34,7 +34,7 @@ export default class LoginMgr {
 
     startHttpReq() {
         this._req_list.forEach(function (protoObj) {
-            app.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
+            global.app.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
         });
     };
 

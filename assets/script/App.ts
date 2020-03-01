@@ -1,6 +1,20 @@
 ﻿import Emitter from "./zero/Emitter";
 import Config from "./Config";
 import ToolKit from "./utils/ToolKit";
+import LoadingMgr from "./manager/LoadingMgr";
+import DBMgr from "./manager/DBMgr";
+import HttpMgr from "./manager/HttpMgr";
+import SceneMgr from "./manager/SceneMgr";
+import WindowMgr from "./manager/WindowMgr";
+import AudioMgr from "./manager/AudioMgr";
+import AsyncTaskMgr from "./manager/AsyncTaskMgr";
+import PoolMgr from "./manager/PoolMgr";
+import ModuleMgr from "./manager/ModuleMgr";
+import TimeMgr from "./manager/TimeMgr";
+import DataMgr from "./manager/DataMgr";
+import LoginMgr from "./manager/LoginMgr";
+import SoundMgr from "./manager/SoundMgr";
+import SceneBase from "./zero/SceneBase";
 
 const {ccclass, property} = cc._decorator;
 /**
@@ -11,6 +25,7 @@ enum EventEnum {
     EVENT_HIDE = 1
     ,EVENT_SHOW = 2
 };
+var game:{[key:string]:any} = {};
 @ccclass
 export default class App extends cc.Component{
     @property(cc.Node)
@@ -25,6 +40,20 @@ export default class App extends cc.Component{
     //mamager
     config:Config = null;
     toolKit:ToolKit = null;
+    loadingMgr:LoadingMgr = null;
+    dbMgr:DBMgr = null;
+
+    httpMgr:HttpMgr = null;
+    sceneMgr:SceneMgr = null; 
+    windowMgr:WindowMgr = null;
+    audioMgr:AudioMgr = null;
+    asyncTaskMgr:AsyncTaskMgr = null;
+    poolMgr:PoolMgr = null;
+    moduleMgr:ModuleMgr = null;
+
+    timeMgr:TimeMgr = null;
+    dataMgr:DataMgr = null;
+    loginMgr:LoginMgr = null;
 
     // use this for initialization
     onLoad () {
@@ -44,36 +73,36 @@ export default class App extends cc.Component{
         var app = this;
 
         //定义全局变量。
-        window.app = app;
-        window.game = {};
-        
+        window.app = app;      
+        window.game = game;
+                
         this.config = this.config || new Config();
-        this.toolKit = this.toolKit || new ToolKit();
+        this.toolKit = this.toolKit || new ToolKit();        
         
-        /*
-        app.loadingMgr = app.loadingMgr || require('LoadingMgr')();
-        app.dbMgr = app.dbMgr || require('DBMgr')();
-        app.httpMgr = app.httpMgr || require('HttpMessageHelp')();
-        app.sceneMgr = app.sceneMgr || require('SceneMgr')();
-        app.windowMgr = app.windowMgr || require('WindowManager')();
-        app.buttonCtrl = app.buttonCtrl || require('ButtonCtrl')();
-        app.audioMgr = app.audioMgr || require('AudioMgr')();
-        app.asyncTaskMgr = app.asyncTaskMgr || require('AsyncTaskMgr')();
-        app.poolMgr = app.poolMgr || require('PoolMgr')();
-        app.moduleMgr = app.moduleMgr || require('ModuleMgr')();
+        this.loadingMgr = this.loadingMgr || new LoadingMgr();
 
-        app.timeMgr = app.timeMgr || require('TimeMgr')();
-        app.dataMgr = app.dataMgr || require('DataMgr')();
-        app.loginMgr = app.loginMgr || require('LoginMgr')();
-        app.extension = app.extension || require('Extension')();
-        app.effectMgr = app.effectMgr || require('EffectMgr')();
+        this.dbMgr = this.dbMgr || new DBMgr();
+        this.httpMgr = this.httpMgr || new HttpMgr();
+        this.sceneMgr = this.sceneMgr || new SceneMgr();
+        this.windowMgr = this.windowMgr || new WindowMgr();
+
+        this.audioMgr = this.audioMgr || new AudioMgr();
+        this.asyncTaskMgr = this.asyncTaskMgr || new AsyncTaskMgr();
+        this.poolMgr = this.poolMgr || new PoolMgr();
+        this.moduleMgr = this.moduleMgr || new ModuleMgr();
+
+        this.timeMgr = this.timeMgr || new TimeMgr();
+        this.dataMgr = this.dataMgr || new DataMgr();
+        this.loginMgr = this.loginMgr || new LoginMgr();
+        //this.extension = this.extension || require('Extension')();
+        //this.effectMgr = this.effectMgr || require('EffectMgr')();
 
 
-        app.userData = require('UserData')();
-        app.rechargeDm = app.rechargeDm || require('RechargeDm')();
+        //this.userData = require('UserData')();
+        //this.rechargeDm = this.rechargeDm || require('RechargeDm')();
 
-        game.soundMgr = game.soundMgr || require('SoundMgr')();
-        */
+        game.soundMgr = game.soundMgr || new SoundMgr();
+        
     }
 
     onMsg () {
@@ -147,9 +176,9 @@ export default class App extends cc.Component{
 
     onViewResize () {
         //遍历所有的节点。
-        //app.toolKit.showTip("onViewResize");
+        //this.toolKit.showTip("onViewResize");
         var root = cc.find('Canvas');
-        var scene_comp = root.getComponent(cc.SceneBase);
+        var scene_comp = root.getComponent(SceneBase);
         if (scene_comp && scene_comp.fitWinSize) {
             scene_comp.fitWinSize();
         }

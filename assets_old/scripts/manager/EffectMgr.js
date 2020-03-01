@@ -128,12 +128,12 @@ EffectMgr.prototype.clearFrameAnim = function (animNode) {
     if (animNode && animNode.isValid) {
         animNode.active = false;
         //缓存起来。
-        animNode.parent = app.nd_effectPool;
+        animNode.parent = global.app.nd_effectPool;
     }
 };
 
 EffectMgr.prototype.getFameEffectFromPool = function (effectObj) {
-    var target = cc.find('FRAME_ANIM_' + effectObj.name, app.nd_effectPool);
+    var target = cc.find('FRAME_ANIM_' + effectObj.name, global.app.nd_effectPool);
     return target;
 };
 
@@ -156,11 +156,11 @@ EffectMgr.prototype.playCommonEffect = function (effect_prefab_name, loadedCallB
             }
         }
     };
-    app.windowMgr.open(effect_prefab_name, cb, null, endCallBack);
+    global.app.windowMgr.open(effect_prefab_name, cb, null, endCallBack);
 };
 
 EffectMgr.prototype.clearCommonEffect = function (effect_prefab_name) {
-    app.windowMgr.close(effect_prefab_name);
+    global.app.windowMgr.close(effect_prefab_name);
 };
 
 module.exports = function () {

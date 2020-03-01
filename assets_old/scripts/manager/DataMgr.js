@@ -46,7 +46,7 @@ var mapData = function (fields, item) {
                 var temp = [];
                 for (var index = 0; index < va.length; index++) {
                     var value = va[index];
-                    if (app.toolKit.isNum(value)) {
+                    if (global.app.toolKit.isNum(value)) {
                         value = Number(value);
                     }
                     temp.push(value);
@@ -55,7 +55,7 @@ var mapData = function (fields, item) {
             }
         }
         else {
-            if (app.toolKit.isNum(va)) {
+            if (global.app.toolKit.isNum(va)) {
                 va = Number(va);
             }
             else {

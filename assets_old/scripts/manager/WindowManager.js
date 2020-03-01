@@ -13,9 +13,9 @@ var RES_ENUM = {
 var WindowManager = function () {
     this.creatingCB = {};
     this.ui = {};
-    app.RES_WINDOW = RES_ENUM.WINDOW;
-    app.RES_ITEM = RES_ENUM.ITEM;
-    app.RES_EFFECT = RES_ENUM.EFFECT;
+    res_enum.WINDOW = RES_ENUM.WINDOW;
+    res_enum.ITEM = RES_ENUM.ITEM;
+    res_enum.EFFECT = RES_ENUM.EFFECT;
 };
 
 // 创建，默认已经有根
@@ -108,7 +108,7 @@ WindowManager.prototype.open = function (uiName, cb, parent, errorCb, b_noAddchi
 
 // 预加载
 WindowManager.prototype.preload = function (uiName, cb) {
-    var parent = app.nd_uiPool;
+    var parent = global.app.nd_uiPool;
     this.create(uiName, function (err, ui) {
         if (err) {
             cc.error('preload ui failed ', uiName, err);

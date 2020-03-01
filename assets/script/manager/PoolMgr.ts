@@ -32,7 +32,7 @@ class Pool {
             this._pool.put(cc.instantiate(this._pb_item));
         }
         var item = this._pool.get(data);
-        item.rootPool = this;
+        (item as any).itemPool = this;
         return item;
     };
     

@@ -1,6 +1,7 @@
 import BaseView from "./BaseView";
 
 const {ccclass, property} = cc._decorator;
+var global = window;
 export default class DialogBase extends BaseView{
     @property({
         tooltip: '窗口的层级；1级窗口0-99 2级100-199 以此类推'
@@ -11,14 +12,23 @@ export default class DialogBase extends BaseView{
     _hasBaseInit: boolean = false;
     @property({
         type: Boolean,
-        notify () {
-            var nd_close = cc.find('btn_close', this.node);
-            if (nd_close) {
-                nd_close.active = false;
-            }
-        }
     })
     _isCanClose:boolean = true
+
+    @property({
+        type: Boolean,
+    })
+    get isCanClose ():boolean{
+        return this._isCanClose
+    }
+    set isCanClose (value:boolean) {
+        var nd_close = cc.find('btn_close', this.node);
+        if (nd_close) {
+            nd_close.active = false;
+        }
+        this._isCanClose = value;
+    }
+    
     @property({
         tooltip: '切换场景的时候是否直接destroy'
     })
@@ -29,7 +39,7 @@ export default class DialogBase extends BaseView{
         if (nd_close) {
             nd_close.on(cc.Node.EventType.TOUCH_END, this.onClose.bind(this));
             //nd_close.on(cc.Node.EventType.MOUSE_UP, this.onClose.bind(this));
-            //app.windowMgr.control.closeAllOpen();
+            //global.app.windowMgr.control.closeAllOpen();
         }
 
         this.node.on('bgClick', this.onBgClick.bind(this));
@@ -66,6 +76,6 @@ export default class DialogBase extends BaseView{
     }
 
     close () {
-        app.windowMgr.closeUI(this);
+        global.app.windowMgr.closeUI(this);
     }
-});
+};

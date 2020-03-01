@@ -1,17 +1,15 @@
-var app = window.app;
+var global = window;
 export default class LoadingMgr{
     play_id = 0;
     is_play = false;
-
     playAnimation (delay:number = 1) {
         this.is_play = true;
-        this.play_id++;
+    this.play_id++;
         var play_id = this.play_id;
         var self = this;
-    
         setTimeout(function () {
             if (play_id == self.play_id) {
-                app.windowMgr.open(app.RES_WINDOW.loadingAm, function () {
+                global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
                     if (self.is_play == false) {
                         self.stopAnimation();
                     }
@@ -22,7 +20,7 @@ export default class LoadingMgr{
     
     stopAnimation () {
         this.is_play = false;
-        app.windowMgr.close(app.RES_WINDOW.loadingAm);
+        global.app.windowMgr.close(res_enum.WINDOW.loadingAm);
     };
     
     //todo
@@ -30,7 +28,7 @@ export default class LoadingMgr{
         this.is_play = true;
         this.play_id++;
         var self = this;
-        app.windowMgr.open(app.RES_WINDOW.loadingAm, function () {
+        global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
             if (self.is_play == false) {
                 self.stopAnimation();
             }
@@ -43,7 +41,7 @@ export default class LoadingMgr{
         }
         for (var i in atlas_name_list) {
             let atlas_url = atlas_name_list[i];
-            app.asyncTaskMgr.newAsyncTask(function () {
+            global.app.asyncTaskMgr.newAsyncTask(function () {
                 cc.loader.loadRes(atlas_url, function (err, res) {
                     if (!err) {
                         cc.log('preLoadRes atlas:', atlas_url);
@@ -61,18 +59,18 @@ export default class LoadingMgr{
         if (async_num == 1) {
             for (var i in ui_name_list) {
                 let ui_name = ui_name_list[i];
-                app.asyncTaskMgr.newAsyncTask(function () {
-                    app.windowMgr.preload(ui_name, cb);
+                global.app.asyncTaskMgr.newAsyncTask(function () {
+                    global.app.windowMgr.preload(ui_name, cb);
                 });
             }
         } else {
             var ui_name_list_copy = ui_name_list.slice(0);
             while (ui_name_list_copy.length > 0) {
                 let ui_name_list_temp = ui_name_list_copy.splice(0, async_num);
-                app.asyncTaskMgr.newAsyncTask(function () {
+                global.app.asyncTaskMgr.newAsyncTask(function () {
                     for (var i in ui_name_list_temp) {
                         let ui_name = ui_name_list_temp[i];
-                        app.windowMgr.preload(ui_name, cb);
+                        global.app.windowMgr.preload(ui_name, cb);
                     }
                 });
             }

@@ -34,7 +34,7 @@ RechargeDm.prototype.getRechargeList = function (cb) {
         if (!!cb) cb(this.rechargeList);
         return;
     }
-    app.httpMgr.sendMessage(app.httpMgr.CMD.PHP_CMD_SHOPPING_LIST, {}, function (shopList) {
+    global.app.httpMgr.sendMessage(global.app.httpMgr.CMD.PHP_CMD_SHOPPING_LIST, {}, function (shopList) {
         if (!!cb) cb(shopList);
     });
 };
