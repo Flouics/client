@@ -7,4 +7,5 @@ declare interface Window {
         ITEM: {[key:string]:any}
         EFFECT: {[key:string]:any}
     };
+    g_event_error_str:string = "";
 }
