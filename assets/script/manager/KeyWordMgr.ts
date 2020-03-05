@@ -35,8 +35,26 @@
 
  */
 export default class KeyWordMgr {
-    sensitiveWordMap = {};   
-    isContainsSensitiveWord (s:string) {
+    sensitiveWordMap = {};
+
+    // 单例处理
+    static _instance: KeyWordMgr = null;
+    constructor() {
+        KeyWordMgr._instance = this;
+    }
+    static getInstance(): KeyWordMgr {
+        if (KeyWordMgr._instance) {
+            return KeyWordMgr._instance
+        } else {
+            let instance = new KeyWordMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return KeyWordMgr.getInstance()
+    }
+
+    isContainsSensitiveWord(s: string) {
         if (s.length < 1) {
             return false;
         }
@@ -51,9 +69,9 @@ export default class KeyWordMgr {
         }
         return false;
     };
-    
+
     //表情检测
-    isEmoji (s:string) {
+    isEmoji(s: string) {
         if (s.length < 1) {
             return false;
         }
@@ -61,12 +79,12 @@ export default class KeyWordMgr {
         if (s.match(/\ud83c[\udc00-\udfff]|\ud83d[\udc00-\udfff]/g) != null) {
             return true;
         }
-    
+
         return false;
     };
-    
+
     //不支持的字符
-    isNonSupport (s:string) {
+    isNonSupport(s: string) {
         if (s.length < 1) {
             return false;
         }
@@ -76,18 +94,18 @@ export default class KeyWordMgr {
         }
         return false;
     }
-    
-    replaceKeyWord (s:string, replace_str:string) {
-        if (replace_str == undefined)  replace_str = '';
-        var ret:string;
+
+    replaceKeyWord(s: string, replace_str: string) {
+        if (replace_str == undefined) replace_str = '';
+        var ret: string;
         if (s.length < 1) {
             return s;
         }
-    
+
         //防注入。
         var reg = /[\(\)\[\]\{\}\^\|\?\+\.'";,]/
         ret = s.toString().replace(reg, '*');
-    
+
         for (var i = 0; i < s.length; i++) {
             for (var j = i; j <= s.length; j++) {
                 var goal = ret.toString().substring(i, j);
@@ -96,19 +114,19 @@ export default class KeyWordMgr {
                     for (var k = 0; k < j - i; k++) {
                         replaceStr += '*';
                     }
-    
+
                     if (replaceStr.length > 0) {
                         ret = ret.toString().replace(goal, replaceStr);
                     }
-    
+
                 }
             }
         }
         return ret;
     };
-    
+
     //通用字符串检查。
-    isStringValid (_string:string) {
+    isStringValid(_string: string) {
         var errorCode = 0;
         //防注入。
         var reg = /[\(\)\[\]\{\}\^\|\?\+\.'";,]/;

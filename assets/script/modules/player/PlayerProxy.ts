@@ -3,7 +3,7 @@
  */
 
 import BaseProxy from "../base/Proxy";
-export default class Proxy extends BaseProxy {
+export default class PlayerProxy extends BaseProxy {
     attrs:{[key:string]:any} = {} 
 
     //方法

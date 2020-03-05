@@ -1,15 +1,33 @@
 var global = window;
-export default class LoadingMgr{
+export default class LoadingMgr {
     play_id = 0;
     is_play = false;
-    playAnimation (delay:number = 1) {
+
+    // 单例处理
+    static _instance: LoadingMgr = null;
+    constructor() {
+        LoadingMgr._instance = this;
+    }
+    static getInstance():LoadingMgr {
+        if (LoadingMgr._instance) {
+            return LoadingMgr._instance
+        } else {
+            let instance = new LoadingMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return LoadingMgr.getInstance()
+    }
+
+    playAnimation(delay: number = 1) {
         this.is_play = true;
-    this.play_id++;
+        this.play_id++;
         var play_id = this.play_id;
         var self = this;
         setTimeout(function () {
             if (play_id == self.play_id) {
-                global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
+                global.app.windowMgr.open(global.res_enum.WINDOW.loadingAm, function () {
                     if (self.is_play == false) {
                         self.stopAnimation();
                     }
@@ -17,25 +35,25 @@ export default class LoadingMgr{
             }
         }, delay * 1000)
     };
-    
-    stopAnimation () {
+
+    stopAnimation() {
         this.is_play = false;
-        global.app.windowMgr.close(res_enum.WINDOW.loadingAm);
+        global.app.windowMgr.close(global.res_enum.WINDOW.loadingAm);
     };
-    
+
     //todo
-    playAnimationRes () {
+    playAnimationRes() {
         this.is_play = true;
         this.play_id++;
         var self = this;
-        global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
+        global.app.windowMgr.open(global.res_enum.WINDOW.loadingAm, function () {
             if (self.is_play == false) {
                 self.stopAnimation();
             }
         });
     };
-    
-    preLoadRes (atlas_name_list:string[]) {
+
+    preLoadRes(atlas_name_list: string[]) {
         if (!atlas_name_list) {
             return;
         }
@@ -50,8 +68,8 @@ export default class LoadingMgr{
             });
         }
     };
-    
-    preLoadPrefab (ui_name_list:string[], cb?:Function, async_num?:number) {
+
+    preLoadPrefab(ui_name_list: string[], cb?: Function, async_num?: number) {
         if (!ui_name_list) {
             return;
         }

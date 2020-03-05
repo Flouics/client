@@ -4,12 +4,12 @@
  */
 
 class Pool {
-    _scriptName:string;
-    _pb_item:any;
-    buffMinCount:number = 5;
-    buffMaxCount:number =  10;
-    _pool:cc.NodePool;
-    constructor(pb_item:any, scriptName:string, buffMinCount:number = 5, buffMaxCount:number = 10){
+    _scriptName: string;
+    _pb_item: any;
+    buffMinCount: number = 5;
+    buffMaxCount: number = 10;
+    _pool: cc.NodePool;
+    constructor(pb_item: any, scriptName: string, buffMinCount: number = 5, buffMaxCount: number = 10) {
         if (!pb_item) {
             return;
         }
@@ -20,13 +20,13 @@ class Pool {
         this._pool = new cc.NodePool(scriptName);
     }
 
-    initialize () {
+    initialize() {
         for (var i = 0; i < this.buffMinCount; i++) {
             this._pool.put(cc.instantiate(this._pb_item));
         }
     };
-    
-    getItem (data:any) {
+
+    getItem(data: any) {
         //有奇怪的BUG。
         if (this._pool.size() < this.buffMinCount) {
             this._pool.put(cc.instantiate(this._pb_item));
@@ -35,8 +35,8 @@ class Pool {
         (item as any).itemPool = this;
         return item;
     };
-    
-    recycleItem (item:cc.Node) {
+
+    recycleItem(item: cc.Node) {
         if (!item) {
             return;
         }
@@ -45,7 +45,7 @@ class Pool {
             item.destroy();
             return;
         }
-    
+
         if (this._pool.size() < this.buffMaxCount) {
             this._pool.put(item);
         } else {
@@ -53,13 +53,13 @@ class Pool {
         }
         return true;
     };
-    
-    getItemScriptComp (data:any) {
+
+    getItemScriptComp(data: any) {
         var item = this.getItem(data);
         return item.getComponent(this._scriptName);
     };
-    
-    recycleItemScriptComp (itemScriptComp:any) {
+
+    recycleItemScriptComp(itemScriptComp: any) {
         if (!itemScriptComp) {
             return;
         }
@@ -68,10 +68,28 @@ class Pool {
 
 };
 
-export default class PoolMgr{
+export default class PoolMgr {
     poolList = {};
+
+    // 单例处理
+    static _instance: PoolMgr = null;
+    constructor() {
+        PoolMgr._instance = this;
+    }
+    static getInstance():PoolMgr {
+        if (PoolMgr._instance) {
+            return PoolMgr._instance
+        } else {
+            let instance = new PoolMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return PoolMgr.getInstance()
+    }
+
     //生成一个缓冲池
-    genPool (tag:string, pb_item:any, scriptName?:string, buffMinCount?:number, buffMaxCount?:number) {
+    genPool(tag: string, pb_item: any, scriptName?: string, buffMinCount?: number, buffMaxCount?: number) {
         var pool = this.poolList[tag];
         if (!pool) {
             var pool = new Pool(pb_item, scriptName, buffMinCount, buffMaxCount);

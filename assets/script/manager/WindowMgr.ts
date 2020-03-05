@@ -5,7 +5,7 @@ var RES_ENUM = {
     WINDOW: {
         loadingAm: "prefab/dialog/loadingAm",
         msgBox: "prefab/dialog/msgBox",
-        tips: "prefab/dialog/tips",   
+        tips: "prefab/dialog/tips",
         rankInfo: "prefab/dialog/rankInfo",
     },
 
@@ -16,9 +16,26 @@ var global = window;
 export default class WindowMgr {
     creatingCB = {};
     ui = {};
-    
-    create (uiName:string, cb?:Function, parent?:cc.Node) {
-        var self = this;    
+
+    // 单例处理
+    static _instance: WindowMgr = null;
+    constructor() {
+        WindowMgr._instance = this;
+    }
+    static getInstance():WindowMgr {
+        if (WindowMgr._instance) {
+            return WindowMgr._instance
+        } else {
+            let instance = new WindowMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return WindowMgr.getInstance()
+    }
+
+    create(uiName: string, cb?: Function, parent?: cc.Node) {
+        var self = this;
         var ret = this.ui[uiName];
         if (ret && ret.isValid) {
             ret.active = true;
@@ -26,26 +43,26 @@ export default class WindowMgr {
             if (parent && ret.parent != parent) {
                 ret.parent = parent;
             }
-    
+
             cb(null, ret);
             return;
         }
-    
+
         // 已经在加载，加入回调队列
         if (this.creatingCB.hasOwnProperty(uiName)) {
             this.creatingCB[uiName].push(cb);
             return;
         }
-    
+
         // 初始化回调队列
         this.creatingCB[uiName] = [cb];
-    
+
         var self = this;
-        cc.loader.loadRes(uiName, cc.Prefab, function (err:any, prefab:any) {
+        cc.loader.loadRes(uiName, cc.Prefab, function (err: any, prefab: any) {
             cc.log('[ui] end create: ', uiName, new Date());
             var cbs = self.creatingCB[uiName] || [];
             delete self.creatingCB[uiName];
-    
+
             if (err) {
                 cc.error(uiName, err);
                 cbs.forEach(function (cb) {
@@ -68,7 +85,7 @@ export default class WindowMgr {
         });
     };
     // 打开
-    open (uiName:string, cb?:Function, parent?:cc.Node, errorCb?:Function) {
+    open(uiName: string, cb?: Function, parent?: cc.Node, errorCb?: Function) {
         // cc.log('open ui: ', uiName);
         var time1 = new Date().getTime();
         this.create(uiName, function (err, ui) {
@@ -89,14 +106,14 @@ export default class WindowMgr {
                     ui.active = true;
                 }
             }
-    
+
             if (!!cb)
                 cb(ui);
         }, parent);
     };
-    
+
     // 预加载
-    preload (uiName:string, cb?:Function) {
+    preload(uiName: string, cb?: Function) {
         var parent = global.app.nd_uiPool;
         this.create(uiName, function (err, ui) {
             if (err) {
@@ -111,10 +128,10 @@ export default class WindowMgr {
             }
         }, parent);
     };
-    
-    
+
+
     // 关闭
-    close (uiName:string) {
+    close(uiName: string) {
         // cc.log('close ui: ', uiName);
         var self = this;
         var ui = this.ui[uiName];
@@ -125,18 +142,18 @@ export default class WindowMgr {
             console.log("没找到 " + uiName);
         }
     };
-    
-    closeUI (component:any) {
+
+    closeUI(component: any) {
         var ui = component.node;
         this._close(ui, ui.uiName);
     };
-    
-    _close (ui:any, uiName:string) {
+
+    _close(ui: any, uiName: string) {
         if (!(ui instanceof cc.Node)) {
             cc.error('close ui must use node.');
             return;
         }
-    
+
         if (ui.isValid) {
             var baseUI = ui.getComponent(DialogBase);
             if (!!baseUI) {
@@ -151,15 +168,15 @@ export default class WindowMgr {
             }
         }
     };
-    
-    
-    closeAll () {
+
+
+    closeAll() {
         //todo
     };
-    
+
     //按照窗口等级关闭窗口 1级窗口level =1
     //level =2 会关闭2级以上所有窗口。
-    closeWindowByLevel (level:number) {
+    closeWindowByLevel(level: number) {
         var self = this;
         var ui_list = [];
         for (var name in this.ui) {
@@ -173,18 +190,18 @@ export default class WindowMgr {
             self.closeUI(ui);
         })
     };
-    
+
     //关闭特定层级的窗口,除了特定窗口。
-    closeWindowByZIndex (zIndex:string, exceptUI:cc.Node) {
+    closeWindowByZIndex(zIndex: string, exceptUI: cc.Node) {
         var ui_list = this.getWindowByZIndex(zIndex, exceptUI);
         var self = this;
         ui_list.forEach(function (ui) {
             self.closeUI(ui);
         })
     };
-    
+
     // 获取冲突的窗口
-    getWindowByZIndex (zIndex:string, exceptUI:cc.Node) {
+    getWindowByZIndex(zIndex: string, exceptUI: cc.Node) {
         var self = this;
         var ui_list = [];
         for (var name in this.ui) {
@@ -196,24 +213,24 @@ export default class WindowMgr {
         }
         return ui_list;
     };
-    
-    getUIRoot () {
+
+    getUIRoot() {
         var canvas = cc.find('Canvas');
         var uiRoot = cc.find('uiRoot', canvas);
         return uiRoot || canvas;
     };
-    
-    getUIMask () {
+
+    getUIMask() {
         var canvas = cc.find('Canvas');
         var mask = cc.find('mask', canvas);
         return mask;
     };
-    
-    setUIBlock (minisec:number) {
+
+    setUIBlock(minisec: number) {
         var mask = this.getUIMask();
         if (!mask) return;
         mask.active = true;
         mask.getComponent('UIMask').setUIMaskBlockTime();
     };
-    
+
 };

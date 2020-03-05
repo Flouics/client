@@ -9,7 +9,24 @@ export default class SceneMgr {
         //launch不需要再发射事件，进入加载。
     };
 
-    loadScene(sceneName:string, cb?:Function) {
+    // 单例处理
+    static _instance: SceneMgr = null;
+    constructor() {
+        SceneMgr._instance = this;
+    }
+    static getInstance():SceneMgr {
+        if (SceneMgr._instance) {
+            return SceneMgr._instance
+        } else {
+            let instance = new SceneMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return SceneMgr.getInstance()
+    }
+
+    loadScene(sceneName: string, cb?: Function) {
 
         // 正在加载了，请排队，或先拒绝
         if (this.isLoading) {
@@ -21,7 +38,7 @@ export default class SceneMgr {
         cc.log('[Scene] preScene ', cc.director.getScene().name, ' -> nextScene ', sceneName);
 
         var self = this;
-        function sceneAction () {
+        function sceneAction() {
             cc.log('endAction, start loadScene', new Date().getTime());
             var uiRoot = global.app.windowMgr.getUIRoot();
             uiRoot.removeAllChildren();

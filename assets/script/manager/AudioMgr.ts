@@ -1,16 +1,31 @@
 ﻿var basePath = '/resources/music/';
 var AUDIO_TYPE = '.mp3';
 var global = window;
-export default class AudioMgr{
-    _curMusic:any = null;
-    _urls:string[] = [];
-    _audioClip:any[] = [];
-    settingData:any = null;
-    constructor(){
-        this.init()
-    }
+export default class AudioMgr {
+    _curMusic: any = null;
+    _urls: string[] = [];
+    _audioClip: any[] = [];
+    settingData: any = null;
 
-   getSettingData () {
+    // 单例处理
+    static _instance: AudioMgr = null;
+    constructor() {
+        AudioMgr._instance = this;
+        this.init();
+    }
+    static getInstance():AudioMgr {
+        if (AudioMgr._instance) {
+            return AudioMgr._instance
+        } else {
+            let instance = new AudioMgr();
+            return instance
+        }
+    }
+    static get obj(){
+        return AudioMgr.getInstance()
+    } 
+
+    getSettingData() {
         var ret = {
             isMusicOpen: 1,
             isEffectOpen: 1,
@@ -27,12 +42,12 @@ export default class AudioMgr{
         }
         return ret;
     };
-    
-   saveSettingData () {
+
+    saveSettingData() {
         global.app.dbMgr._setJsonItem(global.app.dbMgr.Enum.AUDIO_SETTING, this.settingData);
     };
-    
-   init () {
+
+    init() {
         this.settingData = this.getSettingData();
         if (this.settingData) {
             this.setMusicOpen(this.settingData.isMusicOpen == 1);
@@ -41,11 +56,11 @@ export default class AudioMgr{
             this.setMusicOpen(true);
             this.setEffectOpen(true);
         }
-    
+
         return this;
     };
-    
-   getUrl (_name:string) {
+
+    getUrl(_name: string) {
         var name = _name.toString() + AUDIO_TYPE;
         if (this._urls[name]) {
             return this._urls[name];
@@ -55,8 +70,8 @@ export default class AudioMgr{
             return url;
         }
     };
-    
-   getAudioClip (url:string, cb?:Function) {
+
+    getAudioClip(url: string, cb?: Function) {
         if (this._audioClip[url]) {
             if (!!cb) cb(this._audioClip[url]);
         } else {
@@ -72,37 +87,37 @@ export default class AudioMgr{
             });
         }
     };
-    
+
     //背景音乐。单轨
-   playMusicUrl (url:string, loop:boolean = true) {
+    playMusicUrl(url: string, loop: boolean = true) {
         if (this._curMusic) {
             cc.log('there has been a music to play when it try to play', url, ";\tcurMusic is " + this._curMusic)
         }
         //todo 检查音乐是否正在播放。
         this._curMusic = url;
-    
+
         if (this.settingData.isMusicOpen == 0) {
             return;
         }
-        this.getAudioClip(url, function (audioClip:any) {
+        this.getAudioClip(url, function (audioClip: any) {
             cc.audioEngine.playMusic(audioClip, loop);
         });
         return true
     };
-    
+
     //背景音乐。单轨
-   playMusic (name:string, loop:boolean = true) {
+    playMusic(name: string, loop: boolean = true) {
         var url = this.getUrl(name);
         return this.playMusicUrl(url, loop);
     };
-    
-   stopMusic () {
+
+    stopMusic() {
         this._curMusic = null;
         return cc.audioEngine.stopMusic();
     };
-    
+
     //开、关音乐
-   setMusicOpen (isOpen:boolean) {
+    setMusicOpen(isOpen: boolean) {
         var self = this;
         this.settingData.isMusicOpen = isOpen ? 1 : 0;
         if (this.settingData.isMusicOpen == 0) {
@@ -113,53 +128,53 @@ export default class AudioMgr{
             self.rewindMusic();
         }
     };
-    
+
     //设置音乐的音量
-   setMusicVolume (volume:number) {
+    setMusicVolume(volume: number) {
         return cc.audioEngine.setMusicVolume(volume);
     };
-    
-   pauseMusic () {
+
+    pauseMusic() {
         return cc.audioEngine.pauseMusic();
     };
-    
-   resumeMusic () {
+
+    resumeMusic() {
         return cc.audioEngine.resumeMusic();
     };
-    
-   rewindMusic (loop:boolean = true) {
+
+    rewindMusic(loop: boolean = true) {
         //rewindMusic有BUG，不能循环。
         if (this._curMusic) {
             return this.playMusicUrl(this._curMusic, loop);
         }
     };
-    
+
     //音效。多轨
-   playEffectUrl (url:string, loop:boolean = false,cb?:Function) {
+    playEffectUrl(url: string, loop: boolean = false, cb?: Function) {
         if (this.settingData.isEffectOpen == 0) {
             return;
         }
-        if (loop == undefined) loop = false;    
+        if (loop == undefined) loop = false;
         this.getAudioClip(url, function (audioClip) {
             var audioId = cc.audioEngine.playEffect(audioClip, loop);
-            if(!!cb) cb(audioId);
+            if (!!cb) cb(audioId);
         });
         return true;
     };
-    
-   playEffect (name:string, loop?:boolean, volume?:number,cb?:Function) {
+
+    playEffect(name: string, loop?: boolean, volume?: number, cb?: Function) {
         var url = this.getUrl(name);
-        return this.playEffectUrl(url, loop,cb);
+        return this.playEffectUrl(url, loop, cb);
     };
-    
-   stopEffect (audioId?:number) {
+
+    stopEffect(audioId?: number) {
         if (audioId == undefined) {
             return;
         }
         return cc.audioEngine.stopEffect(audioId);
     };
-    
-   stopAllEffects () {
+
+    stopAllEffects() {
         if (cc.sys.os == cc.sys.OS_ANDROID || cc.sys.isBrowser) {
             cc.audioEngine.stopAll();
             this.rewindMusic();
@@ -170,22 +185,22 @@ export default class AudioMgr{
             }
         }
     };
-    
+
     //开、关音效
-   setEffectOpen (isOpen:boolean) {
+    setEffectOpen(isOpen: boolean) {
         var self = this;
         this.settingData.isEffectOpen = isOpen ? 1 : 0;
         if (this.settingData.isEffectOpen == 0) {
             self.stopAllEffects();
         }
     };
-    
+
     //设置音效的音量
-   setEffectsVolume (volume:number) {
+    setEffectsVolume(volume: number) {
         return cc.audioEngine.setEffectsVolume(volume);
     };
-    
-   preload (name:string, cb:Function) {
+
+    preload(name: string, cb: Function) {
         if (!cc.audioEngine.preload) {
             if (!!cb) {
                 cb(false)
@@ -201,5 +216,5 @@ export default class AudioMgr{
          }
          });*/
     };
-    
+
 };

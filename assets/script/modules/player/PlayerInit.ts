@@ -1,14 +1,13 @@
-import PlayerProxy from "./PlayerProxy";
-import PlayerCommand from "./PlayerCommand";
+import Proxy from "./PlayerProxy";
+import Command from "./PlayerCommand";
+import Init from "../base/Init";
 var global = window;
-export default class Init {
-    proxy:PlayerProxy;
-    cmd:PlayerCommand;
-    constructor(){
-        this.proxy = new PlayerProxy();
-        this.cmd = new PlayerCommand();
-    }
+export default class PlayerInit extends Init {
+    proxy:Proxy;
+    cmd:Command;
     init(){
+        this.proxy = new Proxy();
+        this.cmd = new Command();
         //监听服务端消息
         
     }

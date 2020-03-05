@@ -36,7 +36,24 @@ export default class HttpMgr {
         }
     ];
 
-    post(cmd:string, _param:any, _cb?:Function, _errCb?:Function) {
+    // 单例处理
+    static _instance: HttpMgr = null;
+    constructor() {
+        HttpMgr._instance = this;
+    }
+    static getInstance():HttpMgr {
+        if (HttpMgr._instance) {
+            return HttpMgr._instance
+        } else {
+            let instance = new HttpMgr();
+            return instance
+        }
+    }
+    static get obj() {
+        return HttpMgr.getInstance()
+    }
+
+    post(cmd: string, _param: any, _cb?: Function, _errCb?: Function) {
         var req_data = {
             method: 'POST',
             cmd: cmd,
@@ -58,7 +75,7 @@ export default class HttpMgr {
         }
     };
 
-    httpReq(req_data?:any) {
+    httpReq(req_data?: any) {
         var is_queue = !req_data;
         if (!req_data) req_data = this._reqHttpList[0];
         if (!req_data) return;
@@ -72,7 +89,7 @@ export default class HttpMgr {
             this.once(cmd, cb);
         }
         var self = this;
-        function callback (res:any) {
+        function callback(res: any) {
             self.emit(cmd, res);
             self._isReqHttpIng = false;
             if (is_queue) {
@@ -80,7 +97,7 @@ export default class HttpMgr {
             }
         };
 
-        function callback_error (res:any) {
+        function callback_error(res: any) {
             self._isReqHttpIng = false;
             if (!!errCb) errCb('');
         };
@@ -101,7 +118,7 @@ export default class HttpMgr {
     //_timeOut  超时(毫秒)
     //_cb 回调
     //_errCb 错误回调
-    ajax(_method:string, _url:string, _param:any, _cb?:Function, _errCb?:Function, _timeOut?:number, _async?:boolean) {
+    ajax(_method: string, _url: string, _param: any, _cb?: Function, _errCb?: Function, _timeOut?: number, _async?: boolean) {
         var xmlhttp = new XMLHttpRequest();
         if (!xmlhttp || typeof xmlhttp == 'undefined') {
             cc.error("Init xmlhttprequest fail");
@@ -110,7 +127,7 @@ export default class HttpMgr {
             return;
         }
 
-        var t1:number;// 用来作超时处理
+        var t1: number;// 用来作超时处理
         var self = this;
         _method = _method.toUpperCase();
         xmlhttp.onreadystatechange = function () {
@@ -179,19 +196,19 @@ export default class HttpMgr {
     };
 
 
-    on(cmd:string, tag:any, fn?:Function, errcb?:Function) {
+    on(cmd: string, tag: any, fn?: Function, errcb?: Function) {
         this.emitter.on(cmd, tag, fn, errcb);
     };
 
-    once(cmd:string, fn?:Function) {
+    once(cmd: string, fn?: Function) {
         this.emitter.once(cmd, fn);
     };
 
-    off(cmd:string, tag:any, fn?:Function) {
+    off(cmd: string, tag: any, fn?: Function) {
         this.emitter.off(cmd, tag, fn);
     };
 
-    emit(cmd:string, data:any) {
+    emit(cmd: string, data: any) {
         this.emitter.emit(cmd, data);
     };
 };

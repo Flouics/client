@@ -1,10 +1,12 @@
-import Proxy from "./MapProxy";
-import Command from "./MapCommand";
-import Init from "../base/Init";
+import Proxy from "./Proxy";
+import Command from "./Command";
 var global = window;
-export default class MapInit extends Init {
+export default class Init {
     proxy:Proxy;
     cmd:Command;
+    constructor(){
+        this.init()
+    }
     init(){
         this.proxy = new Proxy();
         this.cmd = new Command();
@@ -12,4 +14,3 @@ export default class MapInit extends Init {
         
     }
 }
-

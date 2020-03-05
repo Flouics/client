@@ -27,9 +27,9 @@ class Data {
         this.ids = ids;
     }
 
-    findBy (attr:any, value:any) {
+    findBy(attr: any, value: any) {
         var result = [];
-        var i:any, item:any;
+        var i: any, item: any;
         for (i in this.data) {
             item = this.data[i];
             if (item[attr] == value) {
@@ -39,22 +39,22 @@ class Data {
         return result;
     };
 
-    findById(id:number|string) {
+    findById(id: number | string) {
         return this.data[id];
     };
 
-    random () {
+    random() {
         var length = this.ids.length;
         var rid = this.ids[Math.floor(Math.random() * length)];
         return this.data[rid];
     };
 
-    getFirst () {
+    getFirst() {
         var rid = this.ids[0];
         return this.data[rid];
     };
 
-    all () {
+    all() {
         return this.data;
     };
 };
@@ -102,9 +102,9 @@ function mapData(fields: any, item: any) {
     return obj;
 };
 
-export default class DataMgr{
-    hasLoad:boolean = false;
-    curLoad:number = 0;
+export default class DataMgr {
+    hasLoad: boolean = false;
+    curLoad: number = 0;
     loadTexts = [
         'config'
         , 'block_type'
@@ -113,39 +113,58 @@ export default class DataMgr{
         , 'status'
     ];
 
-    callback:Function;
-    tag:any ;
-    maxLoad:number;
-    tryLoadAllTable (cb:Function, tag?:any) {
+    callback: Function;
+    tag: any;
+    maxLoad: number;
+
+    // 单例处理
+    static _instance: DataMgr = null;
+    constructor() {
+        DataMgr._instance = this;
+    }
+    static getInstance():DataMgr {
+        if (DataMgr._instance) {
+            return DataMgr._instance
+        } else {
+            let instance = new DataMgr();
+            return instance
+        }
+    }
+    static get obj(){
+        return DataMgr.getInstance()
+    } 
+
+
+    tryLoadAllTable(cb: Function, tag?: any) {
         if (!!this.hasLoad) {
             return true;
         }
         this.hasLoad = true;
-        this.curLoad = 0;   
+        this.curLoad = 0;
         this.callback = cb;
         this.tag = tag;
         this.maxLoad = this.loadTexts.length;
-    
+
         for (var i = 0; i < this.maxLoad; ++i) {
             this.loadTable(this.loadTexts[i]);
         }
     };
-    
-    loadTable (filename:string) {
+
+    loadTable(filename: string) {
         var self = this;
         if (self[filename]) {
             self.onLoadTable(filename);
             return;
         }
-        cc.loader.loadRes('data/' + filename + '', function (err:any, textAsset:any) {
+        cc.loader.loadRes('data/' + filename + '', function (err: any, textAsset: any) {
             if (!err) {
                 self[filename] = new Data(textAsset.text);
                 self.onLoadTable(filename);
             }
         });
     };
-    
-    onLoadTable (filename:string) {
+
+    onLoadTable(filename: string) {
         this.curLoad += 1;
         cc.log('load file', filename);
         if (this.curLoad == this.maxLoad) {
@@ -154,8 +173,8 @@ export default class DataMgr{
             }
         }
     };
-    
-    getTable (filename:string) {
+
+    getTable(filename: string) {
         return this[filename];
-    };    
+    };
 };
