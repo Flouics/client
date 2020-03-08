@@ -95,7 +95,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1280,
+      "width": 1440,
       "height": 720
     },
     "_anchorPoint": {
@@ -107,7 +107,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        640,
+        720,
         360,
         0,
         0,
@@ -171,7 +171,7 @@
       "array": [
         0,
         0,
-        221.7025033688163,
+        220.83647796503186,
         0,
         0,
         0,
@@ -328,8 +328,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1000,
-      "height": 470
+      "width": 720,
+      "height": 420
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -398,7 +398,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1000,
-      "height": 470
+      "height": 600
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -479,7 +479,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        235,
+        300,
         0,
         0,
         0,
@@ -639,7 +639,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 307,
+    "_bottom": 437,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -716,10 +716,10 @@
     "alignMode": 0,
     "_target": null,
     "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_left": -140,
+    "_right": -140,
+    "_top": -90,
+    "_bottom": -90,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -771,8 +771,8 @@
     "_alignFlags": 5,
     "_left": 680,
     "_right": 680,
-    "_top": 100,
-    "_bottom": 150,
+    "_top": 125,
+    "_bottom": 175,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1077,7 +1077,7 @@
     "target": {
       "__id__": 2
     },
-    "component": "ErrorPrint",
+    "component": "",
     "_componentId": "",
     "handler": "onRestart",
     "customEventData": ""
@@ -1092,11 +1092,11 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 1280,
+      "width": 1440,
       "height": 720
     },
-    "_fitWidth": false,
-    "_fitHeight": true,
+    "_fitWidth": true,
+    "_fitHeight": false,
     "_id": "dbVWomrDxD441h/LUrNWs6"
   }
 ]

@@ -1720,10 +1720,7 @@ declare namespace cc {
 	     - 将计时器 & 渲染与显示器的刷新频率同步。<br/>
 	     - 只支持动画的间隔 1/60 1/30 & 1/15。<br/>
 	</p> */
-	export class Director extends EventTarget {
-        getAnimationManager(): any {
-            throw new Error("Method not implemented.");
-        }		
+	export class Director extends EventTarget {		
 		/**
 		!#en
 		Converts a view coordinate to an WebGL coordinate<br/>
@@ -2271,7 +2268,6 @@ declare namespace cc {
 		父节点主要根据节点的 zIndex 和添加次序来排序，拥有更高 zIndex 的节点将被排在后面，如果两个节点的 zIndex 一致，先添加的节点会稳定排在另一个节点之前。<br/>
 		节点在 children 中的顺序决定了其渲染顺序。父节点永远在所有子节点之前被渲染 */
 		zIndex: number;		
-        _sgNode: any;
 		/**
 		
 		@param name name 
@@ -6724,7 +6720,6 @@ declare namespace cc {
 		/** !#en The cache mode of label. This mode only supports system fonts.
 		!#zh 文本缓存模式, 该模式只支持系统字体。 */
 		cacheMode: Label.CacheMode;		
-        accumulatorFunction: any;
 		/**
 		!#zh 需要保证当前场景中没有使用CHAR缓存的Label才可以清除，否则已渲染的文字没有重新绘制会不显示
 		!#en It can be cleared that need to ensure there is not use the CHAR cache in the current scene. Otherwise, the rendered text will not be displayed without repainting. 
@@ -7913,22 +7908,7 @@ declare namespace cc {
 	export class RawAsset extends Object {	
 	}	
 	/** Render textures are textures that can be rendered to. */
-	export class RenderTexture extends Texture2D {
-        getSprite() {
-            throw new Error("Method not implemented.");
-        }
-        end() {
-            throw new Error("Method not implemented.");
-        }
-        begin() {
-            throw new Error("Method not implemented.");
-        }
-        setPosition(arg0: Vec2) {
-            throw new Error("Method not implemented.");
-        }
-        static create(arg0: number, arg1: number) {
-            throw new Error("Method not implemented.");
-        }		
+	export class RenderTexture extends Texture2D {		
 		/**
 		!#en
 		Init the render texture with size.
@@ -8252,7 +8232,6 @@ declare namespace cc {
 		!#zh
 		贴图像素高度 */
 		height: number;		
-        generateMipmaps: boolean;
 		/**
 		!#en
 		Get renderer texture implementation object
@@ -12790,10 +12769,7 @@ declare namespace cc {
 	}	
 	/** !#en Representation of 2D vectors and points.
 	!#zh 表示 2D 向量和坐标 */
-	export class Vec2 extends ValueType {
-        len() {
-            throw new Error("Method not implemented.");
-        }		
+	export class Vec2 extends ValueType {		
 		/**
 		!#en
 		Constructor
