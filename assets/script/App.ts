@@ -70,11 +70,12 @@ export default class App extends cc.Component{
 
     appInit () {
         this.scheduleTask = {};
-        var app = this;
-
         //定义全局变量。
-        window.app = app;      
-        window.game = game;
+        window.app = this;
+        window.game = {};
+        
+        var app = window.app;
+        var game = window.game;
                 
         this.config = this.config || new Config();
         this.toolKit = this.toolKit || new ToolKit();        
@@ -122,8 +123,8 @@ export default class App extends cc.Component{
 
     onEventShow () {
         this.emitter.emit(this.eventEnum.EVENT_SHOW);
-        if (cc.director.getScheduler().isTargetPaused(cc.director.getAnimationManager())) {
-            cc.director.getScheduler().resumeTarget(cc.director.getAnimationManager());
+        if (cc.director.getScheduler().isTargetPaused(cc.director.getActionManager())) {
+            cc.director.getScheduler().resumeTarget(cc.director.getActionManager());
         }
     }
 
