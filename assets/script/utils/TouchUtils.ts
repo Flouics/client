@@ -1,9 +1,12 @@
+import MapMain from "../modules/map/MapMainView";
+
 var global = window;
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class TouchUtils extends cc.Component {
     _touchStartPos: cc.Vec2 = null;
+    _touchId:any = null;    //用于处理多点触摸的
     _deltaPos: cc.Vec2 = cc.Vec2.ZERO;
     _speed: cc.Vec2 = new cc.Vec2(1, 1);
     _lastTouchEventTime: number = 0;
@@ -16,7 +19,8 @@ export default class TouchUtils extends cc.Component {
         if (!touchSize) {
             touchSize = this.node.getContentSize();
         }else{
-            this.node.setContentSize(touchSize);
+            this.node.width = touchSize.width
+            this.node.height = touchSize.height
         }
         this._touchSize.width = touchSize.width;
         this._touchSize.height = touchSize.height;
@@ -31,20 +35,36 @@ export default class TouchUtils extends cc.Component {
     }
 
     onTouchStart(event: cc.Event.EventTouch) {
-        this._touchStartPos = event.getLocation();
+        if(this._touchId){
+            return;
+        }
+        this._touchStartPos = event.getLocation();        
+        this._touchId = event.getID();
         this._lastTouchEventTime = new Date().getTime();
     }
 
     onTouchMove(event: cc.Event.EventTouch) {
+        if(this._touchId != event.getID()){
+            return
+        }
         var nowTimeStamp = new Date().getTime();
         var dt = (nowTimeStamp - this._lastTouchEventTime)/1000;        
         this.calcSpeed(event, dt)
         this._lastTouchEventTime = nowTimeStamp;
     }
     onTouchEnd(event: cc.Event.EventTouch) {
+        if(this._touchId != event.getID()){
+            return
+        }
         var nowTimeStamp = new Date().getTime();
-        var dt = (nowTimeStamp - this._lastTouchEventTime)/1000;
-        this.calcSpeed(event, dt);
+        var touchEndPos = event.getLocation();
+        var deltaPos = touchEndPos.add(this._touchStartPos.neg());
+        if(deltaPos.mag() < 20 ){
+            this.node.emit("map_click",event);
+        }else{
+            var dt = (nowTimeStamp - this._lastTouchEventTime)/1000;
+            this.calcSpeed(event, dt);
+        }
         this._lastTouchEventTime = nowTimeStamp;
     }
     calcSpeed(event: cc.Event.EventTouch, dt: number) {
@@ -58,7 +78,7 @@ export default class TouchUtils extends cc.Component {
     }
 
     update(dt: number) {
-        if (this._deltaPos.mag() == 0) {
+        if (this._deltaPos.mag() < 20) {
             return
         }
         var deltaPos = this._speed.mul(dt)
@@ -71,23 +91,23 @@ export default class TouchUtils extends cc.Component {
             this._speed.y = 0;
             this._deltaPos.y = 0;
         }
-        this.updateNodePostion(deltaPos)
+        this.updateNodePosition(deltaPos)
     }
 
-    updateNodePostion(deltaPos:cc.Vec2 = cc.Vec2.ZERO){
+    updateNodePosition(deltaPos:cc.Vec2 = cc.Vec2.ZERO){
         this.node.x = this.node.x + deltaPos.x;
         this.node.y = this.node.y + deltaPos.y;
         if (this.node.x < (-this._touchSize.width/2 + this._viewSize.width/2)){
-            this.node.x =  -this._touchSize.width/2 + this._viewSize.width/2
+            this.node.x =  -this._touchSize.width/2 + this._viewSize.width/2;
         }
-        if (this.node.x > (this._touchSize.width/2 - this._viewSize.width/2){
-            this.node.x =  this._touchSize.width/2 - this._viewSize.width/2
+        if (this.node.x > (this._touchSize.width/2 - this._viewSize.width/2)){
+            this.node.x =  this._touchSize.width/2 - this._viewSize.width/2;
         }
         if (this.node.y < (-this._touchSize.height/2 + this._viewSize.height/2)){
-            this.node.y =  -this._touchSize.height/2 + this._viewSize.height/2
+            this.node.y =  -this._touchSize.height/2 + this._viewSize.height/2;
         }
-        if (this.node.y > (this._touchSize.height/2 - this._viewSize.height/2){
-            this.node.y =  this._touchSize.height/2 - this._viewSize.height/2
+        if (this.node.y > (this._touchSize.height/2 - this._viewSize.height/2)){
+            this.node.y =  this._touchSize.height/2 - this._viewSize.height/2;
         }
 
     }

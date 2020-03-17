@@ -1,5 +1,23 @@
 var global = window;
 export default class ToolKit {
+
+    // 单例处理
+    static _instance: ToolKit = null;
+    constructor() {
+        ToolKit._instance = this;
+    }
+    static getInstance():ToolKit {
+        if (ToolKit._instance) {
+            return ToolKit._instance
+        } else {
+            let instance = new ToolKit();
+            return instance
+        }
+    }
+    static get obj() {
+        return ToolKit.getInstance()
+    }
+    
     /**
      * 是否有效的字符串
      * @param str
@@ -401,7 +419,7 @@ export default class ToolKit {
     };
 
     //加载图片
-    loadResSpritFrame(res_url:string = null, spt:cc.Sprite, cb?:Function) {
+    loadResSpriteFrame(res_url:string = null, spt:cc.Sprite, cb?:Function) {
         if (!res_url) return;
         cc.loader.loadRes(res_url, cc.SpriteFrame, function (err, spriteFrame) {
             if (!err && spt && spt.node) {

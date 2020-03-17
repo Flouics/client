@@ -2,8 +2,10 @@ const { ccclass, property } = cc._decorator;
 var global = window;
 @ccclass
 export default class BaseView extends cc.Component {
-    _httpEvents: { [key: string]: any };
-    _socketEvents: { [key: string]: any };
+    _httpEvents: Object[] = [];
+    _socketEvents: Object[]  = [];
+    _bindData:{ [key: string]: any } = {};
+    _baseUrl:string = "";
     __instanceId: string;
     _objFlags: string;
     // use this for initialization
@@ -71,5 +73,33 @@ export default class BaseView extends cc.Component {
             fn: fn
         })
         global.game.socketMgr.on(event, tag, fn);
+    }
+
+    loadSpt(spt:cc.Sprite,res_url:string = null, cb?:Function) {
+        if (!res_url) return;
+        cc.loader.loadRes(this._baseUrl + res_url, cc.SpriteFrame, function (err, spriteFrame) {
+            if (!err && spt && spt.node) {
+                spt.spriteFrame = spriteFrame;
+                if (!!cb) cb(err, spriteFrame);
+            }
+        });
+    };
+
+    updateDataToUI(key:string,data:any,cb:Function){
+        let dataUnique = this.getDataUnique(data)
+        if (this._bindData[key] != dataUnique){
+            if (!!cb){
+                cb(data);
+            }
+        } 
+        this._bindData[key] = dataUnique;
+    }
+
+    getDataUnique(data:any){
+        if(typeof(data) == "object"){
+            return JSON.stringify(data)
+        }else{
+            return data;
+        }
     }
 }
