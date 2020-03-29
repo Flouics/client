@@ -1,6 +1,8 @@
 import MapMainView from "../modules/map/MapMainView";
 import UIBlock from "../modules/map/UIBlock";
 import ToolKit from "../utils/ToolKit";
+import Building from "./Building";
+import BoxBase from "./BoxBase";
 var BLOCK_VALUE_ENUM = {
     EMPTY:0,
     BLOCK:1,
@@ -9,18 +11,17 @@ var BLOCK_VALUE_ENUM = {
 }
 var CROSS_VALUE =  BLOCK_VALUE_ENUM.EMPTY;
 
-export default class Block {
+export default class Block extends BoxBase {
     static BLOCK_VALUE_ENUM = BLOCK_VALUE_ENUM;     //瓦片地图属性枚举
     static CROSS_VALUE = CROSS_VALUE;       //可以通过属性检查
-    x: number = 0;  //瓦片地图坐标
-    y: number = 0;  //瓦片地图坐标
-    _value:number = 0;   // 瓦片上属性 二进制存储数据    
+    buildingId:number = 0;   // 额外属性，value不同，数据不同
+    _value:number = 0;   // 瓦片上属性 二进制存储数据        
     get value(){
         return this._value;
     }
     set value(value){
         this._value = value;
-        this.updateView();
+       
     }
     _event:number = 0;     //临时事件等
     get event(){
@@ -28,7 +29,6 @@ export default class Block {
     }
     set event(value){
         this._event = value;
-        this.updateView();
     }
     
     node: cc.Node = null;
@@ -36,6 +36,7 @@ export default class Block {
     mapMainView: MapMainView = null;    //地图组件
     ui:UIBlock = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
+        super()
         this.x = x;
         this.y = y;
         this.mapMainView = mapMainView;
@@ -49,12 +50,18 @@ export default class Block {
         this.ui = this.node.getComponent(UIBlock)
         node.scale = 0.95;
         this.value = ToolKit.obj.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
-        this.updateView();
+        this.bindView();
     }
-    updateView(){
+    bindView(){
         if(!this.ui){
             return;
         }
-        this.ui.updateUI(this);
+        this.ui.bindUI(this);
+    }
+    createBuilding(building:Building){
+        this.buildingId = building.id; 
+    }
+    resetBuilding(building?:Building){
+        this.buildingId = building ? building.id : 0;
     }
 }

@@ -13,22 +13,30 @@ export default class UIBlock extends BaseView {
     spt_event:cc.Sprite = null;
 
     _baseUrl = "texture/map/";
-    updateUI(block:Block){
+    _logicObj:Block = null;
+    bindUI(block:Block){
+        this._logicObj = block
+    }
+    updateUI(){
         var self = this;
-        this.updateDataToUI("block.value",block.value,()=>{
-            if(block.value > 0){
-                self.loadSpt(self.spt_item, "block/block_" + block.value)
+        var logicObj = this._logicObj
+        this.updateDataToUI("block.value",logicObj.value,()=>{
+            if(logicObj.value > 0){
+                self.loadSpt(self.spt_item, "block/block_" + logicObj.value)
             }else{
                 self.spt_item.spriteFrame = null;
             }           
         })
 
-        this.updateDataToUI("block.event",block.event,()=>{
-            if(block.event > 0){
-                self.loadSpt(self.spt_event, "event/event_" + block.event)
+        this.updateDataToUI("block.event",logicObj.event,()=>{
+            if(logicObj.event > 0){
+                self.loadSpt(self.spt_event, "event/event_" + logicObj.event)
             }else{
                 self.spt_event.spriteFrame = null;
             }           
         })
+    }
+    update(dt:number){
+        this.updateUI()
     }
 }
