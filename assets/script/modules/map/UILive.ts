@@ -8,6 +8,9 @@ export default class UILive extends BaseView {
     spt_role:cc.Sprite = null;    
     _baseUrl = "texture/hero/";
     _moveAction:cc.Tween;
+    reuse(data:any){
+
+    }
     moveStep(duration:number,toPos:cc.Vec2,cb?:Function) {
         this._moveAction = cc.tween(this.node)
             .to(duration,

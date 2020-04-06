@@ -1,6 +1,6 @@
 import MapMainView from "../../modules/map/MapMainView";
 import MapUtils from "../MapUtils";
-import UITower_1 from "../../modules/map/tower/UITower_1";
+import UITower_1 from "../../modules/map/tower/UITower";
 import Building from "../Building";
 
 export default class Headquarters extends Building {

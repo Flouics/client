@@ -10,13 +10,10 @@ export default class DialogBase extends BaseView{
 
     @property
     _hasBaseInit: boolean = false;
-    @property({
-        type: Boolean,
-    })
-    _isCanClose:boolean = true
+    _isCanClose = true
 
     @property({
-        type: Boolean,
+        type: cc.Boolean,
     })
     get isCanClose ():boolean{
         return this._isCanClose

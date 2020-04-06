@@ -5,25 +5,30 @@ import UIManster from "../modules/map/UIMaster";
 import MonsterMgr from "../manager/MonsterMgr";
 import Headquarters from "./building/Headquarters";
 import Building from "./Building";
+import PoolMgr from "../manager/PoolMgr";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
     static _idIndex = 100000;
-    _pb_url:string = "prefab/map/monster";
+    _pb_tag:string = PoolMgr.POOL_TAG_ENUM.MONSTER;
     target:Live|Building = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
         this.id = Monster._idIndex;
         Monster._idIndex += 1;
+        this.init();
     }
-
+    init(){
+        this.life = 10;
+    }
     clear(){
         MonsterMgr.getInstance().clear(this.id);        
     }
     
     attackHeadquarters(){
         var target = this.mapMainView.headquarters;
+        var nearByPos = this.getNearByPos(target.getRealArea())
         this.target = target;
-        this.moveToPos(target.pos);
+        this.moveToPos(nearByPos);
     }
     checkAction():boolean{
         if(this.target instanceof Building){
@@ -42,5 +47,8 @@ export default class Monster extends Live {
             }
         })       
         return !!isCross;
+    }
+    update(){
+        
     }
 }

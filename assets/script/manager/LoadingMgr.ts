@@ -27,7 +27,7 @@ export default class LoadingMgr {
         var self = this;
         setTimeout(function () {
             if (play_id == self.play_id) {
-                global.app.windowMgr.open(global.res_enum.WINDOW.loadingAm, function () {
+                global.app.windowMgr.open(global.RES_WINDOW.loadingAm, function () {
                     if (self.is_play == false) {
                         self.stopAnimation();
                     }
@@ -38,7 +38,7 @@ export default class LoadingMgr {
 
     stopAnimation() {
         this.is_play = false;
-        global.app.windowMgr.close(global.res_enum.WINDOW.loadingAm);
+        global.app.windowMgr.close(global.RES_WINDOW.loadingAm);
     };
 
     //todo
@@ -46,7 +46,7 @@ export default class LoadingMgr {
         this.is_play = true;
         this.play_id++;
         var self = this;
-        global.app.windowMgr.open(global.res_enum.WINDOW.loadingAm, function () {
+        global.app.windowMgr.open(global.RES_WINDOW.loadingAm, function () {
             if (self.is_play == false) {
                 self.stopAnimation();
             }

@@ -4,9 +4,10 @@ import MapMainView from "../modules/map/MapMainView";
 
 // 怪物管理器
 export default class HeroMgr {
-    heroMap:Hero[] = [];
+    heroMap:{[key:number]:Hero} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
+    _scheduleId:number  = null;
     
     // 单例处理
     static _instance: HeroMgr = null;
@@ -31,10 +32,18 @@ export default class HeroMgr {
     }
 
     reset(){
-        this.heroMap.forEach((monster)=>{
-            monster.die()
-        })
-        this.heroMap = []
+        for (const key in this.heroMap) {
+            if (this.heroMap.hasOwnProperty(key)) {
+                this.heroMap[key].die()                
+            }
+        }
+        this.heroMap = {};
+        this.initSchedule();
+    }
+
+    initSchedule(){
+        this._mapMainView.unschedule(this.update.bind(this));
+        this._mapMainView.schedule(this.update.bind(this),0.1);
     }
 
     create( x: number = 0, y: number = 0){
@@ -50,5 +59,13 @@ export default class HeroMgr {
             obj.die();
         }
         delete this.heroMap[id]
+    }
+    
+    update(){
+        for (const key in this.heroMap) {
+            if (this.heroMap.hasOwnProperty(key)) {
+                this.heroMap[key].update()                
+            }
+        }
     }
 }

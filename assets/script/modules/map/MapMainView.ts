@@ -12,7 +12,9 @@ import Live from "../../logic/Live";
 import Monster from "../../logic/Monster";
 import MonsterMgr from "../../manager/MonsterMgr";
 import HeroMgr from "../../manager/HeroMgr";
-
+import ModuleMgr from "../../manager/ModuleMgr";
+import MapProxy from "./MapProxy";
+import DigTask from "../../logic/task/DigTask";
 
 
 /**
@@ -21,11 +23,16 @@ import HeroMgr from "../../manager/HeroMgr";
  */
 
 var global = window;
+var OPERATION_ENUM = {
+    COMMON: 0,
+    DIG: 1,
+    BUILD: 2,
+}
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MapMainView extends BaseView {
-
     @property()
     margin_x: number = 10;
     @property()
@@ -41,37 +48,45 @@ export default class MapMainView extends BaseView {
     @property(cc.Prefab)
     pb_block = null;            //瓦片资源
 
+    mapProxy: MapProxy = null;
+    static OPERATION_ENUM = OPERATION_ENUM;
+    operation: number = OPERATION_ENUM.COMMON;
     _blockSize: cc.Size = null;
-    _blockSizeVec2: cc.Vec2 = null;
+    _blockSizeVec2: cc.Vec2 = null;         //size 转成矢量，方便转化真实尺寸。
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
     buldingMap: { [key: number]: Building } = {}
-    
+
     testHero: Hero = null;
-    headquarters:Headquarters = null;
-    monsterMgr:MonsterMgr = null;
-    heroMgr:HeroMgr = null;
-    monsterEntryPos:cc.Vec2 = cc.v2(0,0)
+    headquarters: Headquarters = null;
+    monsterMgr: MonsterMgr = null;
+    heroMgr: HeroMgr = null;
+    monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
 
     // use this for initialization
     onLoad() {
         window.game = window.game || {}
         window.game.temp = this;
-        this.initMap()
+        this.mapProxy = ModuleMgr.obj.getProxy("map");
+        this.proxys = [this.mapProxy];
+        this.blockMap = this.mapProxy.blockMap;
+        this.buldingMap = this.mapProxy.buldingMap;
+        this.initMap();
+        super.onLoad();
     };
 
     initMap() {
         this.monsterMgr = MonsterMgr.getInstance();
         this.heroMgr = HeroMgr.getInstance();
         this.monsterMgr.init(this);
-        this.heroMgr.init(this);      
-        this.initBlocks();       
+        this.heroMgr.init(this);
+        this.initBlocks();
         this.initBuildings();
         this.initHeros();
         this.initMonsters()
         this.node.on("map_click", this.onMapClick.bind(this));
     };
-    initMonsterEntryPos(){
-        this.monsterEntryPos = cc.v2(-10,10);
+    initMonsterEntryPos() {
+        this.monsterEntryPos = cc.v2(-10, 10);
         this.getBlockByPos(this.monsterEntryPos).value = Block.BLOCK_VALUE_ENUM.EMPTY;
     }
     initBlockSize(size: cc.Size) {
@@ -132,25 +147,25 @@ export default class MapMainView extends BaseView {
     }
 
     initHeros() {
-        let hero = this.heroMgr.create(2,0);
+        let hero = this.heroMgr.create(2, 0);
         this.testHero = hero;
     }
 
-    initMonsters(){
+    initMonsters() {
         this.initMonsterEntryPos();
-        this.monsterMgr.createMultiple(2,this.monsterEntryPos.x,this.monsterEntryPos.y,(monster:Monster)=>{
+        this.monsterMgr.createMultiple(2, this.monsterEntryPos.x, this.monsterEntryPos.y, (monster: Monster) => {
             monster.attackHeadquarters();
         });
     }
-    clearHero(heroId:number){
+    clearHero(heroId: number) {
         this.heroMgr.clear(heroId);
     }
-    clearMonster(monsterId:number){
+    clearMonster(monsterId: number) {
         this.monsterMgr.clear(monsterId);
     }
-    initBuildings(){
+    initBuildings() {
         let headquarters = new Headquarters(this)
-        this.createBuilding(headquarters,cc.v2(0,0));
+        this.createBuilding(headquarters, cc.v2(0, 0));
         this.buldingMap[headquarters.id] = headquarters
         this.headquarters = headquarters
     }
@@ -158,23 +173,44 @@ export default class MapMainView extends BaseView {
     checkBlock(pos: cc.Vec2) {
         var block = this.getBlockByPos(pos)
         if (block) {
-            return ((block.value | Block.CROSS_VALUE) == 0  && block.buildingId == 0)
+            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
         } else {
             return false;
         }
     }
-    onEnable() {
+    digBlock(pos:cc.Vec2){
+        var block = this.getBlockByPos(pos)
+        if(block && block.value == Block.BLOCK_VALUE_ENUM.BLOCK){
+            block.value = Block.BLOCK_VALUE_ENUM.EMPTY;
+        }
+    }
 
-    };
     // 地图触发了点击事件
     onMapClick(event: cc.Event.EventTouch) {
         var touchEndPos = event.getLocation();
         var viewPos = this.node.convertToNodeSpaceAR(touchEndPos);
         var tilePos = Map.getTilePosByViewPos(viewPos);
         //todo 角色的行为
-        this.testHero.moveToPos(tilePos)
+        if (this.operation == OPERATION_ENUM.COMMON) {
+            this.testHero.moveToPos(tilePos)
+            return
+        }
+        if (this.operation == OPERATION_ENUM.DIG) {
+            var block = this.getBlockByPos(tilePos);
+            if (block.value == Block.BLOCK_VALUE_ENUM.BLOCK) {
+                this.mapProxy.pushTask(new DigTask(tilePos.x, tilePos.y))
+            }
+            return;
+        }
+        if (this.operation == OPERATION_ENUM.COMMON) {
+            this.mapProxy.updateView("onMapBuild", { pos: tilePos })
+            return
+        }
     }
-
+    switchOperation(value: number) {        
+        ToolKit.obj.showTip("切换操作-> " + value);
+        this.operation = value;
+    }
     dealAllBlocks(dealFunc: Function) {
         for (var i in this.blockMap) {
             for (var j in this.blockMap[i]) {
@@ -182,7 +218,6 @@ export default class MapMainView extends BaseView {
             }
         }
     }
-
     createBuilding(building: Building, toPos: cc.Vec2) {
         building.createBuilding(toPos);
         var maskArea = building.getRealArea();

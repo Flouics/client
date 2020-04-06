@@ -13,9 +13,9 @@ var RES_ENUM = {
 var WindowManager = function () {
     this.creatingCB = {};
     this.ui = {};
-    res_enum.WINDOW = RES_ENUM.WINDOW;
-    res_enum.ITEM = RES_ENUM.ITEM;
-    res_enum.EFFECT = RES_ENUM.EFFECT;
+    RES_WINDOW = RES_WINDOW;
+    RES_ITEM = RES_ITEM;
+    RES_EFFECT = RES_EFFECT;
 };
 
 // 创建，默认已经有根

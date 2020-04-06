@@ -1,6 +1,7 @@
 import Init from "../modules/base/Init";
 import MapInit from "../modules/map/MapInit";
 import PlayerInit from "../modules/player/PlayerInit";
+import Proxy from "../modules/base/Proxy";
 
 export default class ModuleMgr{
     static _modules = {}
@@ -23,7 +24,7 @@ export default class ModuleMgr{
         return ModuleMgr.getInstance();
     } 
 
-    static getProxy(moduleName:string){
+    getProxy(moduleName:string):any{
         let mod = ModuleMgr._modules[moduleName];
         if(!mod){
             cc.error("this module has not exist by " + moduleName);

@@ -73,6 +73,9 @@ export default class App extends cc.Component{
         //定义全局变量。
         window.app = this;
         window.game = {};
+        window.RES_WINDOW = {}
+        window.RES_ITEM = {}
+        window.RES_EFFECT = {}
         
         var app = window.app;
         var game = window.game;
@@ -101,19 +104,15 @@ export default class App extends cc.Component{
 
         //this.userData = require('UserData')();
         //this.rechargeDm = this.rechargeDm || require('RechargeDm')();
-
         game.soundMgr = game.soundMgr || new SoundMgr();
         
     }
 
     onMsg () {
-
         //action管理器的问题。
         cc.game.off(cc.game.EVENT_SHOW);
         cc.game.off(cc.game.EVENT_HIDE);
-
         cc.game.on(cc.game.EVENT_SHOW, this.onEventShow.bind(this));
-
         cc.game.on(cc.game.EVENT_HIDE, this.onEventHide.bind(this));
     }
 
@@ -132,7 +131,7 @@ export default class App extends cc.Component{
     }
 
     start () {
-
+        this.sceneMgr.loadScene("game");
     }
 
     restart () {

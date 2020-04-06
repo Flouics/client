@@ -2,6 +2,9 @@ import MapMainView from "../modules/map/MapMainView";
 import MapUtils from "./MapUtils";
 import UILive from "../modules/map/UILive";
 import BoxBase from "./BoxBase";
+import MapProxy from "../modules/map/MapProxy";
+import ModuleMgr from "../manager/ModuleMgr";
+import PoolMgr from "../manager/PoolMgr";
 
 var ACTION_TYPE_ENUM = {
     IDLE:0,
@@ -17,33 +20,29 @@ export default class Live extends BoxBase {
     routeList:cc.Vec2[] = [];    // 移动路径图
     node: cc.Node = null; // ui
     mapMainView: MapMainView = null;    //地图
-    ui:UILive = null
+    ui:UILive = null;
+    mapProxy:MapProxy = null;
     static _idIndex = 1;
-    _pb_url:string = "";
+    _pb_tag:string = "";
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super()
         this.x = x;
         this.y = y;
         this.mapMainView = mapMainView;
+        this.mapProxy = MapProxy.getInstance();
         this.id = Live._idIndex;
         Live._idIndex += 1;
     }
 
     initUI(parent:cc.Node,cb?:Function) {
-        let self = this;
-        cc.loader.loadRes(this._pb_url, cc.Prefab, function (err: any, prefab: any) {
-            if (err) {
-                cc.error(this._pb_url, err);
-            }else{
-                let node = cc.instantiate(prefab);
-                let viewPos = MapUtils.getViewPosByTilePos(self.pos);
-                node.parent = parent;
-                node.position = viewPos;
-                self.node = node;
-                self.ui = self.node.getComponent(UILive);
-                if(!!cb) cb(self);
-            }
-        })
+        let pool = PoolMgr.getInstance().getPool(this._pb_tag);
+        let node = pool.getItem(this);
+        let viewPos = MapUtils.getViewPosByTilePos(this.pos);
+        node.parent = parent;
+        node.position = viewPos;
+        this.node = node;
+        this.ui = this.node.getComponent(UILive);
+        if(!!cb) cb(this);
     }
 
     moveToPos(toPos: cc.Vec2) {
@@ -57,6 +56,10 @@ export default class Live extends BoxBase {
         if(this.actionType == Live.ACTION_TYPE_ENUM.IDLE){
             this.moveNext()
         }        
+    }
+
+    getNearByPos(area: cc.Vec2[]):cc.Vec2 {
+        return MapUtils.getNearByPos(area,this.pos);
     }
     //检查是否可以通过
     checkBlock(pos:cc.Vec2){

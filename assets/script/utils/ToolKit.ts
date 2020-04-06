@@ -286,7 +286,7 @@ export default class ToolKit {
 
     //简单的tip提示
     showTip(content:string) {
-        global.app.windowMgr.open(res_enum.WINDOW.tips, function (uiNode:cc.Node) {
+        global.app.windowMgr.open(window.RES_WINDOW.tips, function (uiNode:cc.Node) {
             var tip = uiNode.getComponent("Tips");
             if (tip) {
                 tip.open(content);

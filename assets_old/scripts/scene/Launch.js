@@ -38,7 +38,7 @@ cc.Class({
         ];
         global.app.loadingMgr.preLoadRes(res);
         var prefabs = [
-            res_enum.WINDOW.rankInfo  
+            RES_WINDOW.rankInfo  
         ];
         global.app.loadingMgr.preLoadPrefab(prefabs);
         cc.director.preloadScene('game');

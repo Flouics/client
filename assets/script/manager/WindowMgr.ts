@@ -1,26 +1,27 @@
 import DialogBase from "../zero/DialogBase";
 import BaseView from "../zero/BaseView";
 
-var RES_ENUM = {
-    WINDOW: {
+// 通用窗口。
+var RES_WINDOW = {
         loadingAm: "prefab/dialog/loadingAm",
         msgBox: "prefab/dialog/msgBox",
         tips: "prefab/dialog/tips",
         rankInfo: "prefab/dialog/rankInfo",
-    },
+    };
 
-    ITEM: {},
-    EFFECT: {},
-};
+var RES_ITEM = {};
+var RES_EFFECT = {};
+
 var global = window;
 export default class WindowMgr {
     creatingCB = {};
-    ui = {};
+    ui = {};    
 
     // 单例处理
     static _instance: WindowMgr = null;
     constructor() {
         WindowMgr._instance = this;
+        global.RES_WINDOW = RES_WINDOW;        
     }
     static getInstance():WindowMgr {
         if (WindowMgr._instance) {

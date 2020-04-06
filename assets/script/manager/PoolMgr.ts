@@ -68,8 +68,15 @@ class Pool {
 
 };
 
+var POOL_TAG_ENUM = {
+    MONSTER:"monster",
+    HERO:"hero",
+    BULLET:"bullet",
+}
+
 export default class PoolMgr {
-    poolList = {};
+    poolMap:{[key:string]:Pool} = {};
+    static POOL_TAG_ENUM = POOL_TAG_ENUM;
 
     // 单例处理
     static _instance: PoolMgr = null;
@@ -90,12 +97,21 @@ export default class PoolMgr {
 
     //生成一个缓冲池
     genPool(tag: string, pb_item: any, scriptName?: string, buffMinCount?: number, buffMaxCount?: number) {
-        var pool = this.poolList[tag];
+        var pool = this.poolMap[tag];
         if (!pool) {
             var pool = new Pool(pb_item, scriptName, buffMinCount, buffMaxCount);
-            this.poolList[tag] = pool;
+            this.poolMap[tag] = pool;
             pool.initialize()
         }
         return pool;
     };
+
+    getPool(tag:string){
+        var pool = this.poolMap[tag];
+        return pool;
+    }
+
+    clearPool(tag:string){
+        delete this.poolMap[tag]
+    }
 };

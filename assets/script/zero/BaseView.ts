@@ -1,3 +1,5 @@
+import Proxy from "../modules/base/Proxy";
+
 const { ccclass, property } = cc._decorator;
 var global = window;
 @ccclass
@@ -6,8 +8,8 @@ export default class BaseView extends cc.Component {
     _socketEvents: Object[]  = [];
     _bindData:{ [key: string]: any } = {};
     _baseUrl:string = "";
-    __instanceId: string;
-    _objFlags: string;
+    proxys:Proxy[] = [];
+    _objFlags:number;
     // use this for initialization
     onLoad() {
 
@@ -21,6 +23,7 @@ export default class BaseView extends cc.Component {
     }
     onEnable() {
         this.onMsg();
+        this.bindProxys();
     }
 
     onClose() {
@@ -29,6 +32,7 @@ export default class BaseView extends cc.Component {
 
     onDisable() {
         this.offMsg();
+        this.unbindProxys();
     }
 
     onDestroy() {
@@ -101,5 +105,15 @@ export default class BaseView extends cc.Component {
         }else{
             return data;
         }
+    }
+    bindProxys(){
+        this.proxys.forEach((proxy)=>{
+            proxy.bindView(this)
+        })       
+    }
+    unbindProxys(){
+        this.proxys.forEach((proxy)=>{
+            proxy.unbindView(this)
+        })       
     }
 }

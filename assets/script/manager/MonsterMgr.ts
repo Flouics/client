@@ -5,7 +5,7 @@ import AsyncTaskMgr from "./AsyncTaskMgr";
 
 // 怪物管理器
 export default class MonsterMgr {
-    monsterMap:Monster[] = [];
+    monsterMap:{[key:number]:Monster} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
     
@@ -33,10 +33,12 @@ export default class MonsterMgr {
     }
 
     reset(){
-        this.monsterMap.forEach((monster)=>{
-            monster.die()
-        })
-        this.monsterMap = []
+        for (const key in this.monsterMap) {
+            if (this.monsterMap.hasOwnProperty(key)) {
+                this.monsterMap[key].die()                
+            }
+        }
+        this.monsterMap = {}
     }
 
     create(x: number = 0, y: number = 0,task?:Function){
@@ -63,5 +65,13 @@ export default class MonsterMgr {
             obj.die();
         }
         delete this.monsterMap[id]
+    }
+
+    update(){
+        for (const key in this.monsterMap) {
+            if (this.monsterMap.hasOwnProperty(key)) {
+                this.monsterMap[key].update()                
+            }
+        }
     }
 }

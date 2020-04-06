@@ -43,11 +43,10 @@ export default class App extends SceneBase{
 
     preLoad () {
         let res_enum = global.res_enum;
-        var res = [
-        ];
+        var res = [];
         global.app.loadingMgr.preLoadRes(res);
         var prefabs = [
-            res_enum.WINDOW.rankInfo  
+            RES_WINDOW.rankInfo  
         ];
         global.app.loadingMgr.preLoadPrefab(prefabs);
         cc.director.preloadScene('game');

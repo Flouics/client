@@ -2,6 +2,9 @@ export default class BoxBase {
     id: number = 0;
     x: number = 0;  //瓦片地图坐标
     y: number = 0;  //瓦片地图坐标
+    life:number = 1;
+    atk:number = 0;
+    def:number = 0;
     get pos(){
         return cc.v2(this.x,this.y)
     }

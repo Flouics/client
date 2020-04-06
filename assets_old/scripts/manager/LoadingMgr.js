@@ -12,7 +12,7 @@ LoadingMgr.prototype.playAnimation = function (delay) {
 
     setTimeout(function () {
         if (play_id == self.play_id) {
-            global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
+            global.app.windowMgr.open(RES_WINDOW.loadingAm, function () {
                 if (self.is_play == false) {
                     self.stopAnimation();
                 }
@@ -23,7 +23,7 @@ LoadingMgr.prototype.playAnimation = function (delay) {
 
 LoadingMgr.prototype.stopAnimation = function () {
     this.is_play = false;
-    global.app.windowMgr.close(res_enum.WINDOW.loadingAm);
+    global.app.windowMgr.close(RES_WINDOW.loadingAm);
 };
 
 //todo
@@ -31,7 +31,7 @@ LoadingMgr.prototype.playAnimationRes = function () {
     this.is_play = true;
     this.play_id++;
     var self = this;
-    global.app.windowMgr.open(res_enum.WINDOW.loadingAm, function () {
+    global.app.windowMgr.open(RES_WINDOW.loadingAm, function () {
         if (self.is_play == false) {
             self.stopAnimation();
         }
