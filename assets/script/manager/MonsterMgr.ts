@@ -40,7 +40,7 @@ export default class MonsterMgr {
     reset(){
         for (const key in this.monsterMap) {
             if (this.monsterMap.hasOwnProperty(key)) {
-                this.monsterMap[key].clear()                
+                this.monsterMap[key].destory()                
             }
         }
         this.monsterMap = {}

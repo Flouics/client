@@ -41,7 +41,7 @@ export default class TowerMgr {
     reset(){
         for (const key in this.towerMap) {
             if (this.towerMap.hasOwnProperty(key)) {
-                this.towerMap[key].clear()                
+                this.towerMap[key].destory()                
             }
         }
         this.towerMap = {}
