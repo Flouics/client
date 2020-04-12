@@ -5,10 +5,12 @@
 export default class MapUtils {
     static size: cc.Size = new cc.Size(1, 1);
     static sizeVec2: cc.Vec2 = new cc.Vec2(1, 1);
+    static perDis:number = 1;
 
     static initBlockSize(size: cc.Size) {
         MapUtils.size = size;
         MapUtils.sizeVec2 = new cc.Vec2(size.width, size.height);
+        MapUtils.perDis = size.width;
     }
 
     static getTilePosByViewPos(viewPos: cc.Vec2) {
@@ -36,6 +38,12 @@ export default class MapUtils {
 
     static getDis(fromPos: cc.Vec2,toPos:cc.Vec2){
         return Math.abs(toPos.x - fromPos.x) + Math.abs(toPos.y - fromPos.y)
+    }
+    static getLineDis(fromPos: cc.Vec2,toPos:cc.Vec2){
+        return fromPos.sub(toPos).mag();
+    }
+    static getUILineDis(fromViewPos: cc.Vec2,toViewPos:cc.Vec2){
+        return fromViewPos.sub(toViewPos).mag();
     }
 
     static isNearBy(fromPos: cc.Vec2,toPos:cc.Vec2){

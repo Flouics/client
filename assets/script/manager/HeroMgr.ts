@@ -34,7 +34,7 @@ export default class HeroMgr {
     reset(){
         for (const key in this.heroMap) {
             if (this.heroMap.hasOwnProperty(key)) {
-                this.heroMap[key].die()                
+                this.heroMap[key].clear()                
             }
         }
         this.heroMap = {};
@@ -56,7 +56,7 @@ export default class HeroMgr {
     clear(id:number){
         let obj = this.heroMap[id];
         if(obj){
-            obj.die();
+            obj.destory();
         }
         delete this.heroMap[id]
     }

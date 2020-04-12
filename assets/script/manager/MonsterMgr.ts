@@ -31,14 +31,20 @@ export default class MonsterMgr {
         this._nodeRoot = mapMainView.nd_masterRoot;
         this.reset()
     }
+    
+    initSchedule(){
+        this._mapMainView.unschedule(this.update.bind(this));
+        this._mapMainView.schedule(this.update.bind(this),0.1);
+    }
 
     reset(){
         for (const key in this.monsterMap) {
             if (this.monsterMap.hasOwnProperty(key)) {
-                this.monsterMap[key].die()                
+                this.monsterMap[key].clear()                
             }
         }
         this.monsterMap = {}
+        this.initSchedule();
     }
 
     create(x: number = 0, y: number = 0,task?:Function){
@@ -62,7 +68,7 @@ export default class MonsterMgr {
     clear(id:number){
         let obj = this.monsterMap[id];
         if(obj){
-            obj.die();
+            obj.destory();
         }
         delete this.monsterMap[id]
     }

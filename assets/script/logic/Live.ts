@@ -18,7 +18,6 @@ export default class Live extends BoxBase {
     actionType:number = ACTION_TYPE_ENUM.IDLE;      //执行的动作行为
     moveSpeed: number = 180;    //1秒
     routeList:cc.Vec2[] = [];    // 移动路径图
-    node: cc.Node = null; // ui
     mapMainView: MapMainView = null;    //地图
     ui:UILive = null;
     mapProxy:MapProxy = null;
@@ -102,11 +101,11 @@ export default class Live extends BoxBase {
     getMoveRoute(toPos:cc.Vec2){        
         return MapUtils.getRouteList(cc.v2(this.x,this.y),toPos,this.checkBlock.bind(this))
     }
-    clear(){
 
-    }
-    die(){
+    destory(){
         //--todo表现
-        this.node.removeFromParent()
+        super.destory();
+        this.node.removeFromParent();
     }
+    update(){}
 }

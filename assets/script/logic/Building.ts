@@ -36,8 +36,11 @@ export default class Building extends BoxBase {
         this.id = Building._idIndex;
         Building._idIndex += 1;
     }
+    initSchedule(){
+        this.mapMainView.unschedule(this.update.bind(this));
+        this.mapMainView.schedule(this.update.bind(this),0.05);
+    }
     createBuilding(toPos:cc.Vec2){
-        var self = this;
         this.setId();       
         this.x = toPos.x;
         this.y = toPos.y;        
@@ -53,5 +56,15 @@ export default class Building extends BoxBase {
 
     getRealArea(){
         return this.realArea;
+    }
+    clear(){
+
+    }
+    destory(){
+        super.destory();
+        this.node.removeFromParent();
+    }
+    update(){
+
     }
 }

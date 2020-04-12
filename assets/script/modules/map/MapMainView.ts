@@ -15,6 +15,8 @@ import HeroMgr from "../../manager/HeroMgr";
 import ModuleMgr from "../../manager/ModuleMgr";
 import MapProxy from "./MapProxy";
 import DigTask from "../../logic/task/DigTask";
+import TowerMgr from "../../manager/TowerMgr";
+import Tower from "../../logic/tower/Tower";
 
 
 /**
@@ -44,6 +46,8 @@ export default class MapMainView extends BaseView {
     @property(cc.Node)
     nd_masterRoot: cc.Node = null;  //怪物的地图层
     @property(cc.Node)
+    nd_bulletRoot: cc.Node = null;  //怪物的地图层
+    @property(cc.Node)
     nd_buildingRoot: cc.Node = null;  //建筑地图层    
     @property(cc.Prefab)
     pb_block = null;            //瓦片资源
@@ -60,6 +64,7 @@ export default class MapMainView extends BaseView {
     headquarters: Headquarters = null;
     monsterMgr: MonsterMgr = null;
     heroMgr: HeroMgr = null;
+    towerMgr:TowerMgr = null;
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
 
     // use this for initialization
@@ -72,19 +77,21 @@ export default class MapMainView extends BaseView {
         this.buldingMap = this.mapProxy.buldingMap;
         this.initMap();
         super.onLoad();
-    };
+    }
 
     initMap() {
         this.monsterMgr = MonsterMgr.getInstance();
         this.heroMgr = HeroMgr.getInstance();
+        this.towerMgr = TowerMgr.getInstance();
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
+        this.towerMgr.init(this);
         this.initBlocks();
         this.initBuildings();
         this.initHeros();
         this.initMonsters()
         this.node.on("map_click", this.onMapClick.bind(this));
-    };
+    }
     initMonsterEntryPos() {
         this.monsterEntryPos = cc.v2(-10, 10);
         this.getBlockByPos(this.monsterEntryPos).value = Block.BLOCK_VALUE_ENUM.EMPTY;
@@ -145,17 +152,18 @@ export default class MapMainView extends BaseView {
             return null
         }
     }
-
     initHeros() {
         let hero = this.heroMgr.create(2, 0);
         this.testHero = hero;
     }
-
     initMonsters() {
         this.initMonsterEntryPos();
         this.monsterMgr.createMultiple(2, this.monsterEntryPos.x, this.monsterEntryPos.y, (monster: Monster) => {
             monster.attackHeadquarters();
         });
+    }
+    initTowers(){
+        this.towerMgr.create(-2,0,1001);
     }
     clearHero(heroId: number) {
         this.heroMgr.clear(heroId);
@@ -164,12 +172,11 @@ export default class MapMainView extends BaseView {
         this.monsterMgr.clear(monsterId);
     }
     initBuildings() {
-        let headquarters = new Headquarters(this)
+        let headquarters = new Headquarters(this);
         this.createBuilding(headquarters, cc.v2(0, 0));
-        this.buldingMap[headquarters.id] = headquarters
-        this.headquarters = headquarters
+        this.buldingMap[headquarters.id] = headquarters;
+        this.headquarters = headquarters;
     }
-
     checkBlock(pos: cc.Vec2) {
         var block = this.getBlockByPos(pos)
         if (block) {

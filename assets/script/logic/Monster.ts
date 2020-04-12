@@ -6,6 +6,7 @@ import MonsterMgr from "../manager/MonsterMgr";
 import Headquarters from "./building/Headquarters";
 import Building from "./Building";
 import PoolMgr from "../manager/PoolMgr";
+import BoxBase from "./BoxBase";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
     static _idIndex = 100000;
@@ -22,8 +23,7 @@ export default class Monster extends Live {
     }
     clear(){
         MonsterMgr.getInstance().clear(this.id);        
-    }
-    
+    }    
     attackHeadquarters(){
         var target = this.mapMainView.headquarters;
         var nearByPos = this.getNearByPos(target.getRealArea())
@@ -47,6 +47,12 @@ export default class Monster extends Live {
             }
         })       
         return !!isCross;
+    }
+    onBeAtked(atkValue:number,atker:BoxBase){
+        this.life += -atkValue;
+        if(!this.checkLive()){
+            this.clear();
+        }
     }
     update(){
         

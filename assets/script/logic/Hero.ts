@@ -8,6 +8,7 @@ import TaskBase from "./TaskBase";
 import ToolKit from "../utils/ToolKit";
 import DigTask from "./task/DigTask";
 import PoolMgr from "../manager/PoolMgr";
+
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
     task:TaskBase = null;

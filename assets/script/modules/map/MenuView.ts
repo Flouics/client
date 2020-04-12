@@ -1,6 +1,6 @@
 import BaseView from "../../zero/BaseView";
 import Building from "../../logic/Building";
-import Tower_1 from "../../logic/tower/Tower_1";
+import Tower from "../../logic/tower/Tower";
 import ModuleMgr from "../../manager/ModuleMgr";
 import MapProxy from "./MapProxy";
 import ToolKit from "../../utils/ToolKit";
@@ -22,7 +22,7 @@ export default class MenuView extends BaseView {
     }
 
     onClickBuild(){
-        this._clickBuilding = new Tower_1(null);
+        this._clickBuilding = new Tower(null);
     }
     onMapBuild(){
         ToolKit.getInstance().showTip("onMapBuild")

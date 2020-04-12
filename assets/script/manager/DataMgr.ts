@@ -105,12 +105,10 @@ function mapData(fields: any, item: any) {
 export default class DataMgr {
     hasLoad: boolean = false;
     curLoad: number = 0;
+    dataPool:{[key:string]:Data} = {}
     loadTexts = [
         'config'
-        , 'block_type'
-        , 'monster_type'
-        , 'skill'
-        , 'status'
+        , 'bullet_type'
     ];
 
     callback: Function;
@@ -152,13 +150,13 @@ export default class DataMgr {
 
     loadTable(filename: string) {
         var self = this;
-        if (self[filename]) {
+        if (self.dataPool[filename]) {
             self.onLoadTable(filename);
             return;
         }
         cc.loader.loadRes('data/' + filename + '', function (err: any, textAsset: any) {
             if (!err) {
-                self[filename] = new Data(textAsset.text);
+                self.dataPool[filename] = new Data(textAsset.text);
                 self.onLoadTable(filename);
             }
         });
@@ -175,6 +173,6 @@ export default class DataMgr {
     };
 
     getTable(filename: string) {
-        return this[filename];
+        return this.dataPool[filename];
     };
 };
