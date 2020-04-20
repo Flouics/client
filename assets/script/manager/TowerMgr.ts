@@ -14,6 +14,7 @@ export default class TowerMgr {
     static _instance: TowerMgr = null;
     constructor() {
         TowerMgr._instance = this;
+        this.initTowerTypeMap();
     }
     static getInstance():TowerMgr {
         if (TowerMgr._instance) {

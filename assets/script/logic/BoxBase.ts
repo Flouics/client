@@ -1,9 +1,12 @@
 import MapUtils from "./MapUtils";
+import BaseView from "../zero/BaseView";
 
 export default class BoxBase {
     id: number = 0;
     x: number = 0;  //瓦片地图坐标
     y: number = 0;  //瓦片地图坐标
+
+    name:string = "";
     life:number = 1;
     atk:number = 0;
     def:number = 0;
@@ -12,6 +15,13 @@ export default class BoxBase {
     targetExtraList:BoxBase[] = null;   //副目标列表
     isDestroy:boolean = false;
     node:cc.Node = null;
+    ui:BaseView = null;
+    bindView(){
+        if(!this.ui){
+            return;
+        }
+        this.ui.bindUI(this);
+    }
     get pos(){
         return cc.v2(this.x,this.y)
     }
@@ -20,16 +30,15 @@ export default class BoxBase {
         var abs_delta_y = Math.abs(this.y - toPos.y);
         return abs_delta_x + abs_delta_y;
     }
-
     getUIPos(){
         if(this.node){
-            return this.node.position
+            return this.node.position;
         }else{
             return MapUtils.getViewPosByTilePos(this.pos);
         }        
     }
 
-    onBeAtked(atkValue:number,atker:BoxBase){
+    onBeAtked(damage:number,atker:BoxBase){
 
     }
 

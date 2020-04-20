@@ -102,6 +102,20 @@ export default class Live extends BoxBase {
         return MapUtils.getRouteList(cc.v2(this.x,this.y),toPos,this.checkBlock.bind(this))
     }
 
+    clear(){
+        this.destory();
+    }
+    onBeAtked(damage:number,atker:BoxBase){
+        this.life += -damage;
+        if(this.ui){
+            this.ui.onBeAtked(damage);
+        }
+        cc.log(this.name,this.life);
+        if(!this.checkLive()) {
+            this.clear();
+        }
+    }
+
     destory(){
         //--todo表现
         super.destory();

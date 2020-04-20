@@ -22,7 +22,7 @@ export default class MenuView extends BaseView {
     }
 
     onClickBuild(){
-        this._clickBuilding = new Tower(null);
+        //this._clickBuilding = new Tower(null);
     }
     onMapBuild(){
         ToolKit.getInstance().showTip("onMapBuild")

@@ -52,12 +52,6 @@ export default class Block extends BoxBase {
         this.value = ToolKit.obj.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         this.bindView();
     }
-    bindView(){
-        if(!this.ui){
-            return;
-        }
-        this.ui.bindUI(this);
-    }
     createBuilding(building:Building){
         this.buildingId = building.id; 
     }

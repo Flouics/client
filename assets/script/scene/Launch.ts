@@ -9,8 +9,6 @@ export default class App extends SceneBase{
     nd_login: cc.Node = null;
     @property(cc.Label)
     lb_version: cc.Label = null;
-    @property(cc.Node)
-    nd_tip: cc.Node = null;
 
     loadEvents:{[key:string]:any} = {}
 
@@ -18,7 +16,6 @@ export default class App extends SceneBase{
     // use this for initialization
     onLoad () {
         this.nd_login.active = false;
-        this.nd_tip.active = false;
     };
 
     onEnable () {
@@ -42,11 +39,10 @@ export default class App extends SceneBase{
     };
 
     preLoad () {
-        let res_enum = global.res_enum;
         var res = [];
         global.app.loadingMgr.preLoadRes(res);
         var prefabs = [
-            RES_WINDOW.rankInfo  
+        
         ];
         global.app.loadingMgr.preLoadPrefab(prefabs);
         cc.director.preloadScene('game');
@@ -69,18 +65,8 @@ export default class App extends SceneBase{
             }
         }
         if (!!isCmp) {
-            this.nd_login.active = true;
+            global.app.sceneMgr.loadScene('game');
         }
-    };
-
-    onClickStart () {
-        var version = global.app.dbMgr._getItem(global.app.dbMgr.Enum.LAST_VERSION);
-        if (version != global.app.config.version) {
-            global.app.dbMgr._setItem(global.app.dbMgr.Enum.LAST_VERSION, global.app.config.version);
-            this.nd_tip.active = true;
-        }
-
-        global.app.sceneMgr.loadScene('game');
     };
 
     onClickRankInfo () {

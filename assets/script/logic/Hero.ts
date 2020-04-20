@@ -12,12 +12,17 @@ import PoolMgr from "../manager/PoolMgr";
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
     task:TaskBase = null;
+    heroMgr:HeroMgr = null;
     static _idIndex = 1000;
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.HERO;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
         this.id = Hero._idIndex;
         Hero._idIndex += 1;
+        this.init();
+    }
+    init(){
+        this.heroMgr = this.mapMainView.heroMgr;
     }
     //每一秒的检测
     update(){
@@ -66,6 +71,6 @@ export default class Hero extends Live {
         return false;
     }
     clear(){
-        HeroMgr.getInstance().clear(this.id)
+        this.heroMgr.clear(this.id)
     }
 }

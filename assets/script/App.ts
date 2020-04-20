@@ -131,7 +131,7 @@ export default class App extends cc.Component{
     }
 
     start () {
-        this.sceneMgr.loadScene("game");
+        
     }
 
     restart () {

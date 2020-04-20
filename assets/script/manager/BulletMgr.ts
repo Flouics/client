@@ -18,6 +18,7 @@ export default class BulletMgr {
     static _instance: BulletMgr = null;
     constructor() {
         BulletMgr._instance = this;
+        this.initBulletTypeMap();
     }
     static getInstance():BulletMgr {
         if (BulletMgr._instance) {
@@ -39,7 +40,7 @@ export default class BulletMgr {
 
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;
-        this._nodeRoot = mapMainView.nd_masterRoot;
+        this._nodeRoot = mapMainView.nd_bulletRoot;
         this.reset()
     }
 

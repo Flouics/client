@@ -10,7 +10,7 @@ export default class UIBuilding extends BaseView {
     spt_face:cc.Sprite = null;
 
     _baseUrl = "texture/map/";
-    _logicObj:Building = null
+    _logicObj:Building = null;
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
@@ -21,8 +21,5 @@ export default class UIBuilding extends BaseView {
                 self.spt_face.spriteFrame = null;
             }           
         })
-    }
-    update(dt:number){
-        this.updateUI()
     }
 }

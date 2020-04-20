@@ -14,9 +14,6 @@ export default class UIBlock extends BaseView {
 
     _baseUrl = "texture/map/";
     _logicObj:Block = null;
-    bindUI(block:Block){
-        this._logicObj = block
-    }
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
@@ -35,8 +32,5 @@ export default class UIBlock extends BaseView {
                 self.spt_event.spriteFrame = null;
             }           
         })
-    }
-    update(dt:number){
-        this.updateUI()
     }
 }

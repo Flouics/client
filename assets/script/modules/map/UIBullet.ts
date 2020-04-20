@@ -11,7 +11,4 @@ export default class UIBullet extends BaseView {
     reuse(data:any){
 
     }
-    update(dt:number){
-
-    }
 }

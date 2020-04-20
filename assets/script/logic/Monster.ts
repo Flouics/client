@@ -12,6 +12,7 @@ export default class Monster extends Live {
     static _idIndex = 100000;
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.MONSTER;
     target:Live|Building = null;
+    monsterMgr:MonsterMgr = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
         this.id = Monster._idIndex;
@@ -20,9 +21,10 @@ export default class Monster extends Live {
     }
     init(){
         this.life = 10;
+        this.monsterMgr = this.mapMainView.monsterMgr;
     }
     clear(){
-        MonsterMgr.getInstance().clear(this.id);        
+        this.monsterMgr.clear(this.id);        
     }    
     attackHeadquarters(){
         var target = this.mapMainView.headquarters;
@@ -48,12 +50,7 @@ export default class Monster extends Live {
         })       
         return !!isCross;
     }
-    onBeAtked(atkValue:number,atker:BoxBase){
-        this.life += -atkValue;
-        if(!this.checkLive()){
-            this.clear();
-        }
-    }
+
     update(){
         
     }

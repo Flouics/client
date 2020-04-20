@@ -1,15 +1,30 @@
 import Proxy from "../modules/base/Proxy";
+import BoxBase from "../logic/BoxBase";
 
 const { ccclass, property } = cc._decorator;
 var global = window;
 @ccclass
 export default class BaseView extends cc.Component {
     _httpEvents: Object[] = [];
-    _socketEvents: Object[]  = [];
-    _bindData:{ [key: string]: any } = {};
-    _baseUrl:string = "";
-    proxys:Proxy[] = [];
-    _objFlags:number;
+    _socketEvents: Object[] = [];
+    _bindData: { [key: string]: any } = {};
+    _baseUrl: string = "";
+    proxys: Proxy[] = [];
+    _objFlags: number;
+
+    _logicObj: BoxBase = null;
+    bindUI(boxBase: BoxBase) {
+        this._logicObj = boxBase
+    }
+    updateUI() {
+        //todo需要重写
+    /*         var self = this;
+        var logicObj = this._logicObj
+        this.updateDataToUI("boxBase.value", logicObj.id, () => {
+            //--todo
+        }) */
+    }
+
     // use this for initialization
     onLoad() {
 
@@ -79,7 +94,7 @@ export default class BaseView extends cc.Component {
         global.game.socketMgr.on(event, tag, fn);
     }
 
-    loadSpt(spt:cc.Sprite,res_url:string = null, cb?:Function) {
+    loadSpt(spt: cc.Sprite, res_url: string = null, cb?: Function) {
         if (!res_url) return;
         cc.loader.loadRes(this._baseUrl + res_url, cc.SpriteFrame, function (err, spriteFrame) {
             if (!err && spt && spt.node) {
@@ -89,31 +104,34 @@ export default class BaseView extends cc.Component {
         });
     };
 
-    updateDataToUI(key:string,data:any,cb:Function){
+    updateDataToUI(key: string, data: any, cb: Function) {
         let dataUnique = this.getDataUnique(data)
-        if (this._bindData[key] != dataUnique){
-            if (!!cb){
+        if (this._bindData[key] != dataUnique) {
+            if (!!cb) {
                 cb(data);
             }
-        } 
+        }
         this._bindData[key] = dataUnique;
     }
 
-    getDataUnique(data:any){
-        if(typeof(data) == "object"){
+    getDataUnique(data: any) {
+        if (typeof (data) == "object") {
             return JSON.stringify(data)
-        }else{
+        } else {
             return data;
         }
     }
-    bindProxys(){
-        this.proxys.forEach((proxy)=>{
+    bindProxys() {
+        this.proxys.forEach((proxy) => {
             proxy.bindView(this)
-        })       
+        })
     }
-    unbindProxys(){
-        this.proxys.forEach((proxy)=>{
+    unbindProxys() {
+        this.proxys.forEach((proxy) => {
             proxy.unbindView(this)
-        })       
+        })
+    }
+    update(dt:number){
+        this.updateUI();
     }
 }

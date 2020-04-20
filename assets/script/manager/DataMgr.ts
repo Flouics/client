@@ -132,7 +132,6 @@ export default class DataMgr {
         return DataMgr.getInstance()
     } 
 
-
     tryLoadAllTable(cb: Function, tag?: any) {
         if (!!this.hasLoad) {
             return true;

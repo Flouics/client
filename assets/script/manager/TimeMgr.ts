@@ -53,6 +53,9 @@ export default class TimeMgr {
         if (client_timestamp == undefined) client_timestamp = new Date().getTime();
         return client_timestamp - this._server_time_diff;
     };
+    getTime(){
+        return this.getServerTimeFromClientTime();
+    }
 
     //格式化时间。
     formatTimeHHMMSS(timestamp?: number) {

@@ -17,6 +17,7 @@ import MapProxy from "./MapProxy";
 import DigTask from "../../logic/task/DigTask";
 import TowerMgr from "../../manager/TowerMgr";
 import Tower from "../../logic/tower/Tower";
+import BulletMgr from "../../manager/BulletMgr";
 
 
 /**
@@ -65,6 +66,7 @@ export default class MapMainView extends BaseView {
     monsterMgr: MonsterMgr = null;
     heroMgr: HeroMgr = null;
     towerMgr:TowerMgr = null;
+    bulletMgr:BulletMgr = null;
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
 
     // use this for initialization
@@ -83,13 +85,16 @@ export default class MapMainView extends BaseView {
         this.monsterMgr = MonsterMgr.getInstance();
         this.heroMgr = HeroMgr.getInstance();
         this.towerMgr = TowerMgr.getInstance();
+        this.bulletMgr = BulletMgr.getInstance();
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);
+        this.bulletMgr.init(this);
         this.initBlocks();
         this.initBuildings();
         this.initHeros();
-        this.initMonsters()
+        this.initMonsters();
+        this.initTowers();
         this.node.on("map_click", this.onMapClick.bind(this));
     }
     initMonsterEntryPos() {

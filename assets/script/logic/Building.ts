@@ -19,6 +19,9 @@ export default class Building extends BoxBase {
 
     initUI(parent:cc.Node,cb?:Function) {
         let self = this;
+        if(this._pb_url == "") {
+            return;
+        }
         cc.loader.loadRes(this._pb_url, cc.Prefab, function (err: any, prefab: any) {
             if (err) {
                 cc.error(this._pb_url, err);
@@ -29,6 +32,7 @@ export default class Building extends BoxBase {
                 node.position = viewPos;
                 self.node = node;
                 self.ui = self.node.getComponent(UIBuilding);
+                self.bindView();
             }
         })
     }
@@ -48,7 +52,7 @@ export default class Building extends BoxBase {
         this.realArea = this.area.map((pos)=>{
             return pos.add(toPos)
         })
-    }
+    }    
 
     getArea(){
         return this.area;

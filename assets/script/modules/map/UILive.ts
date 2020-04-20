@@ -8,6 +8,7 @@ export default class UILive extends BaseView {
     spt_role:cc.Sprite = null;    
     _baseUrl = "texture/hero/";
     _moveAction:cc.Tween;
+    _beAtkedAction:cc.Tween;
     reuse(data:any){
 
     }
@@ -20,12 +21,36 @@ export default class UILive extends BaseView {
             })
         this._moveAction.start();
     }
+    removeTweenAction(actionTween:cc.Tween){
+        if(actionTween){
+            actionTween.stop()
+            actionTween.removeSelf()
+        }       
+    }
     stopMoveAction(){
-        if(this._moveAction){
-            this._moveAction.stop()
-            this._moveAction.removeSelf()
-            this._moveAction = null;
-        }        
+        this.removeTweenAction(this._moveAction);
+        this._moveAction = null;
+    }
+
+    onBeAtked(damage:number){
+        if(this._beAtkedAction) return;
+        var duration = 0.5;
+        var self = this;
+        this._beAtkedAction = cc.tween(this.spt_role.node)
+        .to(duration,
+            { color: cc.Color.RED})
+        .to(duration,
+            { color: cc.Color.WHITE})
+        .call(() => {                
+            //todo
+            self.stopBeAtkedAction();
+        })
+        this._beAtkedAction.start();
+    }
+
+    stopBeAtkedAction(){
+        this.removeTweenAction(this._beAtkedAction);
+        this._beAtkedAction = null;
     }
     updateUI(){
     }
