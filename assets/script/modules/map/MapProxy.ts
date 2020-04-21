@@ -8,16 +8,40 @@ import Building from "../../logic/Building";
 import DigTask from "../../logic/task/DigTask";
 import TaskBase from "../../logic/TaskBase";
 import MapUtils from "../../logic/MapUtils";
+import Headquarters from "../../logic/building/Headquarters";
+import MonsterMgr from "../../manager/MonsterMgr";
+import HeroMgr from "../../manager/HeroMgr";
+import TowerMgr from "../../manager/TowerMgr";
+import BulletMgr from "../../manager/BulletMgr";
+import { serialize } from "../../utils/Decorator";
+import DBMgr from "../../manager/DBMgr";
 export default class MapProxy extends BaseProxy {
     attrs:{[key:string]:any} = {} 
+    @serialize()
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
-    buldingMap: { [key: number]: Building } = {}
+    @serialize()
+    buldingMap: { [key: number]: Building } = {};
+    @serialize()
+    headquarters: Headquarters = null;
+    @serialize()
+    monsterMgr: MonsterMgr = null;
+    @serialize()
+    heroMgr: HeroMgr = null;
+    @serialize()
+    towerMgr:TowerMgr = null;
+    @serialize()
+    bulletMgr:BulletMgr = null;
+
     digTask:DigTask[] = [];
     digTaskMap = {}
 
     //方法
     init(){
         MapProxy._instance = this;
+        this.monsterMgr = MonsterMgr.getInstance();
+        this.heroMgr = HeroMgr.getInstance();
+        this.towerMgr = TowerMgr.getInstance();
+        this.bulletMgr = BulletMgr.getInstance();
     }
 
     static getInstance(){
@@ -66,6 +90,16 @@ export default class MapProxy extends BaseProxy {
     shiftDigTask(){
         var task = this.digTask.shift()
         return task;
+    }
+
+    dumpToDb(){
+        DBMgr.getInstance().setItem(this._classDbKey,this.serialize())
+    }
+    reloadFromDb(){
+        var json = DBMgr.getInstance().getItem(this._classDbKey);
+        if(json){
+            this.unserialize(json);
+        }
     }
 };
 
