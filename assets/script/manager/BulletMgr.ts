@@ -5,9 +5,12 @@ import AsyncTaskMgr from "./AsyncTaskMgr";
 import Bullet from "../logic/Bullet";
 import Tower from "../logic/tower/Tower";
 import BoxBase from "../logic/BoxBase";
+import BaseClass from "../zero/BaseClass";
+import { serialize } from "../utils/Decorator";
 
 // 怪物管理器
-export default class BulletMgr {
+export default class BulletMgr extends BaseClass {
+    @serialize()
     bulletMap:{[key:number]:Bullet} = {};
     _bulletTypeClassMap = {};
     _mapMainView:MapMainView = null;
@@ -17,6 +20,7 @@ export default class BulletMgr {
     // 单例处理
     static _instance: BulletMgr = null;
     constructor() {
+        super();
         BulletMgr._instance = this;
         this.initBulletTypeMap();
     }
@@ -67,6 +71,14 @@ export default class BulletMgr {
         });
         this.bulletMap[bullet.id] = bullet;        
         return bullet;
+    }
+
+    refresh(){
+        for (const key in this.bulletMap) {
+            if (this.bulletMap.hasOwnProperty(key)) {
+                this.bulletMap[key].initUI(this._nodeRoot);                
+            }
+        }
     }
 
     clear(id:number){

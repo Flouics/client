@@ -16,7 +16,7 @@ export function objToJson(obj:Object): any {
         const serialize = Reflect.getMetadata(SerializeMetaKey, obj, property);
         if (serialize) {
             if (obj[property] instanceof Element) {
-                ret[serialize] = this[property].objToJson();
+                ret[serialize] = obj[property].objToJson();
             } else {
                 ret[serialize] = obj[property];
             }

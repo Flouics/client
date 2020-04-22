@@ -3,3 +3,8 @@
 3 炮塔类型
 4 怪物攻击状态
 5 近距离攻击
+
+this.heroMgr.refresh();
+this.monsterMgr.refresh();
+this.towerMgr.refresh();
+this.bulletMgr.refresh();

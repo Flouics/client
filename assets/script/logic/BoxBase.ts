@@ -1,19 +1,31 @@
 import MapUtils from "./MapUtils";
 import BaseView from "../zero/BaseView";
+import { serialize } from "../utils/Decorator";
+import BaseClass from "../zero/BaseClass";
 
-export default class BoxBase {
+export default class BoxBase extends BaseClass {
+    @serialize()
     id: number = 0;
+    @serialize()
     x: number = 0;  //瓦片地图坐标
+    @serialize()
     y: number = 0;  //瓦片地图坐标
-
+    
+    @serialize()
     name:string = "";
+    @serialize()
     life:number = 1;
+    @serialize()
     atk:number = 0;
+    @serialize()
     def:number = 0;
+    @serialize()
     range:number = 0;
-    target:BoxBase = null;
-    targetExtraList:BoxBase[] = null;   //副目标列表
+    @serialize()
     isDestroy:boolean = false;
+
+    target:BoxBase = null;
+    targetExtraList:BoxBase[] = null;   //副目标列表    
     node:cc.Node = null;
     ui:BaseView = null;
     bindView(){

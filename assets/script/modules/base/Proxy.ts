@@ -1,6 +1,7 @@
 import BaseView from "../../zero/BaseView";
+import BaseClass from "../../zero/BaseClass";
 
-export default class Proxy {
+export default class Proxy extends BaseClass {
     uiMap:{[key:string]:any} = {};
     attrs:{[key:string]:any} = {};
 
@@ -9,8 +10,8 @@ export default class Proxy {
     
      // 构造函数 
     constructor() { 
-        this.init()
-                    
+        super();
+        this.init();                    
     }
     init(){
         Proxy._instance = this;

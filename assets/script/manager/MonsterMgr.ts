@@ -2,9 +2,12 @@
 import Monster from "../logic/Monster";
 import MapMainView from "../modules/map/MapMainView";
 import AsyncTaskMgr from "./AsyncTaskMgr";
+import BaseClass from "../zero/BaseClass";
+import { serialize } from "../utils/Decorator";
 
 // 怪物管理器
-export default class MonsterMgr {
+export default class MonsterMgr extends BaseClass {
+    @serialize()
     monsterMap:{[key:number]:Monster} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
@@ -12,6 +15,7 @@ export default class MonsterMgr {
     // 单例处理
     static _instance: MonsterMgr = null;
     constructor() {
+        super();
         MonsterMgr._instance = this;
     }
     static getInstance():MonsterMgr {
@@ -65,6 +69,14 @@ export default class MonsterMgr {
         }
     }
 
+    refresh(){
+        for (const key in this.monsterMap) {
+            if (this.monsterMap.hasOwnProperty(key)) {
+                this.monsterMap[key].initUI(this._nodeRoot);                
+            }
+        }
+    }
+    
     clear(id:number){
         let obj = this.monsterMap[id];
         if(obj){

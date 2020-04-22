@@ -1,9 +1,12 @@
 import Hero from "../logic/Hero";
 import MapMainView from "../modules/map/MapMainView";
+import BaseClass from "../zero/BaseClass";
+import { serialize } from "../utils/Decorator";
 
 
 // 怪物管理器
-export default class HeroMgr {
+export default class HeroMgr extends BaseClass{
+    @serialize()
     heroMap:{[key:number]:Hero} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
@@ -12,6 +15,7 @@ export default class HeroMgr {
     // 单例处理
     static _instance: HeroMgr = null;
     constructor() {
+        super();
         HeroMgr._instance = this;
     }
     static getInstance():HeroMgr {
@@ -51,6 +55,14 @@ export default class HeroMgr {
         hero.initUI(this._nodeRoot)
         this.heroMap[hero.id] = hero;        
         return hero;
+    }
+
+    refresh(){
+        for (const key in this.heroMap) {
+            if (this.heroMap.hasOwnProperty(key)) {
+                this.heroMap[key].initUI(this._nodeRoot);                
+            }
+        }
     }
 
     clear(id:number){

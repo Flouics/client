@@ -2,9 +2,12 @@
 import MapMainView from "../modules/map/MapMainView";
 import Tower from "../logic/tower/Tower";
 import Tower_1001 from "../logic/tower/Tower_1001";
+import BaseClass from "../zero/BaseClass";
+import { serialize } from "../utils/Decorator";
 
 // 怪物管理器
-export default class TowerMgr {
+export default class TowerMgr extends BaseClass{
+    @serialize()
     towerMap:{[key:number]:Tower} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
@@ -13,6 +16,7 @@ export default class TowerMgr {
     // 单例处理
     static _instance: TowerMgr = null;
     constructor() {
+        super();
         TowerMgr._instance = this;
         this.initTowerTypeMap();
     }
@@ -66,6 +70,15 @@ export default class TowerMgr {
         tower.createBuilding(cc.v2(x,y));
         this.towerMap[tower.id] = tower;        
         return tower;
+    }
+
+    
+    refresh(){
+        for (const key in this.towerMap) {
+            if (this.towerMap.hasOwnProperty(key)) {
+                this.towerMap[key].initUI(this._nodeRoot);                
+            }
+        }
     }
 
     clear(id:number){

@@ -89,7 +89,8 @@ export default class MapMainView extends BaseView {
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);
-        this.bulletMgr.init(this);
+        this.bulletMgr.init(this);             
+        
         this.initBlocks();
         this.initBuildings();
         this.initHeros();
