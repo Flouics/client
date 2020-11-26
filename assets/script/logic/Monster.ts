@@ -35,7 +35,7 @@ export default class Monster extends Live {
     checkAction():boolean{
         if(this.target instanceof Building){
             if(this.checkCrossBuilding(this.target)){
-                MonsterMgr.getInstance().clear(this.id)
+                MonsterMgr.getInstance(MonsterMgr).clear(this.id)
                 return true;
             }
         }     

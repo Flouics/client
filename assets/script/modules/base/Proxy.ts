@@ -1,34 +1,9 @@
-import BaseView from "../../zero/BaseView";
 import BaseClass from "../../zero/BaseClass";
+import BaseView from "../../zero/BaseView";
 
 export default class Proxy extends BaseClass {
     uiMap:{[key:string]:any} = {};
     attrs:{[key:string]:any} = {};
-
-    // 单例处理
-    static _instance:any = null;
-    
-     // 构造函数 
-    constructor() { 
-        super();
-        this.init();                    
-    }
-    init(){
-        Proxy._instance = this;
-    }
-
-    static getInstance(){
-        if( Proxy._instance){
-            return Proxy._instance
-        }else{
-            let instance = new Proxy();
-            return instance
-        }
-    }
-
-    static get obj(){
-        return Proxy.getInstance();
-    } 
     
     onHttpMsg(cmd:string,data:any){
         cc.log(cmd,data);

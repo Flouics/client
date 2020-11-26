@@ -1,5 +1,6 @@
 import DialogBase from "../zero/DialogBase";
 import BaseView from "../zero/BaseView";
+import BaseClass from "../zero/BaseClass";
 
 // 通用窗口。
 var RES_WINDOW = {
@@ -13,27 +14,9 @@ var RES_ITEM = {};
 var RES_EFFECT = {};
 
 var global = window;
-export default class WindowMgr {
+export default class WindowMgr extends BaseClass {
     creatingCB = {};
     ui = {};    
-
-    // 单例处理
-    static _instance: WindowMgr = null;
-    constructor() {
-        WindowMgr._instance = this;
-        global.RES_WINDOW = RES_WINDOW;        
-    }
-    static getInstance():WindowMgr {
-        if (WindowMgr._instance) {
-            return WindowMgr._instance
-        } else {
-            let instance = new WindowMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return WindowMgr.getInstance()
-    }
 
     create(uiName: string, cb?: Function, parent?: cc.Node) {
         var self = this;

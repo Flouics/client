@@ -37,26 +37,14 @@ export default class MapProxy extends BaseProxy {
 
     //方法
     init(){
+        super.init();
         MapProxy._instance = this;
-        this.monsterMgr = MonsterMgr.getInstance();
-        this.heroMgr = HeroMgr.getInstance();
-        this.towerMgr = TowerMgr.getInstance();
-        this.bulletMgr = BulletMgr.getInstance();
+        this.monsterMgr = MonsterMgr.getInstance(MonsterMgr);
+        this.heroMgr = HeroMgr.getInstance(MonsterMgr);
+        this.towerMgr = TowerMgr.getInstance(MonsterMgr);
+        this.bulletMgr = BulletMgr.getInstance(MonsterMgr);
     }
 
-    static getInstance(){
-        if( MapProxy._instance){
-            return MapProxy._instance
-        }else{
-            let instance = new MapProxy();
-            return instance
-        }
-    }
-
-    static get obj(){
-        return MapProxy.getInstance();
-    } 
-    
     load(){
 
     }
@@ -93,10 +81,10 @@ export default class MapProxy extends BaseProxy {
     }
 
     dumpToDb(){
-        DBMgr.getInstance().setItem(this._classDbKey,this.serialize())
+        DBMgr.getInstance(DBMgr).setItem(this._classDbKey,this.serialize())
     }
     reloadFromDb(){
-        var json = DBMgr.getInstance().getItem(this._classDbKey);
+        var json = DBMgr.getInstance(DBMgr).getItem(this._classDbKey);
         if(json){
             this.unserialize(json);
         }

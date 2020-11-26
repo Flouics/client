@@ -1,28 +1,13 @@
+import BaseClass from "../zero/BaseClass";
+
 var localStorageEnum = {
     AUDIO_SETTING: 'audio_setting',
     ACCOUNT_INFO: 'ACCOUNT_INFO',
 };
 var global = window;
-export default class DBMgr {
+export default class DBMgr extends BaseClass {
     ls: any = cc.sys.localStorage;
     Enum: any = localStorageEnum;
-
-    // 单例处理
-    static _instance: DBMgr = null;
-    constructor() {
-        DBMgr._instance = this;
-    }
-    static getInstance():DBMgr {
-        if (DBMgr._instance) {
-            return DBMgr._instance
-        } else {
-            let instance = new DBMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return DBMgr.getInstance()
-    }
 
     getItem(_key: string) {
         var key = this.getKey(_key);

@@ -8,7 +8,6 @@ export function serialize(name?: string) {
     };
 }
 
-
 //序列化
 export function objToJson(obj:Object): any {
     const ret = {};

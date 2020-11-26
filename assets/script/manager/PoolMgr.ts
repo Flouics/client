@@ -3,6 +3,8 @@
  * 所有需要用cc.NodePool缓存处理的管理池
  */
 
+import BaseClass from "../zero/BaseClass";
+
 class Pool {
     _scriptName: string;
     _pb_item: any;
@@ -74,27 +76,10 @@ var POOL_TAG_ENUM = {
     BULLET:"bullet",
 }
 
-export default class PoolMgr {
+export default class PoolMgr extends BaseClass {
     poolMap:{[key:string]:Pool} = {};
     static POOL_TAG_ENUM = POOL_TAG_ENUM;
-
-    // 单例处理
-    static _instance: PoolMgr = null;
-    constructor() {
-        PoolMgr._instance = this;
-    }
-    static getInstance():PoolMgr {
-        if (PoolMgr._instance) {
-            return PoolMgr._instance
-        } else {
-            let instance = new PoolMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return PoolMgr.getInstance()
-    }
-
+    
     //生成一个缓冲池
     genPool(tag: string, pb_item: any, scriptName?: string, buffMinCount?: number, buffMaxCount?: number) {
         var pool = this.poolMap[tag];

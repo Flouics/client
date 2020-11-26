@@ -24,17 +24,17 @@ export default class Live extends BoxBase {
     static _idIndex = 1;
     _pb_tag:string = "";
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
-        super()
+        super(Live)
         this.x = x;
         this.y = y;
         this.mapMainView = mapMainView;
-        this.mapProxy = MapProxy.getInstance();
+        this.mapProxy = MapProxy.getInstance(MapProxy);
         this.id = Live._idIndex;
         Live._idIndex += 1;
     }
 
     initUI(parent:cc.Node,cb?:Function) {
-        let pool = PoolMgr.getInstance().getPool(this._pb_tag);
+        let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
         let viewPos = MapUtils.getViewPosByTilePos(this.pos);
         node.parent = parent;

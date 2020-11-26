@@ -36,7 +36,7 @@ export default class Block extends BoxBase {
     mapMainView: MapMainView = null;    //地图组件
     ui:UIBlock = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
-        super()
+        super(Block)
         this.x = x;
         this.y = y;
         this.mapMainView = mapMainView;
@@ -49,7 +49,7 @@ export default class Block extends BoxBase {
         this.node = node;
         this.ui = this.node.getComponent(UIBlock)
         node.scale = 0.95;
-        this.value = ToolKit.obj.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+        this.value = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         this.bindView();
     }
     createBuilding(building:Building){

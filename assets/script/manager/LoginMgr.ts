@@ -1,28 +1,12 @@
+import BaseClass from "../zero/BaseClass";
+
 var global = window;
-export default class LoginMgr {
+export default class LoginMgr extends BaseClass {
     _is_login: boolean = false;
     _req_list_map = {};
     _req_list = [];
     _req_total = 0;
-    _cb = null;
-
-    // 单例处理
-    static _instance: LoginMgr = null;
-    constructor() {
-        LoginMgr._instance = this;
-        this.init()
-    }
-    static getInstance():LoginMgr{
-        if (LoginMgr._instance) {
-            return LoginMgr._instance
-        } else {
-            let instance = new LoginMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return LoginMgr.getInstance()
-    }
+    _cb = null; 
 
     init() {
 

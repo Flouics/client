@@ -1,3 +1,4 @@
+import BaseClass from "../zero/BaseClass";
 import Emitter from "../zero/Emitter";
 
 var HttpCmd = {
@@ -6,7 +7,7 @@ var HttpCmd = {
 };
 
 var global = window;
-export default class HttpMgr {
+export default class HttpMgr extends BaseClass {
     _reqHttpList: any[] = []; //网络请求——键值对队列
     _isReqHttpIng: boolean = false; //当前是否还有网络请求还在进行
 
@@ -35,23 +36,6 @@ export default class HttpMgr {
             login_server: "http://127.0.0.1",
         }
     ];
-
-    // 单例处理
-    static _instance: HttpMgr = null;
-    constructor() {
-        HttpMgr._instance = this;
-    }
-    static getInstance():HttpMgr {
-        if (HttpMgr._instance) {
-            return HttpMgr._instance
-        } else {
-            let instance = new HttpMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return HttpMgr.getInstance()
-    }
 
     post(cmd: string, _param: any, _cb?: Function, _errCb?: Function) {
         var req_data = {

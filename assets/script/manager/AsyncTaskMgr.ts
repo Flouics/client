@@ -1,30 +1,11 @@
-
-
-export default class AsyncTaskMgr {
+import BaseClass from "../zero/BaseClass";
+export default class AsyncTaskMgr extends BaseClass {
     tasks: Function[] = [];
     lowTasks: Function[] = [];
     taskCount: number = 0;
     maxCount: number = 4;
     timeInterval: number = 0.1;
     timeId: number = -1;
-
-    // 单例处理
-    static _instance:AsyncTaskMgr = null;
-    constructor(){
-        AsyncTaskMgr._instance = this;
-    }
-    static getInstance():AsyncTaskMgr{
-        if(AsyncTaskMgr._instance){
-            return AsyncTaskMgr._instance
-        }else{
-            let instance = new AsyncTaskMgr();
-            return instance
-        }
-    }
-    static get obj(){
-        return AsyncTaskMgr.getInstance()
-    } 
-
 
     process() {
         var self = this;

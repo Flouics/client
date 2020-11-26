@@ -8,7 +8,7 @@ export default class Init {
         this.init()
     }
     init(){
-        this.proxy = new Proxy();
+        this.proxy = new Proxy(Proxy);
         this.cmd = new Command();
         //监听服务端消息
         

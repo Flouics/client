@@ -4,31 +4,14 @@ import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
 
 
-// 怪物管理器
+// 角色管理器
 export default class HeroMgr extends BaseClass{
     @serialize()
     heroMap:{[key:number]:Hero} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
-    _scheduleId:number  = null;
+    _scheduleId:number  = null;    
     
-    // 单例处理
-    static _instance: HeroMgr = null;
-    constructor() {
-        super();
-        HeroMgr._instance = this;
-    }
-    static getInstance():HeroMgr {
-        if (HeroMgr._instance) {
-            return HeroMgr._instance
-        } else {
-            let instance = new HeroMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return HeroMgr.getInstance()
-    }
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;
         this._nodeRoot = mapMainView.nd_heroRoot;

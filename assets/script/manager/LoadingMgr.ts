@@ -1,24 +1,9 @@
+import BaseClass from "../zero/BaseClass";
+
 var global = window;
-export default class LoadingMgr {
+export default class LoadingMgr extends BaseClass {
     play_id = 0;
     is_play = false;
-
-    // 单例处理
-    static _instance: LoadingMgr = null;
-    constructor() {
-        LoadingMgr._instance = this;
-    }
-    static getInstance():LoadingMgr {
-        if (LoadingMgr._instance) {
-            return LoadingMgr._instance
-        } else {
-            let instance = new LoadingMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return LoadingMgr.getInstance()
-    }
 
     playAnimation(delay: number = 1) {
         this.is_play = true;

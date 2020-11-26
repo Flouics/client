@@ -1,4 +1,6 @@
-﻿/*
+﻿import BaseClass from "../zero/BaseClass";
+
+/*
  验证数字的正则表达式集
  验证数字：^[0-9]*$
  验证n位的数字：^\d{n}$
@@ -34,25 +36,8 @@
  浮点数 ^(-?\d+)(\.\d+)?$
 
  */
-export default class KeyWordMgr {
-    sensitiveWordMap = {};
-
-    // 单例处理
-    static _instance: KeyWordMgr = null;
-    constructor() {
-        KeyWordMgr._instance = this;
-    }
-    static getInstance(): KeyWordMgr {
-        if (KeyWordMgr._instance) {
-            return KeyWordMgr._instance
-        } else {
-            let instance = new KeyWordMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return KeyWordMgr.getInstance()
-    }
+export default class KeyWordMgr extends BaseClass {
+    sensitiveWordMap = {};    
 
     isContainsSensitiveWord(s: string) {
         if (s.length < 1) {

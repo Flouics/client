@@ -13,24 +13,6 @@ export default class TowerMgr extends BaseClass{
     _nodeRoot:cc.Node = null;
     _towerTypeClassMap = {};
     
-    // 单例处理
-    static _instance: TowerMgr = null;
-    constructor() {
-        super();
-        TowerMgr._instance = this;
-        this.initTowerTypeMap();
-    }
-    static getInstance():TowerMgr {
-        if (TowerMgr._instance) {
-            return TowerMgr._instance
-        } else {
-            let instance = new TowerMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return TowerMgr.getInstance()
-    }
 
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;

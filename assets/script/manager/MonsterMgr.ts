@@ -11,24 +11,6 @@ export default class MonsterMgr extends BaseClass {
     monsterMap:{[key:number]:Monster} = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
-    
-    // 单例处理
-    static _instance: MonsterMgr = null;
-    constructor() {
-        super();
-        MonsterMgr._instance = this;
-    }
-    static getInstance():MonsterMgr {
-        if (MonsterMgr._instance) {
-            return MonsterMgr._instance
-        } else {
-            let instance = new MonsterMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return MonsterMgr.getInstance()
-    }
 
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;
@@ -63,7 +45,7 @@ export default class MonsterMgr extends BaseClass {
     createMultiple(count:number = 1,x: number = 0, y: number = 0,task?:Function){
         var self = this;
         for (let i = 0; i < count; i++) {
-            AsyncTaskMgr.getInstance().newAsyncTask(()=>{
+            AsyncTaskMgr.getInstance(AsyncTaskMgr).newAsyncTask(()=>{
                 self.create(x,y,task);      
             })           
         }

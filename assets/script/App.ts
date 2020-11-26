@@ -81,30 +81,30 @@ export default class App extends cc.Component{
         var game = window.game;
                 
         this.config = this.config || new Config();
-        this.toolKit = this.toolKit || new ToolKit();        
+        this.toolKit = this.toolKit || new ToolKit(ToolKit);        
         
-        this.loadingMgr = this.loadingMgr || new LoadingMgr();
+        this.loadingMgr = this.loadingMgr || new LoadingMgr(LoadingMgr);
 
-        this.dbMgr = this.dbMgr || new DBMgr();
-        this.httpMgr = this.httpMgr || new HttpMgr();
-        this.sceneMgr = this.sceneMgr || new SceneMgr();
-        this.windowMgr = this.windowMgr || new WindowMgr();
+        this.dbMgr = this.dbMgr || new DBMgr(DBMgr);
+        this.httpMgr = this.httpMgr || new HttpMgr(HttpMgr);
+        this.sceneMgr = this.sceneMgr || new SceneMgr(SceneMgr);
+        this.windowMgr = this.windowMgr || new WindowMgr(WindowMgr);
 
-        this.audioMgr = this.audioMgr || new AudioMgr();
-        this.asyncTaskMgr = this.asyncTaskMgr || new AsyncTaskMgr();
-        this.poolMgr = this.poolMgr || new PoolMgr();
-        this.moduleMgr = this.moduleMgr || new ModuleMgr();
+        this.audioMgr = this.audioMgr || new AudioMgr()AudioMgr;
+        this.asyncTaskMgr = this.asyncTaskMgr || new AsyncTaskMgr(AsyncTaskMgr);
+        this.poolMgr = this.poolMgr || new PoolMgr(PoolMgr);
+        this.moduleMgr = this.moduleMgr || new ModuleMgr(ModuleMgr);
 
-        this.timeMgr = this.timeMgr || new TimeMgr();
-        this.dataMgr = this.dataMgr || new DataMgr();
-        this.loginMgr = this.loginMgr || new LoginMgr();
+        this.timeMgr = this.timeMgr || new TimeMgr(TimeMgr);
+        this.dataMgr = this.dataMgr || new DataMgr(DataMgr);
+        this.loginMgr = this.loginMgr || new LoginMgr(LoginMgr);
         //this.extension = this.extension || require('Extension')();
         //this.effectMgr = this.effectMgr || require('EffectMgr')();
 
 
         //this.userData = require('UserData')();
         //this.rechargeDm = this.rechargeDm || require('RechargeDm')();
-        game.soundMgr = game.soundMgr || new SoundMgr();
+        game.soundMgr = game.soundMgr || new SoundMgr(SoundMgr);
         
     }
 

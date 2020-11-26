@@ -3,6 +3,8 @@
  * 游戏声音单独一个类，方便后续游戏扩展。
  */
 
+import BaseClass from "../zero/BaseClass";
+
 
 var CommonSoundKeys = {
     box_destroy: 'box_destroy',
@@ -13,26 +15,9 @@ var CommonSoundKeys = {
     settle: 'settle',
 };
 var global = window
-export default class SoundMgr {
+export default class SoundMgr extends BaseClass {
     CommonSoundKeys = CommonSoundKeys;
-
-    // 单例处理
-    static _instance: SoundMgr = null;
-    constructor() {
-        SoundMgr._instance = this;
-    }
-    static getInstance():SoundMgr {
-        if (SoundMgr._instance) {
-            return SoundMgr._instance
-        } else {
-            let instance = new SoundMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return SoundMgr.getInstance()
-    }
-
+    
     /**
      * 播放通用音效
      */

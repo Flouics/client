@@ -1,3 +1,5 @@
+import BaseClass from "../zero/BaseClass";
+
 /**
  * Created by Administrator on 2017/8/17.
  */
@@ -102,7 +104,7 @@ function mapData(fields: any, item: any) {
     return obj;
 };
 
-export default class DataMgr {
+export default class DataMgr extends BaseClass {
     hasLoad: boolean = false;
     curLoad: number = 0;
     dataPool:{[key:string]:Data} = {}
@@ -114,23 +116,6 @@ export default class DataMgr {
     callback: Function;
     tag: any;
     maxLoad: number;
-
-    // 单例处理
-    static _instance: DataMgr = null;
-    constructor() {
-        DataMgr._instance = this;
-    }
-    static getInstance():DataMgr {
-        if (DataMgr._instance) {
-            return DataMgr._instance
-        } else {
-            let instance = new DataMgr();
-            return instance
-        }
-    }
-    static get obj(){
-        return DataMgr.getInstance()
-    } 
 
     tryLoadAllTable(cb: Function, tag?: any) {
         if (!!this.hasLoad) {

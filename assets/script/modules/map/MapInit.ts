@@ -6,7 +6,7 @@ export default class MapInit extends Init {
     proxy:Proxy;
     cmd:Command;
     init(){
-        this.proxy = new Proxy();
+        this.proxy = new Proxy(Proxy);
         this.cmd = new Command();
         //监听服务端消息
         

@@ -21,7 +21,7 @@ export default class Bullet extends BoxBase {
     static _atkRange = 32;//子弹的命中距离。真实尺寸
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.BULLET;
     constructor(mapMainView: MapMainView,shooter:BoxBase,target:BoxBase, viewPos:cc.Vec2,bulletData:any) {
-        super()
+        super(Bullet)
         this.shooter = shooter;
         this.target = target;
         this.viewPos = viewPos;
@@ -35,7 +35,7 @@ export default class Bullet extends BoxBase {
         //不能直接引用TowerMgr，会导致交叉引用的问题。
         this.bulletMgr = this.mapMainView.bulletMgr;  
         //实现基本的子弹逻辑
-        let pool = PoolMgr.getInstance().getPool(this._pb_tag);
+        let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
         node.parent = parent;
         node.position = this.viewPos;

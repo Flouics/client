@@ -30,12 +30,12 @@ export default class Tower extends Building {
 
     setBullet(bulletId:number){
         this.bulletId = bulletId;
-        this.bulletCfg = DataMgr.getInstance().getTable("bullet_type").findById(this.bulletId);
+        this.bulletCfg = DataMgr.getInstance(DataMgr).getTable("bullet_type").findById(this.bulletId);
     }
 
     atkTarget(){
         if(this.target){
-            var nowTimeStamp = TimeMgr.obj.getTime();
+            var nowTimeStamp = TimeMgr.getInstance(TimeMgr).getTime();
             if(nowTimeStamp > this.lastShootTime){
                 this.genBullet()
                 this.lastShootTime = nowTimeStamp + this.bulletCfg.coldown * 1000
@@ -50,7 +50,7 @@ export default class Tower extends Building {
     }
     //寻找主目标
     findTarget(){
-        var monsterMap = MonsterMgr.getInstance().monsterMap;
+        var monsterMap = MonsterMgr.getInstance(MonsterMgr).monsterMap;
         var target:Monster = null;
         for (const key in monsterMap) {
             if (monsterMap.hasOwnProperty(key)) {                
@@ -63,7 +63,7 @@ export default class Tower extends Building {
         return target;
     }
     genBullet(){
-        BulletMgr.getInstance().create(this,this.target,MapUtils.getViewPosByTilePos(this.pos),this.bulletCfg);
+        BulletMgr.getInstance(BulletMgr).create(this,this.target,MapUtils.getViewPosByTilePos(this.pos),this.bulletCfg);
     }
     checkTargetIntoRange(target:BoxBase){
         if(target && target.isDestroy == false){            

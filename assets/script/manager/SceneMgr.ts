@@ -1,5 +1,7 @@
+import BaseClass from "../zero/BaseClass";
+
 var global = window;
-export default class SceneMgr {
+export default class SceneMgr extends BaseClass {
     isLoading = false;
     EVENT = {
         BEFORE_SCENE_PRELOADING: 'BEFORE_SCENE_PRELOADING',
@@ -8,23 +10,6 @@ export default class SceneMgr {
         AFTER_SCENE_LOADING: 'AFTER_SCENE_LOADING',
         //launch不需要再发射事件，进入加载。
     };
-
-    // 单例处理
-    static _instance: SceneMgr = null;
-    constructor() {
-        SceneMgr._instance = this;
-    }
-    static getInstance():SceneMgr {
-        if (SceneMgr._instance) {
-            return SceneMgr._instance
-        } else {
-            let instance = new SceneMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return SceneMgr.getInstance()
-    }
 
     loadScene(sceneName: string, cb?: Function) {
 

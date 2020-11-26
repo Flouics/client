@@ -8,33 +8,14 @@ import BoxBase from "../logic/BoxBase";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
 
-// 怪物管理器
+// 子弹管理器
 export default class BulletMgr extends BaseClass {
     @serialize()
     bulletMap:{[key:number]:Bullet} = {};
     _bulletTypeClassMap = {};
     _mapMainView:MapMainView = null;
     _nodeRoot:cc.Node = null;
-    lastScheduleTime = null;
-    
-    // 单例处理
-    static _instance: BulletMgr = null;
-    constructor() {
-        super();
-        BulletMgr._instance = this;
-        this.initBulletTypeMap();
-    }
-    static getInstance():BulletMgr {
-        if (BulletMgr._instance) {
-            return BulletMgr._instance
-        } else {
-            let instance = new BulletMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return BulletMgr.getInstance()
-    }
+    lastScheduleTime = null;  
     
     initSchedule(){
         this.lastScheduleTime = new Date().getTime();

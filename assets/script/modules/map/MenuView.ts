@@ -17,7 +17,7 @@ export default class MenuView extends BaseView {
     @property(cc.Toggle)
     tgDig:cc.Toggle = null;
     onLoad(){
-        this.mapProxy = ModuleMgr.obj.getProxy("map") as MapProxy;
+        this.mapProxy = ModuleMgr.getInstance(ModuleMgr).getProxy("map") as MapProxy;
         this.proxys = [this.mapProxy];
     }
 
@@ -25,7 +25,7 @@ export default class MenuView extends BaseView {
         //this._clickBuilding = new Tower(null);
     }
     onMapBuild(){
-        ToolKit.getInstance().showTip("onMapBuild")
+        ToolKit.getInstance(ToolKit).showTip("onMapBuild")
     }
 
     onClickDig(){
@@ -33,7 +33,7 @@ export default class MenuView extends BaseView {
         this.mapProxy.updateView("switchOperation",value);
     }
     onMapDig(){
-        ToolKit.getInstance().showTip("onMapDig")
+        ToolKit.getInstance(ToolKit).showTip("onMapDig")
     }
 
     touchMove(){

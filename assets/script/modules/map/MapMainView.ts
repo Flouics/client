@@ -82,10 +82,10 @@ export default class MapMainView extends BaseView {
     }
 
     initMap() {
-        this.monsterMgr = MonsterMgr.getInstance();
-        this.heroMgr = HeroMgr.getInstance();
-        this.towerMgr = TowerMgr.getInstance();
-        this.bulletMgr = BulletMgr.getInstance();
+        this.monsterMgr = MonsterMgr.getInstance(MonsterMgr);
+        this.heroMgr = HeroMgr.getInstance(HeroMgr);
+        this.towerMgr = TowerMgr.getInstance(TowerMgr);
+        this.bulletMgr = BulletMgr.getInstance(BulletMgr);
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);
@@ -134,7 +134,7 @@ export default class MapMainView extends BaseView {
                 if (Math.abs(i) < 11 && Math.abs(j) < 8) {
                     this.createBlock(i, j);
                 } else {
-                    AsyncTaskMgr.obj.newAsyncTask(function () {
+                    AsyncTaskMgr.getInstance(AsyncTaskMgr).newAsyncTask(function () {
                         this.createBlock(i, j);
                     }.bind(this));
                 }

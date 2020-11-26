@@ -1,29 +1,13 @@
-﻿var basePath = '/resources/music/';
+﻿import BaseClass from "../zero/BaseClass";
+
+var basePath = '/resources/music/';
 var AUDIO_TYPE = '.mp3';
 var global = window;
-export default class AudioMgr {
+export default class AudioMgr extends BaseClass {
     _curMusic: any = null;
     _urls: string[] = [];
     _audioClip: any[] = [];
     settingData: any = null;
-
-    // 单例处理
-    static _instance: AudioMgr = null;
-    constructor() {
-        AudioMgr._instance = this;
-        this.init();
-    }
-    static getInstance():AudioMgr {
-        if (AudioMgr._instance) {
-            return AudioMgr._instance
-        } else {
-            let instance = new AudioMgr();
-            return instance
-        }
-    }
-    static get obj(){
-        return AudioMgr.getInstance()
-    } 
 
     getSettingData() {
         var ret = {

@@ -52,7 +52,7 @@ export default class Hero extends Live {
         return false;
     }
     digBlock(task:TaskBase){
-        ToolKit.obj.showTip("执行挖掘的动作。");
+        ToolKit.getInstance(ToolKit).showTip("执行挖掘的动作。");
         var pos = (task as DigTask).digPos
         this.mapMainView.digBlock(pos)
     }

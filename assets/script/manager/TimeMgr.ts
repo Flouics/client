@@ -1,4 +1,5 @@
 import Lunar from "../utils/Lunar";
+import BaseClass from "../zero/BaseClass";
 
 /**
  * Created by Administrator on 2017/8/1.
@@ -13,27 +14,11 @@ var timeNumFormatString = function (num: number) {
     }
 };
 
-export default class TimeMgr {
+export default class TimeMgr extends BaseClass {
     _server_time_diff = 0;
     lunar = new Lunar()
     DAY_DESC = ['日', '一', '二', '三', '四', '五', '六'];
 
-    // 单例处理
-    static _instance: TimeMgr = null;
-    constructor() {
-        TimeMgr._instance = this;
-    }
-    static getInstance():TimeMgr{
-        if (TimeMgr._instance) {
-            return TimeMgr._instance
-        } else {
-            let instance = new TimeMgr();
-            return instance
-        }
-    }
-    static get obj() {
-        return TimeMgr.getInstance()
-    }
 
     //服务端和客户端时间差
     updateServerTimeDiff(server_timestamp: number) {

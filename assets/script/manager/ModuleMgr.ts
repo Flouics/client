@@ -1,28 +1,10 @@
 import Init from "../modules/base/Init";
 import MapInit from "../modules/map/MapInit";
 import PlayerInit from "../modules/player/PlayerInit";
-import Proxy from "../modules/base/Proxy";
+import BaseClass from "../zero/BaseClass";
 
-export default class ModuleMgr{
-    static _modules = {}
-
-    // 单例处理
-    static _instance:ModuleMgr = null;
-    constructor(){
-        ModuleMgr._instance = this;
-        this.init()
-    }
-    static getInstance():ModuleMgr{
-        if(ModuleMgr._instance){
-            return ModuleMgr._instance
-        }else{
-            let instance = new ModuleMgr();
-            return instance
-        }
-    }
-    static get obj(){
-        return ModuleMgr.getInstance();
-    } 
+export default class ModuleMgr extends BaseClass{
+    static _modules = {}  
 
     getProxy(moduleName:string):any{
         let mod = ModuleMgr._modules[moduleName];

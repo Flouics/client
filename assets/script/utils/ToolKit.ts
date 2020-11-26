@@ -1,22 +1,7 @@
-var global = window;
-export default class ToolKit {
+import BaseClass from "../zero/BaseClass";
 
-    // 单例处理
-    static _instance: ToolKit = null;
-    constructor() {
-        ToolKit._instance = this;
-    }
-    static getInstance():ToolKit {
-        if (ToolKit._instance) {
-            return ToolKit._instance
-        } else {
-            let instance = new ToolKit();
-            return instance
-        }
-    }
-    static get obj() {
-        return ToolKit.getInstance()
-    }
+var global = window;
+export default class ToolKit extends BaseClass{
     
     /**
      * 是否有效的字符串
