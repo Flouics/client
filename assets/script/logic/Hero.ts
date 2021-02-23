@@ -8,6 +8,7 @@ import TaskBase from "./TaskBase";
 import ToolKit from "../utils/ToolKit";
 import DigTask from "./task/DigTask";
 import PoolMgr from "../manager/PoolMgr";
+import StateMachine from "./stateMachine/StateMachine";
 
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
@@ -24,11 +25,37 @@ export default class Hero extends Live {
     init(){
         this.heroMgr = this.mapMainView.heroMgr;
     }
+
+    enterState(params:any){
+        var stateId = this.stateMachine.state.id;
+        switch (stateId) {
+            case StateMachine.STATE_ENUM.IDLE:               
+                break;
+            case StateMachine.STATE_ENUM.MOVING:                     
+                break
+            default:
+                super.enterState(params)
+                break;
+        }
+    }
+
+    onState(params:any){
+        var stateId = this.stateMachine.state.id;
+        switch (stateId) {
+            case StateMachine.STATE_ENUM.IDLE:
+                this.fetchTask();
+                break;
+            case StateMachine.STATE_ENUM.MOVING:               
+                //this.checkAction();
+            default:
+                super.onState(params)
+                break;
+        }
+    }
+    
     //每一秒的检测
     update(){
-        if(this.actionType == Live.ACTION_TYPE_ENUM.IDLE){
-            this.fetchTask();
-        }
+        this.stateMachine.checkState()
     }
 
     fetchTask(){
