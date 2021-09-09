@@ -1,8 +1,8 @@
-import BaseView from "./BaseView";
+import BaseView from "./BaseUI";
 
 const {ccclass, property} = cc._decorator;
 var global = window;
-export default class DialogBase extends BaseView{
+export default class BaseWin extends BaseView{
     @property({
         tooltip: '窗口的层级；1级窗口0-99 2级100-199 以此类推'
     })
@@ -36,7 +36,7 @@ export default class DialogBase extends BaseView{
         if (nd_close) {
             nd_close.on(cc.Node.EventType.TOUCH_END, this.onClose.bind(this));
             //nd_close.on(cc.Node.EventType.MOUSE_UP, this.onClose.bind(this));
-            //global.app.windowMgr.control.closeAllOpen();
+            //App.windowMgr.control.closeAllOpen();
         }
 
         this.node.on('bgClick', this.onBgClick.bind(this));
@@ -73,6 +73,6 @@ export default class DialogBase extends BaseView{
     }
 
     close () {
-        global.app.windowMgr.closeUI(this);
+        App.windowMgr.closeUI(this);
     }
 };

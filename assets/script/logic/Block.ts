@@ -20,8 +20,7 @@ export default class Block extends BoxBase {
         return this._value;
     }
     set value(value){
-        this._value = value;
-       
+        this._value = value;       
     }
     _event:number = 0;     //临时事件等
     get event(){

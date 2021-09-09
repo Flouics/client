@@ -1,14 +1,13 @@
-import BaseView from "../../zero/BaseView";
 import Block from "../../logic/Block";
 import Building from "../../logic/Building";
+import BaseUI from "../../zero/BaseUI";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class UIBuilding extends BaseView {
+export default class UIBuilding extends BaseUI {
     @property(cc.Sprite)
     spt_face:cc.Sprite = null;
-
     _baseUrl = "texture/map/";
     _logicObj:Building = null;
     updateUI(){

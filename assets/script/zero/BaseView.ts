@@ -1,33 +1,24 @@
 import Proxy from "../modules/base/Proxy";
-import BoxBase from "../logic/BoxBase";
+import BaseClass from "./BaseClass";
+import BaseUI from "./BaseUI";
 
 const { ccclass, property } = cc._decorator;
 var global = window;
 @ccclass
-export default class BaseView extends cc.Component {
+export default class BaseView extends BaseClass {
     _httpEvents: Object[] = [];
     _socketEvents: Object[] = [];
-    _bindData: { [key: string]: any } = {};
-    _baseUrl: string = "";
-    proxys: Proxy[] = [];
     _objFlags: number;
-
-    _logicObj: BoxBase = null;
-    bindUI(boxBase: BoxBase) {
-        this._logicObj = boxBase
-    }
+    proxys:Proxy[] = []
+    ui:BaseUI
     updateUI() {
-        //todo需要重写
-    /*         var self = this;
-        var logicObj = this._logicObj
-        this.updateDataToUI("boxBase.value", logicObj.id, () => {
-            //--todo
-        }) */
+        if(this.ui){
+            this.ui.updateUI()
+        }
     }
 
-    // use this for initialization
-    onLoad() {
-
+    onLoad(ui:BaseUI) {
+        
     }
 
     show() {
@@ -36,28 +27,26 @@ export default class BaseView extends cc.Component {
     hide() {
 
     }
-    onEnable() {
-        this.onMsg();
-        this.bindProxys();
+    onEnable(ui:BaseUI) {
     }
 
-    onClose() {
+    onClose(ui:BaseUI) {
 
     }
 
-    onDisable() {
+    onDisable(ui:BaseUI) {
         this.offMsg();
-        this.unbindProxys();
     }
 
-    onDestroy() {
+    onDestroy(ui:BaseUI) {
         this.offMsg();
+        this.ui = null
     }
 
     onMsg() {
         this.offMsg();
         this._httpEvents.forEach(function (obj: any) {
-            global.app.httpMgr.on(obj.event, obj.tag, obj.fn);
+            App.httpMgr.on(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj: any) {
             global.game.socketMgr.on(obj.event, obj.tag, obj.fn);
@@ -66,7 +55,7 @@ export default class BaseView extends cc.Component {
 
     offMsg() {
         this._httpEvents.forEach(function (obj: any) {
-            global.app.httpMgr.off(obj.event, obj.tag, obj.fn);
+            App.httpMgr.off(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj: any) {
             global.game.socketMgr.off(obj.event, obj.tag, obj.fn);
@@ -80,7 +69,7 @@ export default class BaseView extends cc.Component {
             tag: tag,
             fn: fn
         })
-        global.app.httpMgr.on(event, tag, fn);
+        App.httpMgr.on(event, tag, fn);
     }
 
     registerSocketEvent(event: string, fn: Function) {
@@ -92,26 +81,6 @@ export default class BaseView extends cc.Component {
             fn: fn
         })
         global.game.socketMgr.on(event, tag, fn);
-    }
-
-    loadSpt(spt: cc.Sprite, res_url: string = null, cb?: Function) {
-        if (!res_url) return;
-        cc.loader.loadRes(this._baseUrl + res_url, cc.SpriteFrame, function (err, spriteFrame) {
-            if (!err && spt && spt.node) {
-                spt.spriteFrame = spriteFrame;
-                if (!!cb) cb(err, spriteFrame);
-            }
-        });
-    };
-
-    updateDataToUI(key: string, data: any, cb: Function) {
-        let dataUnique = this.getDataUnique(data)
-        if (this._bindData[key] != dataUnique) {
-            if (!!cb) {
-                cb(data);
-            }
-        }
-        this._bindData[key] = dataUnique;
     }
 
     getDataUnique(data: any) {
@@ -132,6 +101,6 @@ export default class BaseView extends cc.Component {
         })
     }
     update(dt:number){
-        this.updateUI();
+        //this.updateUI();  主动刷新
     }
 }

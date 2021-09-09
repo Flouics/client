@@ -1,6 +1,6 @@
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
 
-var global = window;
 export default class ToolKit extends BaseClass{
     
     /**
@@ -77,7 +77,7 @@ export default class ToolKit extends BaseClass{
      */
     get2PosDistance(pos1: cc.Vec2, pos2: cc.Vec2) :any{
         var v = pos1.add(pos2);
-        return v.len();
+        return v.mag();
     };
 
     /**
@@ -271,7 +271,7 @@ export default class ToolKit extends BaseClass{
 
     //简单的tip提示
     showTip(content:string) {
-        global.app.windowMgr.open(window.RES_WINDOW.tips, function (uiNode:cc.Node) {
+        App.windowMgr.open(App.RES_WINDOW.tips, function (uiNode:cc.Node) {
             var tip = uiNode.getComponent("Tips");
             if (tip) {
                 tip.open(content);
@@ -287,8 +287,7 @@ export default class ToolKit extends BaseClass{
             image.crossOrigin = "anonymous";
             image.onload = function () {
                 try {
-                    var texture = new cc.Texture2D();
-                    texture.generateMipmaps = false;
+                    var texture = new cc.Texture2D();                   
                     texture.initWithElement(image);
                     texture.handleLoadedTexture();
                     _spt.spriteFrame = new cc.SpriteFrame(texture);

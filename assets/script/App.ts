@@ -15,8 +15,9 @@ import DataMgr from "./manager/DataMgr";
 import LoginMgr from "./manager/LoginMgr";
 import SoundMgr from "./manager/SoundMgr";
 import SceneBase from "./zero/SceneBase";
+import BaseClass from "./zero/BaseClass";
+import AppUI from "./AppUI";
 
-const {ccclass, property} = cc._decorator;
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
  * 挂在启动场景。
@@ -25,178 +26,166 @@ enum EventEnum {
     EVENT_HIDE = 1
     ,EVENT_SHOW = 2
 };
-var game:{[key:string]:any} = {};
-@ccclass
-export default class App extends cc.Component{
-    @property(cc.Node)
-    public nd_effectPool: cc.Node = null;
-    @property(cc.Node)
-    public nd_uiPool: cc.Node = null;
+
+//全局太麻烦了，老是有红线，直接静态处理吧。App只会有一个。
+export default class App extends BaseClass{
     
-    scheduleTask:any = null;
-    eventEnum:any = EventEnum
-    emitter:Emitter = new Emitter()
+    static scheduleTask:any = null;
+    static eventEnum:any = EventEnum
+    static emitter:Emitter = new Emitter()
 
     //mamager
-    config:Config = null;
-    toolKit:ToolKit = null;
-    loadingMgr:LoadingMgr = null;
-    dbMgr:DBMgr = null;
+    static config:Config = null;
+    static toolKit:ToolKit = null;
+    static loadingMgr:LoadingMgr = null;
+    static dbMgr:DBMgr = null;
 
-    httpMgr:HttpMgr = null;
-    sceneMgr:SceneMgr = null; 
-    windowMgr:WindowMgr = null;
-    audioMgr:AudioMgr = null;
-    asyncTaskMgr:AsyncTaskMgr = null;
-    poolMgr:PoolMgr = null;
-    moduleMgr:ModuleMgr = null;
+    static httpMgr:HttpMgr = null;
+    static sceneMgr:SceneMgr = null; 
+    static windowMgr:WindowMgr = null;
+    static audioMgr:AudioMgr = null;
+    static asyncTaskMgr:AsyncTaskMgr = null;
+    static poolMgr:PoolMgr = null;
+    static moduleMgr:ModuleMgr = null;
 
-    timeMgr:TimeMgr = null;
-    dataMgr:DataMgr = null;
-    loginMgr:LoginMgr = null;
+    static timeMgr:TimeMgr = null;
+    static dataMgr:DataMgr = null;
+    static loginMgr:LoginMgr = null;
+    static soundMgr:SoundMgr = null;
 
-    // use this for initialization
-    onLoad () {
-        //设置为常驻借点。
-        cc.game.addPersistRootNode(this.node);
-        //关闭帧数显示。
-        cc.debug.setDisplayStats(false);
-        //适配相关的
-        cc.view.setResizeCallback(this.onViewResize.bind(this));
+    static RES_WINDOW:{[key:string]:any} = {}
+    static RES_ITEM:{[key:string]:any} = {};
+    static RES_EFFECT:{[key:string]:any} = {};
 
-        this.appInit();
-        this.onMsg();
+    static ui:AppUI = null;
+
+    // use App for initialization
+    static onLoad () {
+        App.appInit();
+        App.onMsg();
     }
 
-    appInit () {
-        this.scheduleTask = {};
-        //定义全局变量。
-        window.app = this;
-        window.game = {};
-        window.RES_WINDOW = {}
-        window.RES_ITEM = {}
-        window.RES_EFFECT = {}
-        
-        var app = window.app;
-        var game = window.game;
+    static appInit (ui?:AppUI) {
+        if (ui) {
+            App.ui = ui;
+        }
+        App.scheduleTask = {};
+        //定义全局变量。        
+        window["app"] = App;    
+        App.RES_WINDOW = {};
+ 
                 
-        this.config = this.config || new Config();
-        this.toolKit = this.toolKit || new ToolKit(ToolKit);        
+        App.config = App.config || new Config();
+        App.toolKit = App.toolKit || new ToolKit(ToolKit);        
         
-        this.loadingMgr = this.loadingMgr || new LoadingMgr(LoadingMgr);
+        App.loadingMgr = App.loadingMgr || new LoadingMgr(LoadingMgr);
 
-        this.dbMgr = this.dbMgr || new DBMgr(DBMgr);
-        this.httpMgr = this.httpMgr || new HttpMgr(HttpMgr);
-        this.sceneMgr = this.sceneMgr || new SceneMgr(SceneMgr);
-        this.windowMgr = this.windowMgr || new WindowMgr(WindowMgr);
+        App.dbMgr = App.dbMgr || new DBMgr(DBMgr);
+        App.httpMgr = App.httpMgr || new HttpMgr(HttpMgr);
+        App.sceneMgr = App.sceneMgr || new SceneMgr(SceneMgr);
+        App.windowMgr = App.windowMgr || new WindowMgr(WindowMgr);
 
-        this.audioMgr = this.audioMgr || new AudioMgr()AudioMgr;
-        this.asyncTaskMgr = this.asyncTaskMgr || new AsyncTaskMgr(AsyncTaskMgr);
-        this.poolMgr = this.poolMgr || new PoolMgr(PoolMgr);
-        this.moduleMgr = this.moduleMgr || new ModuleMgr(ModuleMgr);
+        App.audioMgr = App.audioMgr || new AudioMgr(AudioMgr);
+        App.asyncTaskMgr = App.asyncTaskMgr || new AsyncTaskMgr(AsyncTaskMgr);
+        App.poolMgr = App.poolMgr || new PoolMgr(PoolMgr);
+        App.moduleMgr = App.moduleMgr || new ModuleMgr(ModuleMgr);
 
-        this.timeMgr = this.timeMgr || new TimeMgr(TimeMgr);
-        this.dataMgr = this.dataMgr || new DataMgr(DataMgr);
-        this.loginMgr = this.loginMgr || new LoginMgr(LoginMgr);
-        //this.extension = this.extension || require('Extension')();
-        //this.effectMgr = this.effectMgr || require('EffectMgr')();
+        App.timeMgr = App.timeMgr || new TimeMgr(TimeMgr);
+        App.dataMgr = App.dataMgr || new DataMgr(DataMgr);
+        App.loginMgr = App.loginMgr || new LoginMgr(LoginMgr);
 
-
-        //this.userData = require('UserData')();
-        //this.rechargeDm = this.rechargeDm || require('RechargeDm')();
-        game.soundMgr = game.soundMgr || new SoundMgr(SoundMgr);
+        App.soundMgr = App.soundMgr || new SoundMgr(SoundMgr);
         
     }
 
-    onMsg () {
+    static onMsg () {
         //action管理器的问题。
         cc.game.off(cc.game.EVENT_SHOW);
         cc.game.off(cc.game.EVENT_HIDE);
-        cc.game.on(cc.game.EVENT_SHOW, this.onEventShow.bind(this));
-        cc.game.on(cc.game.EVENT_HIDE, this.onEventHide.bind(this));
+        cc.game.on(cc.game.EVENT_SHOW, App.onEventShow.bind(App));
+        cc.game.on(cc.game.EVENT_HIDE, App.onEventHide.bind(App));
     }
 
-    onEventHide () {
-        this.emitter.emit(this.eventEnum.EVENT_HIDE);
+    static onEventHide () {
+        App.emitter.emit(App.eventEnum.EVENT_HIDE);
     }
 
-    onEventShow () {
-        this.emitter.emit(this.eventEnum.EVENT_SHOW);
+    static onEventShow () {
+        App.emitter.emit(App.eventEnum.EVENT_SHOW);
         if (cc.director.getScheduler().isTargetPaused(cc.director.getActionManager())) {
             cc.director.getScheduler().resumeTarget(cc.director.getActionManager());
         }
     }
 
-    offMsg () {
+    static offMsg () {
     }
 
-    start () {
+    static start () {
         
     }
 
-    restart () {
-        cc.game.removePersistRootNode(this.node);
+    static restart () {
+        if (App.ui){
+            App.ui.restart();
+        }
         //有BUG先屏蔽。
         cc.game.restart();
     }
 
-    exit () {
-        cc.game.removePersistRootNode(this.node);
+    static exit () {
+        if (App.ui){
+            App.ui.exit();
+        }
         cc.game.end();
     }
 
     //简单重写就好了。
-    task (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
+    static task (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
+        if (!App.ui) {
+            return false
+        }
         if (isRepeatDo == undefined) isRepeatDo = false;
 
-        if (this.scheduleTask[key]) {
+        if (App.scheduleTask[key]) {
             if (!isRepeatDo) {
                 cc.warn("scheduleTask has exist.", key);
             }
-            this.delTask(key);
+            App.delTask(key);
         }
-        this.scheduleTask[key] = cb;
-        this.schedule(cb, interval);
+        App.scheduleTask[key] = cb;
+        App.ui.schedule(cb, interval);
+        return true
     }
 
-    taskOnce (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
-        this.task(function () {
-            this.unschedule(key)
+    static taskOnce (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
+        if (!App.ui) {
+            return false
+        }
+        App.task(function () {
+            App.delTask(key)
             if (!!cb) cb();
         }, interval, key, isRepeatDo)
     }
 
-    delTask (key:string) {
-        var func = this.scheduleTask[key];
+    static delTask (key:string) {
+        var func = App.scheduleTask[key];
         if (!!func) {
-            super.unschedule(func);
-            delete this.scheduleTask[key];
+            this.ui.unschedule(func);
+            delete App.scheduleTask[key];
         }
     }
 
-    onViewResize () {
-        //遍历所有的节点。
-        //this.toolKit.showTip("onViewResize");
-        var root = cc.find('Canvas');
-        var scene_comp = root.getComponent(SceneBase);
-        if (scene_comp && scene_comp.fitWinSize) {
-            scene_comp.fitWinSize();
+    static onViewResize () {
+        if (!App.ui) {
+            return false
         }
-        this.updateNodeWidget(root);
+        App.ui.onViewResize();
     }
 
-    updateNodeWidget (node:cc.Node) {
-        if (!!node && node instanceof cc.Node) {
-            var widget = node.getComponent(cc.Widget);
-            if (!!widget) {
-                widget.updateAlignment();
-            }
-            var children = node.children;
-            if (!!children) {
-                children.forEach(function (child:cc.Node) {
-                    this.updateNodeWidget(child);
-                }.bind(this))
-            }
+    static updateNodeWidget (node:cc.Node) {
+        if (!App.ui) {
+            return false
         }
+        App.ui.updateNodeWidget(node)
     }
 }

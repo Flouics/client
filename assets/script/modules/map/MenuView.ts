@@ -1,10 +1,10 @@
-import BaseView from "../../zero/BaseView";
 import Building from "../../logic/Building";
 import Tower from "../../logic/tower/Tower";
 import ModuleMgr from "../../manager/ModuleMgr";
 import MapProxy from "./MapProxy";
 import ToolKit from "../../utils/ToolKit";
 import MapMainView from "./MapMainView";
+import BaseView from "../../zero/BaseView";
 
 const {ccclass, property} = cc._decorator;
 

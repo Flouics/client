@@ -1,4 +1,4 @@
-import BaseView from "../../zero/BaseView";
+import BaseView from "../../zero/BaseUI";
 import Block from "../../logic/Block";
 
 const { ccclass, property } = cc._decorator;
