@@ -27,7 +27,7 @@ cc.Label.prototype.onLoad = function () {
         //增加的修改
         if (typeof app != 'undefined' && this.font == null) {
             var self = this;
-            global.app.loadFont(function (font) {
+            App.loadFont(function (font) {
                 self.font = font;
             });
         }

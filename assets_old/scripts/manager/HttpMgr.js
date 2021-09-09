@@ -72,7 +72,7 @@ HttpMgr.prototype.httpReq = function (req_data) {
 
     // 心跳不走loading
     if (this.no_play_anim_proto_list.indexOf(cmd) == -1) {
-        global.app.loadingMgr.playAnimation();
+        App.loadingMgr.playAnimation();
     }
 };
 
@@ -97,7 +97,7 @@ HttpMgr.prototype.ajax = function (_method, _url, _param, _cb, _errCb, _timeOut,
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             self._isReqHttpIng = false;
-            global.app.loadingMgr.stopAnimation();
+            App.loadingMgr.stopAnimation();
 
             if (_method == "POST") {
                 try {
@@ -153,7 +153,7 @@ HttpMgr.prototype.getLoginServer = function () {
     if (this._login_server) {
         return this._login_server;
     }
-    var serverType = global.app.config.server_type;
+    var serverType = App.config.server_type;
     var serverConfig = this._server_conf[serverType];
     this._login_server = serverConfig.login_server;
     return this._login_server;

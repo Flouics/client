@@ -15,7 +15,7 @@ AudioMgr.prototype.getSettingData = function () {
         musicVolume: 1,
         effectVolume: 1,
     }
-    var localData = global.app.dbMgr._getJsonItem(global.app.dbMgr.Enum.AUDIO_SETTING);
+    var localData = App.dbMgr._getJsonItem(App.dbMgr.Enum.AUDIO_SETTING);
     if (localData) {
         for (var key in localData) {
             if (ret.hasOwnProperty(key)) {
@@ -27,7 +27,7 @@ AudioMgr.prototype.getSettingData = function () {
 };
 
 AudioMgr.prototype.saveSettingData = function () {
-    global.app.dbMgr._setJsonItem(global.app.dbMgr.Enum.AUDIO_SETTING, this.settingData);
+    App.dbMgr._setJsonItem(App.dbMgr.Enum.AUDIO_SETTING, this.settingData);
 };
 
 AudioMgr.prototype.init = function () {

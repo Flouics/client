@@ -236,7 +236,7 @@ UserData.prototype.onRoundResult = function (userInfo) {
 
 UserData.prototype.isMatchGame = function (game_id) {
     if (game_id == undefined)  game_id = this.currentGameId;
-    return game_id >= global.app.config.GameId_hlddz_match || game.challengeDm.match_id > 0
+    return game_id >= App.config.GameId_hlddz_match || game.challengeDm.match_id > 0
 };
 
 UserData.prototype.isIntable = function () {

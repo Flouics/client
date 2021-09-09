@@ -31,7 +31,7 @@ LoginMgr.prototype.initWebRequest = function (protoObjList, cb) {
 
 LoginMgr.prototype.startHttpReq = function () {
     this._req_list.forEach(function (protoObj) {
-        global.app.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
+        App.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
     });
 };
 

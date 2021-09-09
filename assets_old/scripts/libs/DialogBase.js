@@ -27,7 +27,7 @@ cc.DialogBase = cc.Class({
         if (nd_close) {
             nd_close.on(cc.Node.EventType.TOUCH_END, this.onClose.bind(this));
             //nd_close.on(cc.Node.EventType.MOUSE_UP, this.onClose.bind(this));
-            //global.app.windowMgr.control.closeAllOpen();
+            //App.windowMgr.control.closeAllOpen();
         }
 
         this.node.on('bgClick', this.onBgClick.bind(this));
@@ -65,6 +65,6 @@ cc.DialogBase = cc.Class({
     },
 
     onClose: function () {
-        global.app.windowMgr.closeUI(this);
+        App.windowMgr.closeUI(this);
     }
 });

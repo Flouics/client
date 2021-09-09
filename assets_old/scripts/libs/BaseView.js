@@ -35,7 +35,7 @@ cc.BaseView = cc.Class({
     onMsg: function () {
         this.offMsg();
         this._httpEvents.forEach(function (obj) {
-            global.app.httpMgr.on(obj.event, obj.tag, obj.fn);
+            App.httpMgr.on(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj) {
             game.socketMgr.on(obj.event, obj.tag, obj.fn);
@@ -44,7 +44,7 @@ cc.BaseView = cc.Class({
 
     offMsg: function () {
         this._httpEvents.forEach(function (obj) {
-            global.app.httpMgr.off(obj.event, obj.tag, obj.fn);
+            App.httpMgr.off(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj) {
             game.socketMgr.off(obj.event, obj.tag, obj.fn);
@@ -59,7 +59,7 @@ cc.BaseView = cc.Class({
             tag: tag,
             fn: fn
         })
-        global.app.httpMgr.on(event, tag, fn);
+        App.httpMgr.on(event, tag, fn);
     },
 
     registerSocketEvent: function (event, fn) {

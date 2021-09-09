@@ -1,4 +1,4 @@
-import BaseView from "../../zero/BaseView";
+import BaseView from "../../zero/BaseUI";
 import AsyncTaskMgr from "../../manager/AsyncTaskMgr";
 import Block from "../../logic/Block";
 import Hero from "../../logic/Hero";

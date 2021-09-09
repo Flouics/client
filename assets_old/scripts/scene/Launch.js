@@ -23,7 +23,7 @@ cc.Class({
     hotUpdateCheck: function () {
         this.loadEvents = {'loadtxt': false};
         //先不加进度条，就一个文本。
-        global.app.dataMgr.tryLoadAllTable(function () {
+        App.dataMgr.tryLoadAllTable(function () {
             this.loadEvents.loadtxt = true;
             this.loadGame();
         }.bind(this));
@@ -36,17 +36,17 @@ cc.Class({
     preLoad: function () {
         var res = [
         ];
-        global.app.loadingMgr.preLoadRes(res);
+        App.loadingMgr.preLoadRes(res);
         var prefabs = [
             RES_WINDOW.rankInfo  
         ];
-        global.app.loadingMgr.preLoadPrefab(prefabs);
+        App.loadingMgr.preLoadPrefab(prefabs);
         cc.director.preloadScene('game');
     },
 
     setVersion: function () {
-        if (global.app.config.version) {
-            this.lb_version.string = global.app.config.version;
+        if (App.config.version) {
+            this.lb_version.string = App.config.version;
         } else {
             this.lb_version.string = '1.0.0';
         }
@@ -66,16 +66,16 @@ cc.Class({
     },
 
     onClickStart: function () {
-        var version = global.app.dbMgr._getItem(global.app.dbMgr.Enum.LAST_VERSION);
-        if (version != global.app.config.version) {
-            global.app.dbMgr._setItem(global.app.dbMgr.Enum.LAST_VERSION, global.app.config.version);
+        var version = App.dbMgr._getItem(App.dbMgr.Enum.LAST_VERSION);
+        if (version != App.config.version) {
+            App.dbMgr._setItem(App.dbMgr.Enum.LAST_VERSION, App.config.version);
             this.nd_tip.active = true;
         }
 
-        global.app.sceneMgr.loadScene('game');
+        App.sceneMgr.loadScene('game');
     },
 
     onClickRankInfo: function () {
-        global.app.extension.openFaceBookRankInfo();
+        App.extension.openFaceBookRankInfo();
     },
 });

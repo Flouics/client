@@ -58,7 +58,7 @@ var HttpMessageHelp = function () {
 
 HttpMessageHelp.prototype._init = function () {
     //设置服务器类型
-    this._serverType = global.app.config.server_type;
+    this._serverType = App.config.server_type;
     var serverConfig = this.ServerConfig[this._serverType];
     this._login_server = serverConfig.login_server;
     this._pay_server = serverConfig.pay_server;
@@ -132,7 +132,7 @@ HttpMessageHelp.prototype.startNormalHearBeat = function (time) {
     return;
     if (time == undefined) time = 60;
     this.stopNormalHearBeat();
-    global.app.schedule(function callback() {
+    App.schedule(function callback() {
         this.sendMessage(this.CMD.PHP_CMD_HEARTBEAT);
     }.bind(this), time, "normalHeartBeat");
 };
@@ -141,13 +141,13 @@ HttpMessageHelp.prototype.startNormalHearBeat = function (time) {
 //停止普通心跳
 
 HttpMessageHelp.prototype.stopNormalHearBeat = function () {
-    global.app.unschedule("normalHeartBeat");
+    App.unschedule("normalHeartBeat");
 };
 
 //开始支付心跳
 
 HttpMessageHelp.prototype.startPayHearBeat = function () {
-    global.app.schedule(function callback() {
+    App.schedule(function callback() {
         this.sendMessage(this.CMD.PHP_CMD_PAYHEARTBEAT)
     }.bind(this), 0.8, "payHeartBeat");
 };
@@ -155,7 +155,7 @@ HttpMessageHelp.prototype.startPayHearBeat = function () {
 //停止支付心跳
 
 HttpMessageHelp.prototype.stopPayHearBeat = function () {
-    global.app.unschedule("payHeartBeat");
+    App.unschedule("payHeartBeat");
 };
 
 /*
@@ -169,12 +169,12 @@ HttpMessageHelp.prototype.requestLogin = function (data) {
     message.setOpenId(data.openId);
     message.setOpenKey(data.openKey);
     message.setChannel(data.loginType);
-    message.setAppId(global.app.config.app_id);
-    message.setDeviceId(global.app.config.device_id);
-    message.setVerId(global.app.config.version);
+    message.setAppId(App.config.app_id);
+    message.setDeviceId(App.config.device_id);
+    message.setVerId(App.config.version);
     message.setLocation("");
     //message.setAndroidIos(android_ios);
-    //message.setPf(global.app.config.pf);
+    //message.setPf(App.config.pf);
     return message;
 };
 
@@ -183,9 +183,9 @@ HttpMessageHelp.prototype.requestLogin = function (data) {
  */
 HttpMessageHelp.prototype.heartBeatRequest = function (data) {
     var message = new proto.login.HeartbeatRequest();
-    message.setUserId(global.app.userData.getUserId());
-    message.setDeviceId(global.app.config.device_id);
-    message.setAppId(global.app.config.app_id);
+    message.setUserId(App.userData.getUserId());
+    message.setDeviceId(App.config.device_id);
+    message.setAppId(App.config.app_id);
     return message;
 };
 
@@ -194,8 +194,8 @@ HttpMessageHelp.prototype.heartBeatRequest = function (data) {
  */
 HttpMessageHelp.prototype.heartBeatPayRequest = function (data) {
     var message = new proto.recharge.PayHeartbeatRequest();
-    message.setUserId(global.app.userData.getUserId());
-    message.setAppId(global.app.config.app_id);
+    message.setUserId(App.userData.getUserId());
+    message.setAppId(App.config.app_id);
     return message;
 };
 
@@ -204,7 +204,7 @@ HttpMessageHelp.prototype.heartBeatPayRequest = function (data) {
  */
 HttpMessageHelp.prototype.UserBalanceRequest = function (data) {
     var message = new proto.login.UserBalanceRequest();
-    message.setUserId(global.app.userData.getUserId());
+    message.setUserId(App.userData.getUserId());
     return message;
 };
 
@@ -232,7 +232,7 @@ HttpMessageHelp.prototype.sendMessage = function (protoName, data, cb) {
     }
 
     if (!message) {
-        global.app.toolKit.showTip("HTTP请求数据为空");
+        App.toolKit.showTip("HTTP请求数据为空");
         return;
     }
     var req_data = {
@@ -271,7 +271,7 @@ HttpMessageHelp.prototype.httpReq = function (req_data) {
     var url = this.getReqUrl(protoName);
     cc.log("------[http]url:", url);
     if (!url) {
-        global.app.toolKit.showTip("请求地址无效！");
+        App.toolKit.showTip("请求地址无效！");
         return;
     }
     try {
@@ -281,18 +281,18 @@ HttpMessageHelp.prototype.httpReq = function (req_data) {
         request.send(bytes);
         this._startReqTimeOut(protoName, request);
         request.onload = function (evt) {
-            global.app.loginMgr.onWebRes(protoName);
+            App.loginMgr.onWebRes(protoName);
             self._endReqTimeOut();
             if (!req_data) {
                 self._reqHttpList.shift();
             }
             self._isReqHttpIng = false;
-            global.app.loadingMgr.stopAnimation();
+            App.loadingMgr.stopAnimation();
             try {
                 var result = goog.crypt.base64.decodeStringToUint8Array(request.responseText);
                 self.readerPacket(protoName, result);
             } catch (e) {
-                global.app.toolKit.showTip("无法解析数据！" + e);
+                App.toolKit.showTip("无法解析数据！" + e);
             }
 
             if (!self._isReqHttpIng && !req_data) {
@@ -302,7 +302,7 @@ HttpMessageHelp.prototype.httpReq = function (req_data) {
 
         // 心跳不走loading
         if (this.no_play_anim_proto_list.indexOf(protoName) == -1) {
-            global.app.loadingMgr.playAnimation();
+            App.loadingMgr.playAnimation();
         }
 
 
@@ -310,7 +310,7 @@ HttpMessageHelp.prototype.httpReq = function (req_data) {
         this._isReqHttpIng = false;
         this._reqHttpList = [];
         cc.error(protoName, "协议出错");
-        global.app.toolKit.showTip("协议出错");
+        App.toolKit.showTip("协议出错");
     }
 };
 
@@ -326,8 +326,8 @@ HttpMessageHelp.prototype._startReqTimeOut = function (protoName, request) {
         self._isReqHttpIng = false;
         self._reqHttpList = [];
         if (self._request) self._request.abort();
-        global.app.toolKit.showTip((self._nameMap[self._protoName]) ? self._nameMap[self._protoName] + "请求超时" : self._protoName + "请求超时");
-        global.app.loadingMgr.stopAnimation();
+        App.toolKit.showTip((self._nameMap[self._protoName]) ? self._nameMap[self._protoName] + "请求超时" : self._protoName + "请求超时");
+        App.loadingMgr.stopAnimation();
     }, 15 * 1000);
 };
 

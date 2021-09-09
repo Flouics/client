@@ -157,7 +157,7 @@ cc.Class({
             self.hasInit = true;
             self.nd_panel.active = false;
             if (callback) callback();
-            global.app.windowMgr.closeUI(self);
+            App.windowMgr.closeUI(self);
         };
         if (!force && this.hasInit) {
             if (this.cb) this.cb();
@@ -207,7 +207,7 @@ cc.Class({
 
         if (this._am.setVersionCompareHandle && app) {
             this._am.setVersionCompareHandle(function (v1, v2) {
-                return global.app.compareVersion(v1, v2);
+                return App.compareVersion(v1, v2);
             });
         } else {
             cc.error('hotfix cannot find function setVersionCompareHandle')
@@ -246,7 +246,7 @@ cc.Class({
                 }
                 var projectObj = JSON.parse(filestring);
                 var platform = cc.sys.os == cc.sys.OS_IOS ? 'ios' : 'android';
-                projectObj.packageUrl = global.app.httpMgr.getUpdateServer() + '/download/dsn/' + platform + dir;
+                projectObj.packageUrl = App.httpMgr.getUpdateServer() + '/download/dsn/' + platform + dir;
                 projectObj.remoteManifestUrl = projectObj.packageUrl + 'project.manifest';
                 projectObj.remoteVersionUrl = projectObj.packageUrl + 'version.manifest';
                 jsb.fileUtils.writeStringToFile(JSON.stringify(projectObj), storagePath + '/project.manifest');

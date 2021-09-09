@@ -23,11 +23,11 @@ export default class SoundMgr extends BaseClass {
      */
     playSound(name: string, isLoop: boolean = false) {
         if (Array.isArray(name)) {
-            name = global.app.toolKit.getRandFromArray(name);
+            name = App.toolKit.getRandFromArray(name);
         }
 
         if (name) {
-            return global.app.audioMgr.playEffect(name, isLoop);
+            return App.audioMgr.playEffect(name, isLoop);
         } else {
             return null;
         }

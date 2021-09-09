@@ -1,5 +1,5 @@
-import DialogBase from "../zero/DialogBase";
-import BaseView from "../zero/BaseView";
+import DialogBase from "../zero/BaseWin";
+import BaseView from "../zero/BaseUI";
 import BaseClass from "../zero/BaseClass";
 
 // 通用窗口。
@@ -98,7 +98,7 @@ export default class WindowMgr extends BaseClass {
 
     // 预加载
     preload(uiName: string, cb?: Function) {
-        var parent = global.app.nd_uiPool;
+        var parent = App.nd_uiPool;
         this.create(uiName, function (err, ui) {
             if (err) {
                 cc.error('preload ui failed ', uiName, err);

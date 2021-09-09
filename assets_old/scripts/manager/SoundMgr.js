@@ -21,11 +21,11 @@ var SoundMgr = function () {
  */
 SoundMgr.prototype.playSound = function (name, isLoop) {
     if (Array.isArray(name)) {
-        name = global.app.toolKit.getRandFromArray(name);
+        name = App.toolKit.getRandFromArray(name);
     }
 
     if (name) {
-        return global.app.audioMgr.playEffect(name, isLoop);
+        return App.audioMgr.playEffect(name, isLoop);
     } else {
         return null;
     }

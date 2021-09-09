@@ -1,3 +1,4 @@
+
 cc.RichText.prototype._onTouchEnded = function (event) {
     let components = this.node.getComponents(cc.Component);
     for (let i = 0; i < this._labelSegments.length; ++i) {
@@ -27,7 +28,7 @@ cc.Label.prototype.onLoad = function () {
         //增加的修改
         if (typeof app != 'undefined' && this.font == null) {
             var self = this;
-            global.app.loadFont(function (font) {
+            App.loadFont(function (font) {
                 self.font = font;
             });
         }

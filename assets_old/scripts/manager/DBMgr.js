@@ -95,7 +95,7 @@ DBMgr.prototype.clear = function () {
 
 //防止不同用户之间用户数据冲突
 DBMgr.prototype.getKey = function (key) {
-    var uid = global.app.userData.uid || 'someone';
+    var uid = App.userData.uid || 'someone';
     var key_prefix = uid.slice(0, 7);
     return key_prefix + key;
 };

@@ -31,33 +31,33 @@ cc.Class({
         window.app = app;
         window.game = {};
 
-        global.app.config = global.app.config || require('Config')();
-        global.app.toolKit = global.app.toolKit || require('ToolKit')();
-        global.app.loadingMgr = global.app.loadingMgr || require('LoadingMgr')();
-        global.app.dbMgr = global.app.dbMgr || require('DBMgr')();
-        global.app.httpMgr = global.app.httpMgr || require('HttpMessageHelp')();
-        global.app.sceneMgr = global.app.sceneMgr || require('SceneMgr')();
-        global.app.windowMgr = global.app.windowMgr || require('WindowManager')();
-        global.app.buttonCtrl = global.app.buttonCtrl || require('ButtonCtrl')();
-        global.app.audioMgr = global.app.audioMgr || require('AudioMgr')();
-        global.app.asyncTaskMgr = global.app.asyncTaskMgr || require('AsyncTaskMgr')();
-        global.app.poolMgr = global.app.poolMgr || require('PoolMgr')();
-        global.app.moduleMgr = global.app.moduleMgr || require('ModuleMgr')();
+        App.config = App.config || require('Config')();
+        App.toolKit = App.toolKit || require('ToolKit')();
+        App.loadingMgr = App.loadingMgr || require('LoadingMgr')();
+        App.dbMgr = App.dbMgr || require('DBMgr')();
+        App.httpMgr = App.httpMgr || require('HttpMessageHelp')();
+        App.sceneMgr = App.sceneMgr || require('SceneMgr')();
+        App.windowMgr = App.windowMgr || require('WindowManager')();
+        App.buttonCtrl = App.buttonCtrl || require('ButtonCtrl')();
+        App.audioMgr = App.audioMgr || require('AudioMgr')();
+        App.asyncTaskMgr = App.asyncTaskMgr || require('AsyncTaskMgr')();
+        App.poolMgr = App.poolMgr || require('PoolMgr')();
+        App.moduleMgr = App.moduleMgr || require('ModuleMgr')();
 
-        global.app.timeMgr = global.app.timeMgr || require('TimeMgr')();
-        global.app.dataMgr = global.app.dataMgr || require('DataMgr')();
-        global.app.loginMgr = global.app.loginMgr || require('LoginMgr')();
-        global.app.extension = global.app.extension || require('Extension')();
-        global.app.effectMgr = global.app.effectMgr || require('EffectMgr')();
+        App.timeMgr = App.timeMgr || require('TimeMgr')();
+        App.dataMgr = App.dataMgr || require('DataMgr')();
+        App.loginMgr = App.loginMgr || require('LoginMgr')();
+        App.extension = App.extension || require('Extension')();
+        App.effectMgr = App.effectMgr || require('EffectMgr')();
 
 
-        global.app.userData = require('UserData')();
-        global.app.rechargeDm = global.app.rechargeDm || require('RechargeDm')();
+        App.userData = require('UserData')();
+        App.rechargeDm = App.rechargeDm || require('RechargeDm')();
 
         game.soundMgr = game.soundMgr || require('SoundMgr')();
 
         //event
-        global.app.eventEnum = {};
+        App.eventEnum = {};
     },
 
 
@@ -73,11 +73,11 @@ cc.Class({
     },
 
     onEventHide: function () {
-        this.emitter.emit(global.app.eventEnum.EVENT_HIDE);
+        this.emitter.emit(App.eventEnum.EVENT_HIDE);
     },
 
     onEventShow: function () {
-        this.emitter.emit(global.app.eventEnum.EVENT_SHOW);
+        this.emitter.emit(App.eventEnum.EVENT_SHOW);
         if (cc.director.getScheduler().isTargetPaused(cc.director.getAnimationManager())) {
             cc.director.getScheduler().resumeTarget(cc.director.getAnimationManager());
         }
@@ -132,7 +132,7 @@ cc.Class({
 
     onViewResize: function () {
         //遍历所有的节点。
-        //global.app.toolKit.showTip("onViewResize");
+        //App.toolKit.showTip("onViewResize");
         var root = cc.find('Canvas');
         var scene_comp = root.getComponent(cc.SceneBase);
         if (scene_comp && scene_comp.fitWinSize) {

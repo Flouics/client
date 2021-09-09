@@ -25,19 +25,19 @@ export default class SceneMgr extends BaseClass {
         var self = this;
         function sceneAction() {
             cc.log('endAction, start loadScene', new Date().getTime());
-            var uiRoot = global.app.windowMgr.getUIRoot();
+            var uiRoot = App.windowMgr.getUIRoot();
             uiRoot.removeAllChildren();
             // 停止当前音乐
             self.isLoading = cc.director.loadScene(sceneName, function () {
                 self.isLoading = false;
-                global.app.loadingMgr.stopAnimation();
+                App.loadingMgr.stopAnimation();
                 cc.log('end loadScene', sceneName, new Date().getTime());
                 if (cb) {
                     cb();
                 }
             });
         }
-        global.app.loadingMgr.playAnimation(0.2);
+        App.loadingMgr.playAnimation(0.2);
         cc.director.preloadScene(sceneName, function (error) {
             if (error) {
                 self.isLoading = false;

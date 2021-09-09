@@ -108,7 +108,7 @@ WindowManager.prototype.open = function (uiName, cb, parent, errorCb, b_noAddchi
 
 // 预加载
 WindowManager.prototype.preload = function (uiName, cb) {
-    var parent = global.app.nd_uiPool;
+    var parent = App.nd_uiPool;
     this.create(uiName, function (err, ui) {
         if (err) {
             cc.error('preload ui failed ', uiName, err);

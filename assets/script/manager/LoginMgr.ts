@@ -37,7 +37,7 @@ export default class LoginMgr extends BaseClass {
 
     startHttpReq() {
         this._req_list.forEach(function (protoObj) {
-            global.app.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
+            App.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
         });
     };
 
