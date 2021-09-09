@@ -16,10 +16,16 @@ export default class BaseClass {
         this._class = _class;
         _class._instance = this;
     }
+
+
     public get className() : string {
         return this.getClassName();
     }
 
+    static clearInstance(_class:any){
+        _class._instance = null
+    }
+    
     //单例
     static getInstance(_class:any){
         if( _class._instance){
@@ -32,6 +38,10 @@ export default class BaseClass {
 
     getClassName(){
         return this.constructor.name;
+    }
+
+    getId(){
+        return this._classId
     }
     //序列化
     serialize(){

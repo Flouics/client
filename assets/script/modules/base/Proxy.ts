@@ -14,10 +14,10 @@ export default class Proxy extends BaseClass {
     }
 
     bindView(view:BaseView){
-        this.uiMap[view.uuid] = view;
+        this.uiMap[view.getId()] = view;
     }
     unbindView(view:BaseView){
-        delete this.uiMap[view.uuid];
+        delete this.uiMap[view.getId()];
     }
     updateView(funcName:string,params?:{}){
         for (var uuid in this.uiMap) {

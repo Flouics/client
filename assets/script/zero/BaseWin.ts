@@ -1,8 +1,9 @@
-import BaseView from "./BaseUI";
+import App from "../App";
+import BaseUI from "./BaseUI";
 
 const {ccclass, property} = cc._decorator;
 var global = window;
-export default class BaseWin extends BaseView{
+export default class BaseWin extends BaseUI{
     @property({
         tooltip: '窗口的层级；1级窗口0-99 2级100-199 以此类推'
     })

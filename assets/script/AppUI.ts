@@ -26,7 +26,6 @@ export default class AppUI extends BaseUI{
         cc.view.setResizeCallback(this.onViewResize.bind(this));
 
         this.appInit();
-        this.onMsg();
     }
 
     appInit () {
@@ -44,7 +43,7 @@ export default class AppUI extends BaseUI{
     exit () {
         cc.game.removePersistRootNode(this.node);
     }
-    
+
     onViewResize () {
         //遍历所有的节点。
         //this.toolKit.showTip("onViewResize");

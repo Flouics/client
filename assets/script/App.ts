@@ -56,6 +56,7 @@ export default class App extends BaseClass{
     static RES_WINDOW:{[key:string]:any} = {}
     static RES_ITEM:{[key:string]:any} = {};
     static RES_EFFECT:{[key:string]:any} = {};
+    static game:{[key:string]:any} = {};
 
     static ui:AppUI = null;
 
@@ -72,31 +73,50 @@ export default class App extends BaseClass{
         App.scheduleTask = {};
         //定义全局变量。        
         window["app"] = App;    
-        App.RES_WINDOW = {};
- 
                 
-        App.config = App.config || new Config();
-        App.toolKit = App.toolKit || new ToolKit(ToolKit);        
+        App.config = new Config();
+        App.toolKit = App.getInstance(ToolKit);        
         
-        App.loadingMgr = App.loadingMgr || new LoadingMgr(LoadingMgr);
+        App.loadingMgr = App.getInstance(LoadingMgr);
 
-        App.dbMgr = App.dbMgr || new DBMgr(DBMgr);
-        App.httpMgr = App.httpMgr || new HttpMgr(HttpMgr);
-        App.sceneMgr = App.sceneMgr || new SceneMgr(SceneMgr);
-        App.windowMgr = App.windowMgr || new WindowMgr(WindowMgr);
+        App.dbMgr = App.getInstance(DBMgr);
+        App.httpMgr = App.getInstance(HttpMgr);
+        App.sceneMgr = App.getInstance(SceneMgr);
+        App.windowMgr = App.getInstance(WindowMgr);
 
-        App.audioMgr = App.audioMgr || new AudioMgr(AudioMgr);
-        App.asyncTaskMgr = App.asyncTaskMgr || new AsyncTaskMgr(AsyncTaskMgr);
-        App.poolMgr = App.poolMgr || new PoolMgr(PoolMgr);
-        App.moduleMgr = App.moduleMgr || new ModuleMgr(ModuleMgr);
+        App.audioMgr = App.getInstance(AudioMgr);
+        App.asyncTaskMgr = App.getInstance(AsyncTaskMgr);
+        App.poolMgr = App.getInstance(PoolMgr);
+        App.moduleMgr = App.getInstance(ModuleMgr);
 
-        App.timeMgr = App.timeMgr || new TimeMgr(TimeMgr);
-        App.dataMgr = App.dataMgr || new DataMgr(DataMgr);
-        App.loginMgr = App.loginMgr || new LoginMgr(LoginMgr);
-
-        App.soundMgr = App.soundMgr || new SoundMgr(SoundMgr);
+        App.timeMgr = App.getInstance(TimeMgr);
+        App.dataMgr = App.getInstance(DataMgr);
+        App.loginMgr = App.getInstance(LoginMgr);
+        App.soundMgr = App.getInstance(SoundMgr);      
         
+        App.RES_WINDOW= {};
+        App.RES_ITEM = {};
+        App.RES_EFFECT = {};
+        App.game = {};
     }
+
+    static clear(){
+        App.config = null;
+        App.clearInstance(ToolKit);
+        App.clearInstance(LoadingMgr);
+        App.clearInstance(DBMgr);
+        App.clearInstance(HttpMgr);
+        App.clearInstance(SceneMgr);
+        App.clearInstance(WindowMgr);
+        App.clearInstance(AudioMgr);
+        App.clearInstance(AsyncTaskMgr);
+        App.clearInstance(ModuleMgr);
+        App.clearInstance(TimeMgr);
+        App.clearInstance(DataMgr);
+        App.clearInstance(LoginMgr);
+        App.clearInstance(SoundMgr);
+    }
+
 
     static onMsg () {
         //action管理器的问题。
@@ -187,5 +207,19 @@ export default class App extends BaseClass{
             return false
         }
         App.ui.updateNodeWidget(node)
+    }
+
+    static clearInstance(_class:any){
+        _class._instance = null
+    }
+    
+    //单例
+    static getInstance(_class:any){
+        if( _class._instance){
+            return _class._instance
+        }else{
+            let instance = new _class(_class);
+            return instance
+        }
     }
 }

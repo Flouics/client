@@ -1,3 +1,4 @@
+import App from "../App";
 import Proxy from "../modules/base/Proxy";
 import BaseClass from "./BaseClass";
 import BaseUI from "./BaseUI";
@@ -11,14 +12,18 @@ export default class BaseView extends BaseClass {
     _objFlags: number;
     proxys:Proxy[] = []
     ui:BaseUI
+    node:cc.Node
     updateUI() {
         if(this.ui){
             this.ui.updateUI()
         }
     }
 
-    onLoad(ui:BaseUI) {
-        
+    onLoad(ui?:BaseUI) {
+        if(this.ui){
+            this.ui = ui;
+            this.node = ui.node;
+        }
     }
 
     show() {
@@ -27,18 +32,18 @@ export default class BaseView extends BaseClass {
     hide() {
 
     }
-    onEnable(ui:BaseUI) {
+    onEnable(ui?:BaseUI) {
     }
 
-    onClose(ui:BaseUI) {
+    onClose(ui?:BaseUI) {
 
     }
 
-    onDisable(ui:BaseUI) {
+    onDisable(ui?:BaseUI) {
         this.offMsg();
     }
 
-    onDestroy(ui:BaseUI) {
+    onDestroy(ui?:BaseUI) {
         this.offMsg();
         this.ui = null
     }
@@ -49,7 +54,7 @@ export default class BaseView extends BaseClass {
             App.httpMgr.on(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj: any) {
-            global.game.socketMgr.on(obj.event, obj.tag, obj.fn);
+           App.game.socketMgr.on(obj.event, obj.tag, obj.fn);
         });
     }
 
@@ -58,7 +63,7 @@ export default class BaseView extends BaseClass {
             App.httpMgr.off(obj.event, obj.tag, obj.fn);
         });
         this._socketEvents.forEach(function (obj: any) {
-            global.game.socketMgr.off(obj.event, obj.tag, obj.fn);
+           App.game.socketMgr.off(obj.event, obj.tag, obj.fn);
         });
     }
     registerHttpEvent(event: string, fn: Function) {
@@ -80,7 +85,7 @@ export default class BaseView extends BaseClass {
             tag: tag,
             fn: fn
         })
-        global.game.socketMgr.on(event, tag, fn);
+       App.game.socketMgr.on(event, tag, fn);
     }
 
     getDataUnique(data: any) {
@@ -99,6 +104,16 @@ export default class BaseView extends BaseClass {
         this.proxys.forEach((proxy) => {
             proxy.unbindView(this)
         })
+    }
+    schedule(callback: Function, interval?: number, repeat?: number, delay?: number){
+        if (this.ui){
+            return this.ui.schedule(callback, interval, repeat, delay)
+        }        
+    }
+    unschedule(callback: Function){
+        if (this.ui){
+            return this.ui.unschedule(callback)
+        }        
     }
     update(dt:number){
         //this.updateUI();  主动刷新

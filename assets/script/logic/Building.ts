@@ -13,7 +13,7 @@ export default class Building extends BoxBase {
     static _idIndex = 1;
     _pb_url:string = "";    //不预先加载的原因是因为种类比较多，而且基本上不会复用。
     constructor(mapMainView: MapMainView) {
-        super();
+        super(Building);
         this.mapMainView = mapMainView;
     }
 

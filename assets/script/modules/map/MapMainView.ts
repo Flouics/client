@@ -1,4 +1,4 @@
-import BaseView from "../../zero/BaseUI";
+
 import AsyncTaskMgr from "../../manager/AsyncTaskMgr";
 import Block from "../../logic/Block";
 import Hero from "../../logic/Hero";
@@ -18,14 +18,16 @@ import DigTask from "../../logic/task/DigTask";
 import TowerMgr from "../../manager/TowerMgr";
 import Tower from "../../logic/tower/Tower";
 import BulletMgr from "../../manager/BulletMgr";
-
+import App from "../../App";
+import BaseView from "../../zero/BaseView";
+import BaseUI from "../../zero/BaseUI";
 
 /**
  * Created by Administrator on 2017/9/12.
  * 独立所有场景之外。
  */
 
-var global = window;
+
 var OPERATION_ENUM = {
     COMMON: 0,
     DIG: 1,
@@ -70,15 +72,15 @@ export default class MapMainView extends BaseView {
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
 
     // use this for initialization
-    onLoad() {
-        window.game = window.game || {}
-        window.game.temp = this;
-        this.mapProxy = ModuleMgr.obj.getProxy("map");
+    onLoad(ui?:BaseUI) {
+        App.game = App.game || {}
+        App.game.temp = this;
+        this.mapProxy = App.moduleMgr.getProxy("map");
         this.proxys = [this.mapProxy];
         this.blockMap = this.mapProxy.blockMap;
-        this.buldingMap = this.mapProxy.buldingMap;
+        this.buldingMap = this.mapProxy.buldingMap;        
+        super.onLoad(ui);
         this.initMap();
-        super.onLoad();
     }
 
     initMap() {
@@ -112,7 +114,7 @@ export default class MapMainView extends BaseView {
         this.initBlockSize(new cc.Size(node.width, node.height));
         Map.initBlockSize(new cc.Size(node.width, node.height));
         //touch触摸的尺寸。        
-        let touchUtils = this.node.getComponent(TouchUtils);
+        let touchUtils = this.ui.node.getComponent(TouchUtils);
         if (touchUtils) {
             touchUtils.init(new cc.Size(
                 (this.margin_x * 2 + 1) * this._blockSize.width
@@ -221,7 +223,7 @@ export default class MapMainView extends BaseView {
         }
     }
     switchOperation(value: number) {        
-        ToolKit.obj.showTip("切换操作-> " + value);
+        App.toolKit.showTip("切换操作-> " + value);
         this.operation = value;
     }
     dealAllBlocks(dealFunc: Function) {
