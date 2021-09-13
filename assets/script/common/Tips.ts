@@ -1,5 +1,5 @@
-import BaseView from "../zero/BaseView";
-import DialogBase from "../zero/DialogBase";
+import BaseView from "../zero/BaseUI";
+import DialogBase from "../zero/BaseWin";
 
 
 const {ccclass, property} = cc._decorator;

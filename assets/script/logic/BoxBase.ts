@@ -28,12 +28,6 @@ export default class BoxBase extends BaseView {
     targetExtraList:BoxBase[] = null;   //副目标列表    
     node:cc.Node = null;
     ui:BaseUI = null;
-    bindView(){
-        if(!this.ui){
-            return;
-        }
-        this.ui.bindUI(this);
-    }
     get pos(){
         return cc.v2(this.x,this.y)
     }

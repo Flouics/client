@@ -1,10 +1,10 @@
-import BaseView from "../../zero/BaseUI";
+import BaseUI from "../../zero/BaseUI";
 import Block from "../../logic/Block";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class UIBlock extends BaseView {
+export default class UIBlock extends BaseUI {
     @property(cc.Sprite)
     spt_floor:cc.Sprite = null;
     @property(cc.Sprite)

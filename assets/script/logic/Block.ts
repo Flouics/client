@@ -45,11 +45,10 @@ export default class Block extends BoxBase {
         node.parent = this.mapMainView.nd_mapRoot;
         node.x = this.x * this.mapMainView._blockSize.width;
         node.y = this.y * this.mapMainView._blockSize.height;
-        this.node = node;
-        this.ui = this.node.getComponent(UIBlock)
         node.scale = 0.95;
         this.value = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
-        this.bindView();
+        this.bindView(node.getComponent(UIBlock));
+        this.updateUI();
     }
     createBuilding(building:Building){
         this.buildingId = building.id; 

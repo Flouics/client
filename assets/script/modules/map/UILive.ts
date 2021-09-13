@@ -1,9 +1,9 @@
-import BaseView from "../../zero/BaseView";
+import BaseUI from "../../zero/BaseUI";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class UILive extends BaseView {
+export default class UILive extends BaseUI {
     @property(cc.Sprite)
     spt_role:cc.Sprite = null;    
     _baseUrl = "texture/hero/";

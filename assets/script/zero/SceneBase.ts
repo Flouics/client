@@ -1,8 +1,8 @@
-import BaseView from "./BaseView";
+import BaseUI from "./BaseUI";
 
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class SceneBase extends BaseView{
+export default class SceneBase extends BaseUI{
     // use this for initialization
     onLoad () {
         super.onLoad();

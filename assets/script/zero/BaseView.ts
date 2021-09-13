@@ -13,6 +13,11 @@ export default class BaseView extends BaseClass {
     proxys:Proxy[] = []
     ui:BaseUI
     node:cc.Node
+    bindView(ui:BaseUI){
+        this.ui = ui;
+        this.node = ui.node;
+        this.ui.bindUI(this);
+    }
     updateUI() {
         if(this.ui){
             this.ui.updateUI()
@@ -20,10 +25,7 @@ export default class BaseView extends BaseClass {
     }
 
     onLoad(ui?:BaseUI) {
-        if(this.ui){
-            this.ui = ui;
-            this.node = ui.node;
-        }
+
     }
 
     show() {
