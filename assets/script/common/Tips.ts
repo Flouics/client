@@ -1,11 +1,9 @@
-import BaseView from "../zero/BaseUI";
-import DialogBase from "../zero/BaseWin";
-
+import BaseWin from "../zero/BaseWin";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Tips extends DialogBase {
+export default class Tips extends BaseWin {
     @property(cc.Label)
     lb_content:cc.Label = null;
     @property({
@@ -16,7 +14,7 @@ export default class Tips extends DialogBase {
 
     tipsList = [];
     closeTime = 0;
-;
+    
     onLoad () {
         super.onLoad()
         this.tipsList = []; //队列。

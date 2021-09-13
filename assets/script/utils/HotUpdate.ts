@@ -1,19 +1,28 @@
-cc.Class({
-    extends: cc.DialogBase,
+import BaseWin from "../zero/BaseWin";
+const {ccclass, property} = cc._decorator;
 
-    properties: {
-        nd_panel: cc.Node,
-        manifestUrl: {//引擎建议如此定义
-            type: cc.Asset,     // use 'type:' to define Asset object directly
-            default: null,      // object's default value is null
-        },
-        lb_progress: cc.Label,
-        nd_btnSkip: cc.Node,
-        nd_btnUpdate: cc.Node,
-        nd_btnRoot: cc.Node,
-    },
+//废弃先不用
+@ccclass
+export default class HotUpdate extends BaseWin {
 
-    checkCb: function (event) {
+    @property(cc.Node)
+    nd_panel: cc.Node = null;
+    @property(cc.Asset)
+    manifestUrl: cc.Asset = null;
+    @property(cc.Label)
+    lb_progress: cc.Label = null;
+    @property(cc.Node)
+    nd_btnSkip: cc.Node= null;
+    @property(cc.Node)
+    nd_btnUpdate: cc.Node= null;
+    @property(cc.Node)
+    nd_btnRoot: cc.Node= null;
+
+    timeout_id:number = null;
+    cb:Function = null;
+    _needUpdate:boolean = null;
+
+    checkCb (event:cc.Event.EventTouch) {
         cc.log('Code: ' + event.getEventCode());
         if (this.timeout_id != -1 && this.timeout_id != undefined) {
             clearTimeout(this.timeout_id);
@@ -42,13 +51,13 @@ cc.Class({
                 this.lb_progress.string = '00.00%';
                 break;
             default:
-                cc.log(event.getMessage());
+                cc.log(event.getEventCode());
                 //this.getComponent('Launch').checkFirstUrl();
                 break;
         }
-    },
+    };
 
-    updateCb: function (event) {
+    updateCb (event:cc.Event.EventTouch) {
         var needRestart = false;
         var failed = false;
         switch (event.getEventCode()) {
@@ -124,7 +133,7 @@ cc.Class({
             cc.audioEngine.stopAll();
             cc.game.restart();
         }
-    },
+    };
 
     onClickBtnUpdate: function () {
         if (this._am && this._needUpdate) {
@@ -143,11 +152,11 @@ cc.Class({
         } else {
             if (this.cb) this.cb();
         }
-    },
+    };
 
     onClickBtnSkip: function () {
         if (!!this.cb) this.cb();
-    },
+    };
 
     init: function (callback, force) {
         var self = this;
@@ -180,19 +189,19 @@ cc.Class({
         this.fixHotUpdateUrl(this.initHotUpdate.bind(this));
         //this.initHotUpdate();//不修正热更地址。
 
-    },
+    };
 
     getStoragePath: function () {
         var storagePath = ((jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/') + 'ccs-remote-asset');
         return storagePath;
-    },
+    };
 
     isDebug: function () {
         var storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/');
         var isFileExist = jsb.fileUtils.isFileExist(storagePath + 'debug.conf');
         cc.log('isFileExist', isFileExist);
         return isFileExist;
-    },
+    };
 
     initHotUpdate: function () {
         var storagePath = this.getStoragePath();
@@ -229,7 +238,7 @@ cc.Class({
         }
         this._am.setEventCallback(this.checkCb.bind(this));
         this._am.checkUpdate();
-    },
+    };
 
     fixHotUpdateUrl: function (cb) {
         var storagePath = this.getStoragePath();
@@ -258,7 +267,7 @@ cc.Class({
             }
         };
         this.getUpdateFileString(storagePath, callback);
-    },
+    };
 
     getUpdateFileString: function (storagePath, cb) {
         try {
@@ -285,7 +294,7 @@ cc.Class({
                 }
             })
         }
-    },
+    };
 
     onDestroy: function () {
         if (this._updateListener) {
@@ -293,4 +302,4 @@ cc.Class({
             this._updateListener = null;
         }
     }
-});
+}

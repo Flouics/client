@@ -1,4 +1,0 @@
-﻿ID	名字	数据1	数据2	数据3	数据4
-id	name	data1	data2	data3	data4
-1001	初始化数据	0	0	0	0
-

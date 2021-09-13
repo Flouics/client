@@ -1,5 +1,5 @@
 cc.Class({
-    extends: cc.DialogBase,
+    extends: cc.Component,
 
     properties: {
         nd_panel: cc.Node,

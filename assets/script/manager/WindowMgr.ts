@@ -1,4 +1,4 @@
-import DialogBase from "../zero/BaseWin";
+import BaseWin from "../zero/BaseWin";
 import BaseView from "../zero/BaseUI";
 import BaseClass from "../zero/BaseClass";
 
@@ -83,7 +83,7 @@ export default class WindowMgr extends BaseClass {
             var time2 = new Date().getTime();
             cc.log('open ui cost:', uiName, time2 - time1);
             if (!!ui) {
-                var baseUI = ui.getComponent(DialogBase);
+                var baseUI = ui.getComponent(BaseWin);
                 if (!!baseUI) {
                     baseUI.show();
                 } else {
@@ -104,7 +104,7 @@ export default class WindowMgr extends BaseClass {
                 cc.error('preload ui failed ', uiName, err);
                 return;
             } else {
-                var baseUI = ui.getComponent(DialogBase);
+                var baseUI = ui.getComponent(BaseWin);
                 if (!!baseUI && baseUI.init) {
                     baseUI.init();
                 }
@@ -139,7 +139,7 @@ export default class WindowMgr extends BaseClass {
         }
 
         if (ui.isValid) {
-            var baseUI = ui.getComponent(DialogBase);
+            var baseUI = ui.getComponent(BaseWin);
             if (!!baseUI) {
                 baseUI.hide();
             } else {
@@ -165,7 +165,7 @@ export default class WindowMgr extends BaseClass {
         var ui_list = [];
         for (var name in this.ui) {
             var uiNode = this.ui[name];
-            var baseUI = uiNode.getComponent(DialogBase);
+            var baseUI = uiNode.getComponent(BaseWin);
             if (baseUI && baseUI.index >= level * 100) {
                 ui_list.push(baseUI);
             }
@@ -190,7 +190,7 @@ export default class WindowMgr extends BaseClass {
         var ui_list = [];
         for (var name in this.ui) {
             var uiNode = this.ui[name];
-            var baseUI = uiNode.getComponent(DialogBase);
+            var baseUI = uiNode.getComponent(BaseWin);
             if (baseUI && baseUI.node.active && baseUI.index == zIndex && baseUI != exceptUI) {
                 ui_list.push(baseUI);
             }
