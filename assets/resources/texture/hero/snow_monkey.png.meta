@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "3813bf54-7434-4a25-bea3-e64229e7dbd6",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 130,
+  "height": 112,
   "platformSettings": {},
   "subMetas": {
     "snow_monkey": {
