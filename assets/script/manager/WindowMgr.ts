@@ -1,19 +1,9 @@
 import BaseWin from "../zero/BaseWin";
 import BaseView from "../zero/BaseUI";
 import BaseClass from "../zero/BaseClass";
+import App from "../App";
+import BaseUI from "../zero/BaseUI";
 
-// 通用窗口。
-var RES_WINDOW = {
-        loadingAm: "prefab/dialog/loadingAm",
-        msgBox: "prefab/dialog/msgBox",
-        tips: "prefab/dialog/tips",
-        rankInfo: "prefab/dialog/rankInfo",
-    };
-
-var RES_ITEM = {};
-var RES_EFFECT = {};
-
-var global = window;
 export default class WindowMgr extends BaseClass {
     creatingCB = {};
     ui = {};    
@@ -42,14 +32,14 @@ export default class WindowMgr extends BaseClass {
         this.creatingCB[uiName] = [cb];
 
         var self = this;
-        cc.loader.loadRes(uiName, cc.Prefab, function (err: any, prefab: any) {
+        cc.loader.loadRes(uiName,cc.Prefab, function (err: any, prefab: any) {
             cc.log('[ui] end create: ', uiName, new Date());
             var cbs = self.creatingCB[uiName] || [];
             delete self.creatingCB[uiName];
 
             if (err) {
                 cc.error(uiName, err);
-                cbs.forEach(function (cb) {
+                cbs.forEach(function (cb:Function) {
                     cb(err, null);
                 })
             }
@@ -62,7 +52,7 @@ export default class WindowMgr extends BaseClass {
                 }
                 self.ui[uiName] = ui;
                 ui.uiName = uiName;
-                cbs.forEach(function (cb) {
+                cbs.forEach(function (cb:Function) {
                     cb(null, ui);
                 })
             }
@@ -98,8 +88,8 @@ export default class WindowMgr extends BaseClass {
 
     // 预加载
     preload(uiName: string, cb?: Function) {
-        var parent = App.nd_uiPool;
-        this.create(uiName, function (err, ui) {
+        var parent = App.ui.nd_uiPool;
+        this.create(uiName, function (err, ui:BaseUI) {
             if (err) {
                 cc.error('preload ui failed ', uiName, err);
                 return;

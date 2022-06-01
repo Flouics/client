@@ -1,9 +1,9 @@
 import MapUtils from "./MapUtils";
 import { serialize } from "../utils/Decorator";
 import BaseUI from "../zero/BaseUI";
-import BaseView from "../zero/BaseView";
+import BaseClass from "../zero/BaseClass";
 
-export default class BoxBase extends BaseView {
+export default class BoxBase extends BaseClass {
     @serialize()
     id: number = 0;
     @serialize()
@@ -28,6 +28,44 @@ export default class BoxBase extends BaseView {
     targetExtraList:BoxBase[] = null;   //副目标列表    
     node:cc.Node = null;
     ui:BaseUI = null;
+
+    bindUI(ui:BaseUI){
+        this.ui = ui;
+        this.node = ui.node;
+        this.ui.bindBox(this);
+    }
+    updateUI() {
+        if(this.ui){
+            this.ui.updateUI()
+        }
+    }
+
+    
+    onLoad(ui?:BaseUI) {
+
+    }
+
+    show() {
+
+    }
+    hide() {
+
+    }
+    onEnable(ui?:BaseUI) {
+    }
+
+    onClose(ui?:BaseUI) {
+
+    }
+
+    onDisable(ui?:BaseUI) {
+    }
+
+    onDestroy(ui?:BaseUI) {
+        this.ui = null
+    }
+
+
     get pos(){
         return cc.v2(this.x,this.y)
     }

@@ -72,14 +72,13 @@ export default class MapMainView extends BaseView {
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
 
     // use this for initialization
-    onLoad(ui?:BaseUI) {
+    onLoad() {
         App.game = App.game || {}
         App.game.temp = this;
         this.mapProxy = App.moduleMgr.getProxy("map");
         this.proxys = [this.mapProxy];
         this.blockMap = this.mapProxy.blockMap;
         this.buldingMap = this.mapProxy.buldingMap;        
-        super.onLoad(ui);
         this.initMap();
     }
 
@@ -114,7 +113,7 @@ export default class MapMainView extends BaseView {
         this.initBlockSize(new cc.Size(node.width, node.height));
         Map.initBlockSize(new cc.Size(node.width, node.height));
         //touch触摸的尺寸。        
-        let touchUtils = this.ui.node.getComponent(TouchUtils);
+        let touchUtils = this.node.getComponent(TouchUtils);
         if (touchUtils) {
             touchUtils.init(new cc.Size(
                 (this.margin_x * 2 + 1) * this._blockSize.width

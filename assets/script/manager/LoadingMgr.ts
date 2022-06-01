@@ -1,3 +1,4 @@
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
 
 var global = window;
@@ -12,7 +13,7 @@ export default class LoadingMgr extends BaseClass {
         var self = this;
         setTimeout(function () {
             if (play_id == self.play_id) {
-                App.windowMgr.open(global.RES_WINDOW.loadingAm, function () {
+                App.windowMgr.open(App.RES_WINDOW.loadingAm, function () {
                     if (self.is_play == false) {
                         self.stopAnimation();
                     }
@@ -23,7 +24,7 @@ export default class LoadingMgr extends BaseClass {
 
     stopAnimation() {
         this.is_play = false;
-        App.windowMgr.close(global.RES_WINDOW.loadingAm);
+        App.windowMgr.close(App.RES_WINDOW.loadingAm);
     };
 
     //todo
@@ -31,7 +32,7 @@ export default class LoadingMgr extends BaseClass {
         this.is_play = true;
         this.play_id++;
         var self = this;
-        App.windowMgr.open(global.RES_WINDOW.loadingAm, function () {
+        App.windowMgr.open(App.RES_WINDOW.loadingAm, function () {
             if (self.is_play == false) {
                 self.stopAnimation();
             }

@@ -1,5 +1,7 @@
-﻿import App from "./App";
+﻿
+import App from "./App";
 import BaseUI from "./zero/BaseUI";
+import BaseView from "./zero/BaseView";
 import SceneBase from "./zero/SceneBase";
 
 const {ccclass, property} = cc._decorator;
@@ -8,9 +10,8 @@ const {ccclass, property} = cc._decorator;
  * 挂在启动场景。
  */
 
-
 @ccclass
-export default class AppUI extends BaseUI{
+export default class AppView extends BaseView{
     @property(cc.Node)
     public nd_effectPool: cc.Node = null;
     @property(cc.Node)
@@ -18,18 +19,15 @@ export default class AppUI extends BaseUI{
     
     // use this for initialization
     onLoad () {
+        App.appInit(this);
+        App.onLoad();
+
         //设置为常驻借点。
         cc.game.addPersistRootNode(this.node);
         //关闭帧数显示。
         cc.debug.setDisplayStats(false);
         //适配相关的
-        cc.view.setResizeCallback(this.onViewResize.bind(this));
-
-        this.appInit();
-    }
-
-    appInit () {
-       App.appInit(this);        
+        cc.view.setResizeCallback(this.onViewResize.bind(this));        
     }
 
     start () {

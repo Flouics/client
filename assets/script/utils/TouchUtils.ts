@@ -1,4 +1,4 @@
-import MapMain from "../modules/map/MapMainView";
+import MapMainView from "../modules/map/MapMainView";
 
 var global = window;
 const { ccclass, property } = cc._decorator;

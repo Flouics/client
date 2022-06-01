@@ -5,18 +5,15 @@ export default class BaseClass {
     _classDbKey:string;
     _class = null;
     _classId: string = "";
-    static _instance = null;        //单例
+    static _instance = null;       
     constructor(_class:any){
-        if (_class == null) {
-            cc.error("constructor need class")
-            return;
+        if (_class != null) {
+            this._class = _class;
+            _class._instance = this;         //单例
         }
         this._classId = UUID.gen(16);
         this._classDbKey = this.getClassName() + this._classId;
-        this._class = _class;
-        _class._instance = this;
     }
-
 
     public get className() : string {
         return this.getClassName();

@@ -1,3 +1,4 @@
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
 
 /**

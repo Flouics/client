@@ -16,7 +16,7 @@ import LoginMgr from "./manager/LoginMgr";
 import SoundMgr from "./manager/SoundMgr";
 import SceneBase from "./zero/SceneBase";
 import BaseClass from "./zero/BaseClass";
-import AppUI from "./AppUI";
+import AppView from "./AppView";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -58,21 +58,27 @@ export default class App extends BaseClass{
     static RES_EFFECT:{[key:string]:any} = {};
     static game:{[key:string]:any} = {};
 
-    static ui:AppUI = null;
+    static ui:AppView = null;
 
     // use App for initialization
     static onLoad () {
-        App.appInit();
         App.onMsg();
+
+        // 通用接口
+        App.RES_WINDOW = {
+            loadingAm: "prefab/dialog/loadingAm",
+            msgBox: "prefab/dialog/msgBox",
+            tips: "prefab/dialog/tips",
+        }
     }
 
-    static appInit (ui?:AppUI) {
+    static appInit (ui?:AppView) {
         if (ui) {
             App.ui = ui;
         }
         App.scheduleTask = {};
         //定义全局变量。        
-        window["app"] = App;    
+        window["App"] = App;    
                 
         App.config = new Config();
         App.toolKit = App.getInstance(ToolKit);        
@@ -98,6 +104,9 @@ export default class App extends BaseClass{
         App.RES_ITEM = {};
         App.RES_EFFECT = {};
         App.game = {};
+
+        //需要初始化的模块
+        App.moduleMgr.init()
     }
 
     static clear(){
@@ -209,17 +218,22 @@ export default class App extends BaseClass{
         App.ui.updateNodeWidget(node)
     }
 
-    static clearInstance(_class:any){
-        _class._instance = null
+    static clearInstance(_Class:any){
+        _Class.clearInstance()
     }
     
     //单例
-    static getInstance(_class:any){
-        if( _class._instance){
-            return _class._instance
+    static getInstance(_Class:any){
+        if( _Class._instance){
+            return _Class._instance
         }else{
-            let instance = new _class(_class);
+            let instance = new _Class(_Class);
             return instance
         }
     }
+
+    hotUpdateCheck (cb:Function) {        
+        //先不加进度条，就一个文本。
+        App.dataMgr.tryLoadAllTable(cb);
+    };
 }

@@ -30,7 +30,7 @@ export default class Building extends BoxBase {
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
                 node.parent = parent;
                 node.position = viewPos;
-                self.bindView(node.getComponent(UIBuilding));
+                self.bindUI(node.getComponent(UIBuilding));
             }
         })
     }
