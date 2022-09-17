@@ -14,7 +14,6 @@ import TimeMgr from "./manager/TimeMgr";
 import DataMgr from "./manager/DataMgr";
 import LoginMgr from "./manager/LoginMgr";
 import SoundMgr from "./manager/SoundMgr";
-import SceneBase from "./zero/SceneBase";
 import BaseClass from "./zero/BaseClass";
 import AppView from "./AppView";
 
@@ -106,7 +105,7 @@ export default class App extends BaseClass{
         App.game = {};
 
         //需要初始化的模块
-        App.moduleMgr.init()
+        App.moduleMgr.init()   
     }
 
     static clear(){

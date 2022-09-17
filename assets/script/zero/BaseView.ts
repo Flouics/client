@@ -12,7 +12,7 @@ export default class BaseView extends BaseUI {
     _objFlags: number;
     proxys:Proxy[] = [];
 
-    onLoad(ui?:BaseUI) {
+    onLoad() {
 
     }
 
@@ -22,18 +22,18 @@ export default class BaseView extends BaseUI {
     hide() {
 
     }
-    onEnable(ui?:BaseUI) {
+    onEnable() {
     }
 
-    onClose(ui?:BaseUI) {
+    onClose() {
 
     }
 
-    onDisable(ui?:BaseUI) {
+    onDisable() {
         this.offMsg();
     }
 
-    onDestroy(ui?:BaseUI) {
+    onDestroy() {
         this.offMsg();
     }
 
