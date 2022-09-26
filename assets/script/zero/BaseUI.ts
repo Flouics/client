@@ -8,9 +8,16 @@ var global = window;
 export default class BaseUI extends cc.Component {
     _bindData: { [key: string]: any } = {};
     _baseUrl: string = "";
-    _logicObj: BaseView = null;
-    bindUI(baseView: BaseView) {
-        this._logicObj = baseView     
+    _logicObj: BoxBase = null;
+    init(){
+        
+    }
+    getId(){        
+        return this.uuid
+    }
+
+    bindBox(box: BoxBase) {
+        this._logicObj = box     
     }
     setBaseUrl(baseUrl:string){
         this._baseUrl = baseUrl;        

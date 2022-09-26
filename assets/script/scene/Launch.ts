@@ -1,9 +1,10 @@
+import App from "../App";
 import SceneBase from "../zero/SceneBase";
 
 var global = window;
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class App extends SceneBase{
+export default class Launch extends SceneBase{
 
     @property(cc.Node)
     nd_login: cc.Node = null;
@@ -11,7 +12,6 @@ export default class App extends SceneBase{
     lb_version: cc.Label = null;
 
     loadEvents:{[key:string]:any} = {}
-
 
     // use this for initialization
     onLoad () {
@@ -22,7 +22,6 @@ export default class App extends SceneBase{
         super.onEnable();
         this.nd_login.active = false;
         this.setVersion();
-        this.hotUpdateCheck();
     };
 
     hotUpdateCheck () {
@@ -35,6 +34,7 @@ export default class App extends SceneBase{
     };
 
     start () {
+        this.hotUpdateCheck();
         this.preLoad();
     };
 
@@ -67,9 +67,5 @@ export default class App extends SceneBase{
         if (!!isCmp) {
             App.sceneMgr.loadScene('game');
         }
-    };
-
-    onClickRankInfo () {
-        App.extension.openFaceBookRankInfo();
     };
 };

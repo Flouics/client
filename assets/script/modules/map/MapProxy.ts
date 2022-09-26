@@ -37,7 +37,6 @@ export default class MapProxy extends Proxy {
 
     //方法
     init(){
-        MapProxy._instance = this;
         this.monsterMgr = MonsterMgr.getInstance(MonsterMgr);
         this.heroMgr = HeroMgr.getInstance(MonsterMgr);
         this.towerMgr = TowerMgr.getInstance(MonsterMgr);

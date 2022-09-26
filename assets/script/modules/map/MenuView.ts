@@ -5,6 +5,8 @@ import MapProxy from "./MapProxy";
 import ToolKit from "../../utils/ToolKit";
 import MapMainView from "./MapMainView";
 import BaseView from "../../zero/BaseView";
+import App from "../../App";
+import BaseUI from "../../zero/BaseUI";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,8 +18,9 @@ export default class MenuView extends BaseView {
     tgBuild:cc.Toggle = null;
     @property(cc.Toggle)
     tgDig:cc.Toggle = null;
+    
     onLoad(){
-        this.mapProxy = ModuleMgr.getInstance(ModuleMgr).getProxy("map") as MapProxy;
+        this.mapProxy = App.moduleMgr.getProxy("map") as MapProxy;
         this.proxys = [this.mapProxy];
     }
 

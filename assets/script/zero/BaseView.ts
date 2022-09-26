@@ -6,25 +6,13 @@ import BaseUI from "./BaseUI";
 const { ccclass, property } = cc._decorator;
 var global = window;
 @ccclass
-export default class BaseView extends BaseClass {
+export default class BaseView extends BaseUI {
     _httpEvents: Object[] = [];
     _socketEvents: Object[] = [];
     _objFlags: number;
-    proxys:Proxy[] = []
-    ui:BaseUI
-    node:cc.Node
-    bindView(ui:BaseUI){
-        this.ui = ui;
-        this.node = ui.node;
-        this.ui.bindUI(this);
-    }
-    updateUI() {
-        if(this.ui){
-            this.ui.updateUI()
-        }
-    }
+    proxys:Proxy[] = [];
 
-    onLoad(ui?:BaseUI) {
+    onLoad() {
 
     }
 
@@ -34,20 +22,19 @@ export default class BaseView extends BaseClass {
     hide() {
 
     }
-    onEnable(ui?:BaseUI) {
+    onEnable() {
     }
 
-    onClose(ui?:BaseUI) {
+    onClose() {
 
     }
 
-    onDisable(ui?:BaseUI) {
+    onDisable() {
         this.offMsg();
     }
 
-    onDestroy(ui?:BaseUI) {
+    onDestroy() {
         this.offMsg();
-        this.ui = null
     }
 
     onMsg() {
@@ -106,16 +93,6 @@ export default class BaseView extends BaseClass {
         this.proxys.forEach((proxy) => {
             proxy.unbindView(this)
         })
-    }
-    schedule(callback: Function, interval?: number, repeat?: number, delay?: number){
-        if (this.ui){
-            return this.ui.schedule(callback, interval, repeat, delay)
-        }        
-    }
-    unschedule(callback: Function){
-        if (this.ui){
-            return this.ui.unschedule(callback)
-        }        
     }
     update(dt:number){
         //this.updateUI();  主动刷新
