@@ -2,7 +2,7 @@
  * 用户数据
  */
 
-import BaseProxy from "../base/Proxy";
+import Proxy from "../base/Proxy";
 import Block from "../../logic/Block";
 import Building from "../../logic/Building";
 import DigTask from "../../logic/task/DigTask";
@@ -15,7 +15,7 @@ import TowerMgr from "../../manager/TowerMgr";
 import BulletMgr from "../../manager/BulletMgr";
 import { serialize } from "../../utils/Decorator";
 import DBMgr from "../../manager/DBMgr";
-export default class MapProxy extends BaseProxy {
+export default class MapProxy extends Proxy {
     attrs:{[key:string]:any} = {} 
     @serialize()
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
@@ -37,7 +37,6 @@ export default class MapProxy extends BaseProxy {
 
     //方法
     init(){
-        super.init();
         MapProxy._instance = this;
         this.monsterMgr = MonsterMgr.getInstance(MonsterMgr);
         this.heroMgr = HeroMgr.getInstance(MonsterMgr);
@@ -78,16 +77,6 @@ export default class MapProxy extends BaseProxy {
     shiftDigTask(){
         var task = this.digTask.shift()
         return task;
-    }
-
-    dumpToDb(){
-        DBMgr.getInstance(DBMgr).setItem(this._classDbKey,this.serialize())
-    }
-    reloadFromDb(){
-        var json = DBMgr.getInstance(DBMgr).getItem(this._classDbKey);
-        if(json){
-            this.unserialize(json);
-        }
     }
 };
 

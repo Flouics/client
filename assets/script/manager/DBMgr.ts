@@ -1,3 +1,5 @@
+import App from "../App";
+import PlayerProxy from "../modules/player/PlayerProxy";
 import BaseClass from "../zero/BaseClass";
 
 var localStorageEnum = {
@@ -96,7 +98,7 @@ export default class DBMgr extends BaseClass {
 
     //防止不同用户之间用户数据冲突
     getKey(key: string) {
-        var uid = App.userData.uid || 'someone';
+        var uid = PlayerProxy.getInstance(PlayerProxy).userData.uid || 'someone';
         var key_prefix = uid.slice(0, 7);
         return key_prefix + key;
     };
