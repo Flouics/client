@@ -1,3 +1,4 @@
+import App from "../App";
 import BaseWin from "../zero/BaseWin";
 
 const {ccclass, property} = cc._decorator;
@@ -31,6 +32,7 @@ export default class Tips extends BaseWin {
         var nowTimestamp = new Date().getTime();
         if (nowTimestamp > this.closeTime) {
             this.onClose();
+            App.windowMgr.closeUI(this);
         }
     }
 }

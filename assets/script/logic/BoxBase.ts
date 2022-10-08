@@ -30,6 +30,9 @@ export default class BoxBase extends BaseClass {
     ui:BaseUI = null;
 
     bindUI(ui:BaseUI){
+        if (ui == null) {
+            return
+        }
         this.ui = ui;
         this.node = ui.node;
         this.ui.bindBox(this);
