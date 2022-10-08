@@ -160,4 +160,8 @@ export default class DataMgr extends BaseClass {
     getTable(filename: string) {
         return this.dataPool[filename];
     };
+    
+    static findById(filename:string,id: number | string){
+        return DataMgr.getInstance(DataMgr).getTable(filename).findById(id);
+    }
 };

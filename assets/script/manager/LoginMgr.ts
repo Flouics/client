@@ -1,3 +1,4 @@
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
 
 var global = window;
@@ -37,7 +38,7 @@ export default class LoginMgr extends BaseClass {
 
     startHttpReq() {
         this._req_list.forEach(function (protoObj) {
-            App.httpMgr.sendMessage(protoObj.cmd, protoObj.data);
+            App.httpMgr.post(protoObj.cmd, protoObj.data);
         });
     };
 
