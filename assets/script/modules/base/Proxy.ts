@@ -7,6 +7,7 @@ export default class Proxy extends BaseClass {
     uiMap:{[key:string]:any} = {};
     attrs:{[key:string]:any} = {};
     app:App;
+    isDump:true;
     constructor(_class:any){       
         super(_class);
         this.app = App.getInstance(App);
@@ -37,11 +38,25 @@ export default class Proxy extends BaseClass {
         }
     }
 
+    getDbKey(){        
+        var playerProxy = App.moduleMgr.getProxy("player");
+        var userId = playerProxy.uuid;
+        return this._classDbKey + "_" + userId
+    }
+
     dumpToDb(){
-        DBMgr.getInstance(DBMgr).setItem(this._classDbKey,this.serialize())
+        if (!this.isDump) {
+            return
+        }
+        var key = this.getDbKey();
+        DBMgr.getInstance(DBMgr).setItem(key,this.serialize());
     }
     reloadFromDb(){
-        var json = DBMgr.getInstance(DBMgr).getItem(this._classDbKey);
+        if (!this.isDump) {
+            return
+        }
+        var key = this.getDbKey();
+        var json = DBMgr.getInstance(DBMgr).getItem(key);
         if(json){
             this.unserialize(json);
         }

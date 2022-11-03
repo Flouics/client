@@ -12,7 +12,7 @@ export default class BaseClass {
             _class._instance = this;         //单例
         }
         this._classId = UUID.gen(16);
-        this._classDbKey = this.getClassName() + this._classId;
+        this._classDbKey = this.getClassName();
     }
 
     public get className() : string {

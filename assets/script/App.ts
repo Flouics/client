@@ -16,6 +16,7 @@ import LoginMgr from "./manager/LoginMgr";
 import SoundMgr from "./manager/SoundMgr";
 import BaseClass from "./zero/BaseClass";
 import AppView from "./AppView";
+import TouchUtils from "./utils/TouchUtils";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -105,7 +106,10 @@ export default class App extends BaseClass{
         App.game = {};
 
         //需要初始化的模块
-        App.moduleMgr.init()   
+        App.moduleMgr.init();  
+        
+        //重新加载数据
+        App.reloadFromDb();
     }
 
     static clear(){
@@ -124,7 +128,6 @@ export default class App extends BaseClass{
         App.clearInstance(LoginMgr);
         App.clearInstance(SoundMgr);
     }
-
 
     static onMsg () {
         //action管理器的问题。
@@ -231,8 +234,16 @@ export default class App extends BaseClass{
         }
     }
 
-    hotUpdateCheck (cb:Function) {        
+    static hotUpdateCheck (cb:Function) {        
         //先不加进度条，就一个文本。
         App.dataMgr.tryLoadAllTable(cb);
     };
+
+    static dumpToDb(){
+        App.moduleMgr.dumpToDb()
+    }
+
+    static reloadFromDb(){
+        App.moduleMgr.reloadFromDb()
+    }
 }

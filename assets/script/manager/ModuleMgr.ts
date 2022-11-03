@@ -39,6 +39,24 @@ export default class ModuleMgr extends BaseClass{
         }
         mod.command[funcName](params)
     };
+
+    dumpToDb(){
+        for (const key in ModuleMgr._modules) {
+            if (Object.prototype.hasOwnProperty.call(ModuleMgr._modules, key)) {
+                var mod = ModuleMgr._modules[key];
+                mod.proxy.dumpToDb();
+            }
+        }
+    }
+
+    reloadFromDb(){
+        for (const key in ModuleMgr._modules) {
+            if (Object.prototype.hasOwnProperty.call(ModuleMgr._modules, key)) {
+                var mod = ModuleMgr._modules[key];
+                mod.proxy.reloadFromDb();
+            }
+        }
+    }
 };
 
 

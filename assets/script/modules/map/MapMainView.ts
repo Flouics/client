@@ -99,7 +99,7 @@ export default class MapMainView extends BaseView {
     }
     initMonsterEntryPos() {
         this.monsterEntryPos = cc.v2(-10, 10);
-        this.getBlockByPos(this.monsterEntryPos).value = Block.BLOCK_VALUE_ENUM.EMPTY;
+        this.getBlockByPos(this.monsterEntryPos).value = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
     }
     initBlockSize(size: cc.Size) {
         this._blockSize = size;
