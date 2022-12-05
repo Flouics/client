@@ -21,7 +21,7 @@ export default class MenuView extends BaseView {
     
     onLoad(){
         this.mapProxy = App.moduleMgr.getProxy("map") as MapProxy;
-        this.proxys = [this.mapProxy];
+        this.proxys = ["map"];
     }
 
     onClickBuild(){

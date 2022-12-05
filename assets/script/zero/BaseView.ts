@@ -10,7 +10,7 @@ export default class BaseView extends BaseUI {
     _httpEvents: Object[] = [];
     _socketEvents: Object[] = [];
     _objFlags: number;
-    proxys:Proxy[] = [];
+    proxys:Proxy|String[] = [];
 
     onLoad() {
 
@@ -23,6 +23,8 @@ export default class BaseView extends BaseUI {
 
     }
     onEnable() {
+        this.bindProxys();
+        this.onMsg();
     }
 
     onClose() {
@@ -30,7 +32,8 @@ export default class BaseView extends BaseUI {
     }
 
     onDisable() {
-        this.offMsg();
+        this.unbindProxys();
+        this.offMsg();        
     }
 
     onDestroy() {
@@ -86,11 +89,17 @@ export default class BaseView extends BaseUI {
     }
     bindProxys() {
         this.proxys.forEach((proxy) => {
+            if (typeof proxy  == 'string' ){
+                proxy = App.moduleMgr.getProxy(proxy)
+            }
             proxy.bindView(this)
         })
     }
     unbindProxys() {
         this.proxys.forEach((proxy) => {
+            if (typeof proxy  == 'string' ){
+                proxy = App.moduleMgr.getProxy(proxy)
+            }
             proxy.unbindView(this)
         })
     }

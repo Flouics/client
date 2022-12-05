@@ -52,49 +52,6 @@ class Data {
     };
 };
 
-/**
- * map the array data to object
- *
- * @param 
- * @param 
- * @return 
- * @api private
- */
-function mapData(fields: any, item: any) {
-    var obj = {};
-    for (var k in fields) {
-        var va = item[fields[k]];
-        // 解析成列表
-        if (k.endsWith("List")) {
-            if (va.length == 0) {
-                va = [];
-            }
-            else {
-                va = va.split(';');
-                var temp = [];
-                for (var index = 0; index < va.length; index++) {
-                    var value = va[index];
-                    if (App.toolKit.isNum(value)) {
-                        value = Number(value);
-                    }
-                    temp.push(value);
-                }
-                va = temp;
-            }
-        }
-        else {
-            if (App.toolKit.isNum(va)) {
-                va = Number(va);
-            }
-            else {
-                va = va.replace(/\\n|\\r/g, '\n');
-            }
-        }
-        obj[k] = va;
-    }
-    return obj;
-};
-
 export default class DataMgr extends BaseClass {
     hasLoad: boolean = false;
     curLoad: number = 0;
@@ -102,6 +59,7 @@ export default class DataMgr extends BaseClass {
     loadTexts = [
         'config'
         , 'bullet_type'
+        , 'building'
     ];
 
     callback: Function;
@@ -129,10 +87,10 @@ export default class DataMgr extends BaseClass {
             self.onLoadTable(filename);
             return;
         }
-        cc.loader.loadRes('data/' + filename + '', function (err: any, textAsset: any) {
+        cc.loader.loadRes('data/' + filename + '.json', function (err: any, textAsset: any) {
             if (!err) {
                 try {
-                    let mapData = eval(textAsset.text)
+                    let mapData = textAsset.json
                     for (const key in mapData) {
                         if (Object.prototype.hasOwnProperty.call(mapData, key)) {
                             const element = mapData[key];

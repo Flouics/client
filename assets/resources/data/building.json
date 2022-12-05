@@ -1,0 +1,44 @@
+{"building": [
+    {
+        "name": "基地",
+        "icon": "icon",
+        "data1": 0,
+        "areaJson": [[
+            0,
+            0
+        ]],
+        "_id": 0,
+        "id": 100101,
+        "power": 1,
+        "type": 1001,
+        "life": 100
+    },
+    {
+        "name": "金矿",
+        "icon": "icon",
+        "data1": 0,
+        "areaJson": [[
+            0,
+            0
+        ]],
+        "_id": 1,
+        "id": 100201,
+        "power": 1,
+        "type": 1002,
+        "life": 100
+    },
+    {
+        "name": "基础炮塔",
+        "icon": "icon",
+        "data1": 0,
+        "areaJson": [[
+            0,
+            0
+        ]],
+        "_id": 2,
+        "id": 200101,
+        "power": 1,
+        "type": 2001,
+        "life": 100
+    }
+]}

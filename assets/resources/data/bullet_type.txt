@@ -1,5 +1,0 @@
-﻿ID	类型	攻击类型	名字	图片	力度	血量	移动速度	冷却时间	一次发射数量	额外参数
-id	type	shootType	name	icon	power	life	speed	coldown	per_shoot_num	data1
-100101	1001	1	基础	icon	1	1	800	0.3	1	0
-100201	1002	1	对地	icon	1	1	800	0.3	1	0
-100301	1003	2	对人	icon	1	1	800	0.3	1	0
