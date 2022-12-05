@@ -7,27 +7,17 @@ import BaseClass from "../zero/BaseClass";
 var global = window;
 class Data {
     data: { [key: string]: any } = {};
+    list:any[] = [];
     ids: any[] = [];
-    constructor(dataString: string) {
-        var data = dataString.split(/\r?\n/);
-        var fields = {};
-        data[1].split('\t').forEach(function (i: any, k: any) {
-            fields[i] = k;
-        });
-        data.splice(0, 2);
-
-        var result = {}, ids = [], item: any;
-        data.forEach(function (k: any) {
-            if (k.trim() == '') {
-                return;
+    constructor(data:Object) {
+        for (const key in data) {
+            if (Object.prototype.hasOwnProperty.call(data, key)) {
+                const element = data[key];
+                this.data[element.id] = data
+                this.list.push(element)
+                this.ids.push(element.id)
             }
-            k = k.split('\t');
-            item = mapData(fields, k);
-            result[item.id] = item;
-            ids.push(item.id);
-        });
-        this.data = result;
-        this.ids = ids;
+        }
     }
 
     findBy(attr: any, value: any) {
@@ -141,8 +131,18 @@ export default class DataMgr extends BaseClass {
         }
         cc.loader.loadRes('data/' + filename + '', function (err: any, textAsset: any) {
             if (!err) {
-                self.dataPool[filename] = new Data(textAsset.text);
-                self.onLoadTable(filename);
+                try {
+                    let mapData = eval(textAsset.text)
+                    for (const key in mapData) {
+                        if (Object.prototype.hasOwnProperty.call(mapData, key)) {
+                            const element = mapData[key];
+                            self.dataPool[key] = new Data(element);
+                        }
+                    }
+                    self.onLoadTable(filename);
+                } catch (error) {
+                    cc.error("data load failed by name->",filename)
+                }                
             }
         });
     };
