@@ -399,7 +399,7 @@ export default class ToolKit extends BaseClass{
                 cb(startValue);
             }
         };
-        label.schedule(label.accumulatorFunction, 0.1, cc.macro.REPEAT_FOREVER);
+        label.schedule(label.accumulatorFunction, 0.1, cc.macro.REPEAT_FOREVE);
     };
 
     //加载图片
@@ -486,5 +486,17 @@ export default class ToolKit extends BaseClass{
     //剪贴板功能 浏览器模式 Sari需要用这种
     copyTextToClipboardBrower_2(content:string) {
         return false
+    };
+
+    empty(value:any){
+        if(!!value){
+            return false
+        }
+        if(typeof(value) == "string"){
+            return value == ""
+        }else{
+            return !value
+        }
+
     };
 };

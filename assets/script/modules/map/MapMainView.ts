@@ -67,14 +67,15 @@ export default class MapMainView extends BaseView {
     heroMgr: HeroMgr = null;
     towerMgr:TowerMgr = null;
     bulletMgr:BulletMgr = null;
-    monsterEntryPos: cc.Vec2 = cc.v2(0, 0)
+    monsterEntryPos: cc.Vec2 = cc.v2(0, 0);
+    moduleName = "map";
 
     // use this for initialization
     onLoad() {
+        super.onLoad();
         App.game = App.game || {}
         App.game.temp = this;
-        this.mapProxy = App.moduleMgr.getProxy("map");
-        this.proxys = [this.mapProxy];
+        this.mapProxy = this.proxy as MapProxy;
         this.blockMap = this.mapProxy.blockMap;
         this.buldingMap = this.mapProxy.buldingMap;        
         this.initMap();
@@ -210,7 +211,8 @@ export default class MapMainView extends BaseView {
         if (this.operation == OPERATION_ENUM.DIG) {
             var block = this.getBlockByPos(tilePos);
             if (block.value == Block.BLOCK_VALUE_ENUM.BLOCK) {
-                this.mapProxy.pushTask(new DigTask(tilePos.x, tilePos.y))
+                //this.mapProxy.pushTask(new DigTask(tilePos.x, tilePos.y))
+                this.command("pushTask",new DigTask(tilePos.x, tilePos.y));
             }
             return;
         }
@@ -220,7 +222,6 @@ export default class MapMainView extends BaseView {
         }
     }
     switchOperation(value: number) {        
-        App.toolKit.showTip("切换操作-> " + value);
         this.operation = value;
     }
     dealAllBlocks(dealFunc: Function) {

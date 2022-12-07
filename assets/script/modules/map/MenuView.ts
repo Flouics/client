@@ -7,6 +7,7 @@ import MapMainView from "./MapMainView";
 import BaseView from "../../zero/BaseView";
 import App from "../../App";
 import BaseUI from "../../zero/BaseUI";
+import TouchUtils from "../../utils/TouchUtils";
 
 const {ccclass, property} = cc._decorator;
 
@@ -18,25 +19,24 @@ export default class MenuView extends BaseView {
     tgBuild:cc.Toggle = null;
     @property(cc.Toggle)
     tgDig:cc.Toggle = null;
+    moduleName = "map";
     
     onLoad(){
-        this.mapProxy = App.moduleMgr.getProxy("map") as MapProxy;
-        this.proxys = ["map"];
+        super.onLoad()
+        this.mapProxy = this.proxy as MapProxy;
     }
 
     onClickBuild(){
         //this._clickBuilding = new Tower(null);
-    }
-    onMapBuild(){
-        ToolKit.getInstance(ToolKit).showTip("onMapBuild")
+        var value = this.tgDig.isChecked ? MapMainView.OPERATION_ENUM.BUILD : MapMainView.OPERATION_ENUM.COMMON;
+        this.mapProxy.updateView("switchOperation",value);
+        this.command("onClickBuild")
     }
 
     onClickDig(){
         var value = this.tgDig.isChecked ? MapMainView.OPERATION_ENUM.DIG : MapMainView.OPERATION_ENUM.COMMON;
         this.mapProxy.updateView("switchOperation",value);
-    }
-    onMapDig(){
-        ToolKit.getInstance(ToolKit).showTip("onMapDig")
+        this.command("onClickDig")
     }
 
     touchMove(){

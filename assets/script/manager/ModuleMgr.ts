@@ -20,9 +20,7 @@ export default class ModuleMgr extends BaseClass{
         this.loadModule("player",new PlayerInit())
         this.loadModule("map",new MapInit())        
     };
-    load(moduleName:string){
-        let resUrl = "../modules/" + moduleName + "/" + moduleName + "Init";        
-    };
+
     loadModule(moduleName:string,moduleInit:Init){
         ModuleMgr._modules[moduleName] = moduleInit;
     };
@@ -33,11 +31,11 @@ export default class ModuleMgr extends BaseClass{
             return;
         }
 
-        if(!mod.command[funcName]){
+        if(!mod.cmd[funcName]){
             cc.error("this func has not exist by " + funcName + " in module " + moduleName);
             return;
         }
-        mod.command[funcName](params)
+        mod.cmd[funcName](params)
     };
 
     dumpToDb(){

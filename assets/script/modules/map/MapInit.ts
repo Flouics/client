@@ -5,6 +5,7 @@ var global = window;
 export default class MapInit extends Init {
     proxy:Proxy;
     cmd:Command;
+    
     init(){
         this.proxy = new Proxy(Proxy);
         this.cmd = new Command();

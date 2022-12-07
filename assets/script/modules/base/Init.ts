@@ -6,11 +6,16 @@ export default class Init {
     cmd:Command;
     constructor(){
         this.init()
+        this.initProxyCmd()
     }
     init(){
         this.proxy = new Proxy(Proxy);
         this.cmd = new Command();
         //监听服务端消息
         
+    }
+    initProxyCmd(){
+        this.proxy.cmd = this.cmd;
+        this.cmd.proxy = this.proxy;
     }
 }

@@ -10,9 +10,21 @@ export default class BaseView extends BaseUI {
     _httpEvents: Object[] = [];
     _socketEvents: Object[] = [];
     _objFlags: number;
-    proxys:Proxy|String[] = [];
+    moduleName:string = "";
+    proxys:any[] = [];
+    proxy:Proxy;
 
     onLoad() {
+        this.init();
+    }
+    init() {
+        super.init();
+        if (!App.toolKit.empty(this.moduleName)){
+            this.proxy = App.moduleMgr.getProxy(this.moduleName);
+            if(this.proxys.indexOf(this.proxy) == -1){
+                this.proxys.push(this.proxy)
+            }            
+        } 
 
     }
 
@@ -103,7 +115,14 @@ export default class BaseView extends BaseUI {
             proxy.unbindView(this)
         })
     }
+
     update(dt:number){
         //this.updateUI();  主动刷新
+    }
+
+    command(funcName:string,params?:any){
+        if (!App.toolKit.empty(this.moduleName){
+            App.moduleMgr.command(this.moduleName,funcName,params)
+        }
     }
 }

@@ -2,11 +2,13 @@ import App from "../../App";
 import DBMgr from "../../manager/DBMgr";
 import BaseClass from "../../zero/BaseClass";
 import BaseView from "../../zero/BaseView";
+import Command from "./Command";
 
 export default class Proxy extends BaseClass {
     uiMap:{[key:string]:any} = {};
     attrs:{[key:string]:any} = {};
     app:App;
+    cmd:Command;
     isDump:true;
     constructor(_class:any){       
         super(_class);
