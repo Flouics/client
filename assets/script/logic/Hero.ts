@@ -1,14 +1,13 @@
 import MapMainView from "../modules/map/MapMainView";
 import MapUtils from "./MapUtils";
-import UIHero from "../modules/map/UIHero";
 import Live from "./Live";
 import HeroMgr from "../manager/HeroMgr";
-import MapProxy from "../modules/map/MapProxy";
 import TaskBase from "./TaskBase";
 import ToolKit from "../utils/ToolKit";
 import DigTask from "./task/DigTask";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
+import App from "../App";
 
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
@@ -31,8 +30,13 @@ export default class Hero extends Live {
         switch (stateId) {
             case StateMachine.STATE_ENUM.IDLE:               
                 break;
+            case StateMachine.STATE_ENUM.DIG:   
+                this.digBlock(this.task);                  
+                break;
+            case StateMachine.STATE_ENUM.BUILD:                     
+                break;
             case StateMachine.STATE_ENUM.MOVING:                     
-                break
+                //break;
             default:
                 super.enterState(params)
                 break;
@@ -81,7 +85,8 @@ export default class Hero extends Live {
     digBlock(task:TaskBase){
         ToolKit.getInstance(ToolKit).showTip("执行挖掘的动作。");
         var pos = (task as DigTask).digPos
-        this.mapMainView.digBlock(pos)
+        App.moduleMgr.command("map","digBlock",pos)
+        //this.mapMainView.digBlock(pos)
     }
     checkAction():boolean{
         // 检查目标行为，如果有可执行目标就执行。
@@ -89,8 +94,8 @@ export default class Hero extends Live {
         
         if(this.task){       
             if(this.task instanceof DigTask){
-                if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.digPos)){
-                    this.digBlock(this.task);
+                if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.digPos)){                    
+                    this.enterState(StateMachine.STATE_ENUM.DIG);
                     return true;
                 }                
             }         

@@ -23,5 +23,9 @@ export default class MapCommand extends BaseCommand{
     pushTask(task:DigTask){
         this.proxy.pushTask(task)
     }
+
+    digBlock(pos:cc.Vec2){
+        this.proxy.updateView("digBlock",pos);
+    }
     
 }

@@ -3,9 +3,11 @@ import State from "./State";
 
 var STATE_ENUM = {
     NONE:0,
-    IDLE:1,
+    IDLE:1, 
     MOVING:2,
     ATTACK:3,
+    DIG:4,
+    BUILD:5,
 }
 
 export default class StateMachine {
