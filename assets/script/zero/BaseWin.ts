@@ -40,8 +40,7 @@ export default class BaseWin extends BaseUI{
             //App.windowMgr.control.closeAllOpen();
         }
 
-        this.node.on('bgClick', this.onBgClick.bind(this));
-
+        this.node.on(cc.Node.EventType.TOUCH_END, this.onBgClick.bind(this));
     }
 
     _baseInit () {
@@ -66,10 +65,6 @@ export default class BaseWin extends BaseUI{
     }
 
     onBgClick (event:any) {
-        if (this._isCanClose) {
-            this.close();
-        }
-
         event.stopPropagation();
     }
 

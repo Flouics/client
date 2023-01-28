@@ -10,7 +10,7 @@ export default class PlayerProxy extends BaseProxy {
     init(){
         this.attrs = {
             aid : 0        
-           ,uid : ""
+           ,uid : "123456"
            ,gender : 0    //性别
            ,gold : 0      //金币
            ,diamond : 0   //钻石

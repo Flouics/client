@@ -24,7 +24,7 @@ export default class ModuleMgr extends BaseClass{
     loadModule(moduleName:string,moduleInit:Init){
         ModuleMgr._modules[moduleName] = moduleInit;
     };
-    command(moduleName:string,funcName:string,params:any){
+    command(moduleName:string,funcName:string,params?:any){
         let mod = ModuleMgr._modules[moduleName];
         if(!mod){
             cc.error("this module has not exist by " + moduleName);

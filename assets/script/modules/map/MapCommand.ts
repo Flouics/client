@@ -9,7 +9,7 @@ import MapProxy from "./MapProxy";
 export default class MapCommand extends BaseCommand{
     proxy:MapProxy;
     showMapView(params:any){
-       let proxy = ModuleMgr.getInstance(ModuleMgr).getProxy("map")
+        let proxy = ModuleMgr.getInstance(ModuleMgr).getProxy("map")
         WindowMgr.getInstance(WindowMgr).open("");
     }
 
@@ -28,4 +28,7 @@ export default class MapCommand extends BaseCommand{
         this.proxy.updateView("digBlock",pos);
     }
     
+    reloadMapView(){
+        this.proxy.updateView("reloadMapView");
+    }
 }

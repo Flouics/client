@@ -10,11 +10,11 @@ export default class Tips extends BaseWin {
     @property({
         type:cc.Integer
     })
-    num_tipShowTime = 1500;
-    index = 499;
+    num_tipShowTime:number = 1500;
+    index:number = 499;
 
-    tipsList = [];
-    closeTime = 0;
+    tipsList:any[] = [];
+    closeTime:number = 0;
     
     onLoad () {
         super.onLoad()

@@ -6,6 +6,7 @@ import MapProxy from "../modules/map/MapProxy";
 import { serialize } from "../utils/Decorator";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
+import App from "../App";
 
 export default class Live extends BoxBase {
     @serialize()
@@ -37,7 +38,9 @@ export default class Live extends BoxBase {
             case StateMachine.STATE_ENUM.IDLE:
                 break;
             case StateMachine.STATE_ENUM.MOVING:
-                this.moveStep(params.toPos);
+                if(params && params.toPos){
+                    this.moveStep(params.toPos);
+                }                
                 break;
             case StateMachine.STATE_ENUM.ATTACK:
                break;
@@ -151,5 +154,7 @@ export default class Live extends BoxBase {
         super.destory();
         this.node.removeFromParent();
     }
-    update(){}
+    update(){
+        
+    }
 }

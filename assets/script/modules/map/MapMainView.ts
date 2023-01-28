@@ -59,7 +59,7 @@ export default class MapMainView extends BaseView {
     _blockSize: cc.Size = null;
     _blockSizeVec2: cc.Vec2 = null;         //size 转成矢量，方便转化真实尺寸。
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
-    buldingMap: { [key: number]: Building } = {}
+    buildingMap: { [key: number]: Building } = {}
 
     testHero: Hero = null;
     headquarters: Headquarters = null;
@@ -77,7 +77,16 @@ export default class MapMainView extends BaseView {
         App.game.temp = this;
         this.mapProxy = this.proxy as MapProxy;
         this.blockMap = this.mapProxy.blockMap;
-        this.buldingMap = this.mapProxy.buldingMap;        
+        this.buildingMap = this.mapProxy.buildingMap;        
+        this.initMap();
+    }
+
+    reloadMapView(){
+        this.blockMap = this.mapProxy.blockMap;
+        this.buildingMap = this.mapProxy.buildingMap;    
+        this.monsterMgr.reset();
+        this.heroMgr.reset();
+        this.bulletMgr.reset();    
         this.initMap();
     }
 
@@ -151,19 +160,14 @@ export default class MapMainView extends BaseView {
         return this.getBlock(tilePos.x, tilePos.y);
     }
     getBlock(x: number, y: number) {
-        // Debug.tryObject(this.blockMap[x][y], "blockList out")
-        if (this.blockMap[x]) {
-            return this.blockMap[x][y];
-        } else {
-            return null
-        }
+        return this.mapProxy.getBlock(x,y);
     }
     initHeros() {
         let hero = this.heroMgr.create(2, 0);
         this.testHero = hero;
     }
     initMonsters() {
-        this.initMonsterEntryPos();
+        this.initMonsterEntryPos();        
         this.monsterMgr.createMultiple(2, this.monsterEntryPos.x, this.monsterEntryPos.y, (monster: Monster) => {
             monster.attackHeadquarters();
         });
@@ -180,7 +184,7 @@ export default class MapMainView extends BaseView {
     initBuildings() {
         let headquarters = new Headquarters(this);
         this.createBuilding(headquarters, cc.v2(0, 0));
-        this.buldingMap[headquarters.id] = headquarters;
+        this.buildingMap[headquarters.id] = headquarters;
         this.headquarters = headquarters;
     }
     checkBlock(pos: cc.Vec2) {
@@ -206,7 +210,7 @@ export default class MapMainView extends BaseView {
         //todo 角色的行为
         if (this.operation == OPERATION_ENUM.COMMON) {
             this.testHero.moveToPos(tilePos)
-            return
+            return;
         }
         if (this.operation == OPERATION_ENUM.DIG) {
             var block = this.getBlockByPos(tilePos);
@@ -216,7 +220,7 @@ export default class MapMainView extends BaseView {
             }
             return;
         }
-        if (this.operation == OPERATION_ENUM.COMMON) {
+        if (this.operation == OPERATION_ENUM.BUILD) {
             this.mapProxy.updateView("onMapBuild", { pos: tilePos })
             return
         }

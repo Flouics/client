@@ -61,7 +61,9 @@ export default class Bullet extends BoxBase {
     destory(){
         //--todo表现
         super.destory();
-        this.node.removeFromParent();
+        if(this.node){
+            this.node.removeFromParent();
+        }        
     }
 
     getDamage(){

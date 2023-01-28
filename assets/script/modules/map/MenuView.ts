@@ -42,4 +42,9 @@ export default class MenuView extends BaseView {
     touchMove(){
 
     }
+
+    onClickSetting(){
+        App.windowMgr.open(App.RES_WINDOW.setting, function (uiNode:cc.Node) {
+        });
+    }
 }

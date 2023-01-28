@@ -9,7 +9,7 @@ export default class Proxy extends BaseClass {
     attrs:{[key:string]:any} = {};
     app:App;
     cmd:Command;
-    isDump:true;
+    isDump:boolean = true;
     constructor(_class:any){       
         super(_class);
         this.app = App.getInstance(App);
@@ -51,7 +51,9 @@ export default class Proxy extends BaseClass {
             return
         }
         var key = this.getDbKey();
-        DBMgr.getInstance(DBMgr).setItem(key,this.serialize());
+        var json = this.serialize();
+        cc.log("dumpToDb",json)
+        DBMgr.getInstance(DBMgr).setItem(key,json);
     }
     reloadFromDb(){
         if (!this.isDump) {
@@ -60,6 +62,7 @@ export default class Proxy extends BaseClass {
         var key = this.getDbKey();
         var json = DBMgr.getInstance(DBMgr).getItem(key);
         if(json){
+            cc.log("reloadFromDb",json)
             this.unserialize(json);
         }
     }

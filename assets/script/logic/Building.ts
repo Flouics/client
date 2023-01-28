@@ -64,7 +64,9 @@ export default class Building extends BoxBase {
     }
     destory(){
         super.destory();
-        this.node.removeFromParent();
+        if(this.node){
+            this.node.removeFromParent();
+        }        
     }
     update(){
 

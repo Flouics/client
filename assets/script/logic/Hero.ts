@@ -47,7 +47,7 @@ export default class Hero extends Live {
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             case StateMachine.STATE_ENUM.IDLE:
-                this.fetchTask();
+                this.moveNext();
                 break;
             case StateMachine.STATE_ENUM.MOVING:               
                 //this.checkAction();
@@ -63,7 +63,16 @@ export default class Hero extends Live {
     }
 
     fetchTask(){
-        return this.fetchDigTask();
+        if(this.task){
+            this.checkAction();
+        }else{
+            return this.fetchDigTask();
+        }        
+    }
+
+    clearTask(){
+        this.task = null;
+        this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
     }
     fetchDigTask(){
         var task = this.mapProxy.shiftDigTask();
@@ -90,15 +99,22 @@ export default class Hero extends Live {
     }
     checkAction():boolean{
         // 检查目标行为，如果有可执行目标就执行。
-        // 子类就是需要处理具体行为。
-        
+        // 子类就是需要处理具体行为。        
         if(this.task){       
             if(this.task instanceof DigTask){
+                var digPos = this.task.digPos
+                var block = this.mapProxy.getBlock(digPos.x,digPos.y);
+                if(!block){
+                    this.clearTask();
+                    return false;
+                }
                 if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.digPos)){                    
                     this.enterState(StateMachine.STATE_ENUM.DIG);
                     return true;
-                }                
+                }      
             }         
+        }else{
+            this.fetchTask();
         }
         return false;
     }

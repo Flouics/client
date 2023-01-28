@@ -20,7 +20,7 @@ export default class MapProxy extends Proxy {
     @serialize()
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
     @serialize()
-    buldingMap: { [key: number]: Building } = {};
+    buildingMap: { [key: number]: Building } = {};
     @serialize()
     headquarters: Headquarters = null;
     @serialize()
@@ -76,6 +76,22 @@ export default class MapProxy extends Proxy {
     shiftDigTask(){
         var task = this.digTask.shift()
         return task;
+    }
+    getBlock(x: number, y: number) {
+        // Debug.tryObject(this.blockMap[x][y], "blockList out")
+        if (this.blockMap[x]) {
+            return this.blockMap[x][y];
+        } else {
+            return null
+        }
+    }
+    getBuilding(x: number, y: number) {
+        // Debug.tryObject(this.blockMap[x][y], "blockList out")
+        if (this.buildingMap[x]) {
+            return this.buildingMap[x][y];
+        } else {
+            return null
+        }
     }
 };
 

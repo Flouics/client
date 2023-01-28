@@ -69,6 +69,7 @@ export default class App extends BaseClass{
             loadingAm: "prefab/dialog/loadingAm",
             msgBox: "prefab/dialog/msgBox",
             tips: "prefab/dialog/tips",
+            setting:"prefab/dialog/setting"
         }
     }
 
@@ -239,11 +240,14 @@ export default class App extends BaseClass{
         App.dataMgr.tryLoadAllTable(cb);
     };
 
-    static dumpToDb(){
+    static dumpToDb(){       
         App.moduleMgr.dumpToDb()
+        cc.log("保存成功")
     }
 
     static reloadFromDb(){
-        App.moduleMgr.reloadFromDb()
+        App.moduleMgr.reloadFromDb();
+        App.moduleMgr.command("map","reloadMapView");
+        cc.log("加载成功")
     }
 }

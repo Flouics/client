@@ -7,6 +7,7 @@ import Headquarters from "./building/Headquarters";
 import Building from "./Building";
 import PoolMgr from "../manager/PoolMgr";
 import BoxBase from "./BoxBase";
+import StateMachine from "./stateMachine/StateMachine";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
     static _idIndex = 100000;
@@ -32,10 +33,11 @@ export default class Monster extends Live {
         this.target = target;
         this.moveToPos(nearByPos);
     }
+
     checkAction():boolean{
         if(this.target instanceof Building){
             if(this.checkCrossBuilding(this.target)){
-                MonsterMgr.getInstance(MonsterMgr).clear(this.id)
+                this.stateMachine.switchState(StateMachine.STATE_ENUM.ATTACK)
                 return true;
             }
         }     
@@ -51,7 +53,41 @@ export default class Monster extends Live {
         return !!isCross;
     }
 
+    //攻击 
+    onAtk() {
+        MonsterMgr.getInstance(MonsterMgr).clear(this.id)
+        return true;
+    }
+
+    enterState(params:any){
+        var stateId = this.stateMachine.state.id;
+        switch (stateId) {
+            default:
+                super.enterState(params)
+                break;
+        }
+    }
+    
+    onState(params:any){
+        var stateId = this.stateMachine.state.id;
+        switch (stateId) {
+            case StateMachine.STATE_ENUM.IDLE:                
+                this.moveNext();
+                break;
+            case StateMachine.STATE_ENUM.MOVING:                
+                super.onState(params);
+                this.checkAction();
+                break;
+            case StateMachine.STATE_ENUM.ATTACK:
+                this.onAtk();
+                break;
+            default:
+                super.onState(params)
+                break;
+        }
+    }
+
     update(){
-        
+        this.stateMachine.checkState()
     }
 }
