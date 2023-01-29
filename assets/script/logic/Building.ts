@@ -2,15 +2,21 @@ import MapMainView from "../modules/map/MapMainView";
 import MapUtils from "./MapUtils";
 import UIBuilding from "../modules/map/UIBuilding";
 import BoxBase from "./BoxBase";
+import { serialize } from "./../utils/Decorator";
 
 export default class Building extends BoxBase {
+    @serialize()
     type:number  = 0;
+    @serialize()
     area:cc.Vec2[] = [cc.v2(0,0)];
+    @serialize()
     realArea:cc.Vec2[] = [cc.v2(0,0)];   // 实际坐标系
     node: cc.Node = null; // 
     mapMainView: MapMainView = null;    //地图
     ui:UIBuilding = null
+    @serialize()
     static _idIndex = 1;
+    @serialize()
     _pb_url:string = "";    //不预先加载的原因是因为种类比较多，而且基本上不会复用。
     constructor(mapMainView: MapMainView) {
         super(Building);

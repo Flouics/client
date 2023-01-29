@@ -18,6 +18,10 @@ import DBMgr from "../../manager/DBMgr";
 export default class MapProxy extends Proxy {
     attrs:{[key:string]:any} = {} 
     @serialize()
+    margin_x: number = 10;
+    @serialize()
+    margin_y: number = 10;
+    @serialize()
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
     @serialize()
     buildingMap: { [key: number]: Building } = {};
@@ -77,7 +81,9 @@ export default class MapProxy extends Proxy {
         var task = this.digTask.shift()
         return task;
     }
-    getBlock(x: number, y: number) {
+    getBlock(x: number, y: number) {        
+        x = this.fixPosX(x);
+        y = this.fixPosY(y); 
         // Debug.tryObject(this.blockMap[x][y], "blockList out")
         if (this.blockMap[x]) {
             return this.blockMap[x][y];
@@ -85,13 +91,35 @@ export default class MapProxy extends Proxy {
             return null
         }
     }
-    getBuilding(x: number, y: number) {
+    getBuilding(x: number, y: number) {        
+        x = this.fixPosX(x);
+        y = this.fixPosY(y); 
         // Debug.tryObject(this.blockMap[x][y], "blockList out")
         if (this.buildingMap[x]) {
             return this.buildingMap[x][y];
         } else {
             return null
         }
+    }
+
+    fixPosX(x: number){
+        var num =  this.margin_x * 2 + 1
+        if(x < 0){
+            x = (x % num) + num;
+        }else if(x > num){
+            x = (x % num) - num;
+        }
+        return x;
+    }
+
+    fixPosY(y: number){
+        var num =  this.margin_y * 2 + 1
+        if(y < 0){
+            y = (y % num) + num;
+        }else if(y > num){
+            y = (y % num) - num;
+        }
+        return y;
     }
 };
 

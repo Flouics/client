@@ -14,8 +14,25 @@ export default class MapUtils {
     }
 
     static getTilePosByViewPos(viewPos: cc.Vec2) {
-        var x = Math.floor((viewPos.x + MapUtils.size.width / 2) / MapUtils.size.width);
-        var y = Math.floor((viewPos.y + MapUtils.size.height / 2) / MapUtils.size.height);
+        var size = new cc.Size(MapUtils.size.width / 2,MapUtils.size.height / 2)
+        var x = viewPos.x;
+        var y = viewPos.y;
+        if(x < -size.width || x > size.width){
+            if(x > 0){
+                x = (x % MapUtils.size.width) - MapUtils.size.width
+            }else{
+                x = (x % MapUtils.size.width) + MapUtils.size.width
+            }
+        }
+        if(y < -size.height || y > size.height){
+            if(y > 0){
+                y = (y % MapUtils.size.height) - MapUtils.size.height
+            }else{
+                y = (y % MapUtils.size.height) + MapUtils.size.height
+            }
+        }
+        x = Math.floor((x + size.width) / MapUtils.size.width);
+        y = Math.floor((y + size.height) / MapUtils.size.height);
         return cc.v2(x, y)
     }
 

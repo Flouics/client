@@ -3,7 +3,7 @@ import AsyncTaskMgr from "../../manager/AsyncTaskMgr";
 import Block from "../../logic/Block";
 import Hero from "../../logic/Hero";
 import TouchUtils from "../../utils/TouchUtils";
-import Map from "../../logic/MapUtils";
+import MapUtils from "../../logic/MapUtils";
 import ToolKit from "../../utils/ToolKit";
 import Debug from "../../utils/Debug";
 import Building from "../../logic/Building";
@@ -31,6 +31,7 @@ var OPERATION_ENUM = {
     DIG: 1,
     BUILD: 2,
 }
+var Math = Math;
 
 const { ccclass, property } = cc._decorator;
 
@@ -69,6 +70,8 @@ export default class MapMainView extends BaseView {
     bulletMgr:BulletMgr = null;
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0);
     moduleName = "map";
+    centerPos: cc.Vec2 = cc.v2(0, 0);
+    mapSize:cc.Size = new cc.Size(0,0);
 
     // use this for initialization
     onLoad() {
@@ -98,7 +101,9 @@ export default class MapMainView extends BaseView {
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);
-        this.bulletMgr.init(this);             
+        this.bulletMgr.init(this);
+        this.margin_x = this.mapProxy.margin_x;
+        this.margin_y = this.mapProxy.margin_y;             
         
         this.initBlocks();
         this.initBuildings();
@@ -119,14 +124,15 @@ export default class MapMainView extends BaseView {
         //方块数据
         let node = cc.instantiate(this.pb_block);
         this.initBlockSize(new cc.Size(node.width, node.height));
-        Map.initBlockSize(new cc.Size(node.width, node.height));
+        MapUtils.initBlockSize(new cc.Size(node.width, node.height));
+        this.mapSize = new cc.Size(
+            (this.margin_x * 2 + 1) * this._blockSize.width
+            , (this.margin_y * 2 + 1) * this._blockSize.height
+        );
         //touch触摸的尺寸。        
         let touchUtils = this.node.getComponent(TouchUtils);
         if (touchUtils) {
-            touchUtils.init(new cc.Size(
-                (this.margin_x * 2 + 1) * this._blockSize.width
-                , (this.margin_y * 2 + 1) * this._blockSize.height)
-            );
+            touchUtils.init(this.mapSize);
         }
 
         //先初始化数据
@@ -206,7 +212,7 @@ export default class MapMainView extends BaseView {
     onMapClick(event: cc.Event.EventTouch) {
         var touchEndPos = event.getLocation();
         var viewPos = this.node.convertToNodeSpaceAR(touchEndPos);
-        var tilePos = Map.getTilePosByViewPos(viewPos);
+        var tilePos = MapUtils.getTilePosByViewPos(viewPos);
         //todo 角色的行为
         if (this.operation == OPERATION_ENUM.COMMON) {
             this.testHero.moveToPos(tilePos)
@@ -243,6 +249,64 @@ export default class MapMainView extends BaseView {
             let block = self.getBlockByPos(pos);
             block.createBuilding(building)
         })
+    }
+    // 地图移动时，地图重新显示
+    onMapMove(){
+        var offsetPos = new cc.Vec2(this.node.x - this.centerPos.x,this.node.y - this.centerPos.y);
+        var x = Math.ceil(offsetPos.x/this._blockSize.width)
+        var y = Math.ceil(offsetPos.y/this._blockSize.height)
+
+        var map = {};
+        for (var i in this.blockMap) {
+            for (var j in this.blockMap[i]) {
+                map[j][i] = this.blockMap[i][j];
+            }
+        }
+        
+        if(x > 0){
+            for (let i = -this.margin_x; i < this.margin_x + x; i++) {
+                var blocks = this.blockMap[i];
+                for (const key in blocks) {
+                    if (Object.prototype.hasOwnProperty.call(blocks, key)) {
+                        const block = blocks[key];
+                        block.move(new cc.Vec2(this.mapSize.width,0))
+                    }
+                }
+            }
+        }else if(x < 0){
+            for (let i = this.margin_x; i > this.margin_x + x; i--) {
+                var blocks = this.blockMap[i];
+                for (const key in blocks) {
+                    if (Object.prototype.hasOwnProperty.call(blocks, key)) {
+                        const block = blocks[key];
+                        block.move(new cc.Vec2(-this.mapSize.width,0))
+                    }
+                }
+            }
+        }
+
+        if(y > 0){
+            for (let i = -this.margin_y; i < this.margin_y + y; i++) {
+                var blocks = map[i];
+                for (const key in blocks) {
+                    if (Object.prototype.hasOwnProperty.call(blocks, key)) {
+                        const block = blocks[key];
+                        block.move(new cc.Vec2(0,this.mapSize.height))
+                    }
+                }
+            }
+        }else if(y < 0){
+            for (let i = this.margin_y; i > this.margin_y + y; i--) {
+                var blocks = map[i];
+                for (const key in blocks) {
+                    if (Object.prototype.hasOwnProperty.call(blocks, key)) {
+                        const block = blocks[key];
+                        block.move(new cc.Vec2(0,-this.mapSize.height))
+                    }
+                }
+            }
+        }
+        
     }
 
     //测试区域

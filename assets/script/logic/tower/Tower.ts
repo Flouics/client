@@ -8,12 +8,16 @@ import Monster from "../Monster";
 import MonsterMgr from "../../manager/MonsterMgr";
 import TowerMgr from "../../manager/TowerMgr";
 import TimeMgr from "../../manager/TimeMgr";
+import { serialize } from "../../utils/Decorator";
 
 export default class Tower extends Building {
+    @serialize()
     static _idIndex = 1;
+    @serialize()    
     bulletId = 100101;
     bulletCfg:any = {};
     towerMgr:TowerMgr = null;
+    @serialize()
     lastShootTime:number = 0;
     constructor(mapMainView: MapMainView) {
         super(mapMainView)

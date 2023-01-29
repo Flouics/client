@@ -23,8 +23,12 @@ export default class BaseView extends BaseUI {
             this.proxy = App.moduleMgr.getProxy(this.moduleName);
             if(this.proxys.indexOf(this.proxy) == -1){
                 this.proxys.push(this.proxy)
+            }else{
+                cc.warn("proxy of ",this.moduleName," is null");
             }            
-        } 
+        } else{
+            cc.warn("moduleName is null",this.moduleName);
+        }
 
     }
 

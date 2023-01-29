@@ -16,7 +16,7 @@ export default class Block extends BoxBase {
     static BLOCK_VALUE_ENUM = BLOCK_VALUE_ENUM;     //瓦片地图属性枚举
     static CROSS_VALUE = CROSS_VALUE;       //可以通过属性检查
     buildingId:number = 0;   // 额外属性，value不同，数据不同
-    _value:number = 0;   // 瓦片上属性 二进制存储数据        
+    _value:number = null;   // 瓦片上属性 二进制存储数据        
     get value(){
         return this._value;
     }
@@ -47,9 +47,16 @@ export default class Block extends BoxBase {
         node.x = this.x * this.mapMainView._blockSize.width;
         node.y = this.y * this.mapMainView._blockSize.height;
         node.scale = 0.95;
-        this.value = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+        if(this.value == null){
+            this.value = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+        }        
         this.bindUI(node.getComponent(UIBlock));
         this.updateUI();
+    }
+
+    move(offsetPos:cc.Vec2){
+        this.node.x = this.x * this.mapMainView._blockSize.width + offsetPos.x;
+        this.node.y = this.y * this.mapMainView._blockSize.height + offsetPos.y;
     }
     createBuilding(building:Building){
         this.buildingId = building.id; 
