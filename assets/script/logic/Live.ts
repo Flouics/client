@@ -52,6 +52,9 @@ export default class Live extends BoxBase {
     onState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
+            case StateMachine.STATE_ENUM.PATHFINDING:
+                this.moveNext()
+                break;
             default:
                 break;
         }
@@ -80,10 +83,14 @@ export default class Live extends BoxBase {
         //this.fixPosition();
         //test
         var moveRouteList = this.getMoveRoute(toPos)
+        if (App.toolKit.empty(moveRouteList)){
+            return false;
+        }
         this.mapMainView.printBlocks(moveRouteList);
         this.routeList = moveRouteList;
         this.ui.stopMoveAction();
-        this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE)     
+        this.stateMachine.switchState(StateMachine.STATE_ENUM.PATHFINDING)     
+        return true;
     }
 
     getNearByPos(area: cc.Vec2[]):cc.Vec2 {
@@ -123,7 +130,7 @@ export default class Live extends BoxBase {
         self.x = x;
         self.y = y;
         this.ui.moveStep(duration,toPos.scale(this.mapMainView._blockSizeVec2),() => {
-            this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE)
+            this.stateMachine.switchState(this.stateMachine.lastState.id)
         })
     }
     fixPosition(){

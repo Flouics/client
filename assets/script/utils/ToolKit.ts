@@ -494,6 +494,8 @@ export default class ToolKit extends BaseClass{
         }
         if(typeof(value) == "string"){
             return value == ""
+        }else if (typeof(value) == "object"){
+            return Object.keys(value).length == 0;
         }else{
             return !value
         }

@@ -46,11 +46,6 @@ export default class Hero extends Live {
     onState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
-            case StateMachine.STATE_ENUM.IDLE:
-                this.moveNext();
-                break;
-            case StateMachine.STATE_ENUM.MOVING:               
-                //this.checkAction();
             default:
                 super.onState(params)
                 break;
@@ -77,12 +72,8 @@ export default class Hero extends Live {
     fetchDigTask(){
         var task = this.mapProxy.shiftDigTask();
         if(task){
-            var moveRouteList = this.getMoveRoute(task.digPos);
-            var nearByPos = moveRouteList[0];
-            if(nearByPos && MapUtils.isNearBy(task.digPos,nearByPos)){
-                this.routeList = moveRouteList;
-                this.task = task;
-                this.moveNext();
+            if(this.moveToPos(task.digPos)){
+                this.task = task;                
                 return true;
             }else{
                 this.mapProxy.pushTask(task);   //无法完成的任务，重新塞回队列。

@@ -8,12 +8,13 @@ var STATE_ENUM = {
     ATTACK:3,
     DIG:4,
     BUILD:5,
+    PATHFINDING:6             // 寻路中
 }
 
 export default class StateMachine {
     static STATE_ENUM = STATE_ENUM;     //状态属性枚举
-    @serialize()
     state:State = new State(STATE_ENUM.NONE);      //执行的动作行为
+    lastState:State = new State(STATE_ENUM.NONE);   //旧状态
     enterStateHandler:Function = ()=>{};             //进入状态执行函数
     onStateHandler:Function = ()=>{};                //处于状态执行函数
     exitStateHandler:Function = ()=>{};               //结束状态执行函数
@@ -24,7 +25,11 @@ export default class StateMachine {
     }
 
     switchState(stateId:number,enterParams?:any,exitParams?:any){
+        if (this.isState(stateId)) {
+            return;     //相同状态不切换
+        }
         this.state.exit(exitParams)
+        this.lastState = this.state;
         this.state = new State(stateId,this.enterStateHandler,this.exitStateHandler,this.onStateHandler)
         this.state.enter(enterParams)
     }
@@ -37,6 +42,10 @@ export default class StateMachine {
     }
     isState(stateId:number){
         return this.state.id == stateId
+    }
+
+    isLastState(stateId:number){
+        return this.lastState.id == stateId
     }
     
     regeditHandler(enterHandler?:Function,exitHandler?:Function,onHandler?:Function){

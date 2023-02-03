@@ -72,11 +72,7 @@ export default class Monster extends Live {
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             case StateMachine.STATE_ENUM.IDLE:                
-                this.moveNext();
-                break;
-            case StateMachine.STATE_ENUM.MOVING:                
-                super.onState(params);
-                this.checkAction();
+                this.attackHeadquarters();
                 break;
             case StateMachine.STATE_ENUM.ATTACK:
                 this.onAtk();
