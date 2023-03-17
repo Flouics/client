@@ -98,8 +98,14 @@ export default class Live extends BoxBase {
     }
     //检查是否可以通过
     checkBlock(pos:cc.Vec2){
-        return this.mapMainView.checkBlock(pos);
+        return this.mapProxy.checkBlock(pos);
     }
+
+    //避免遍历死循环。
+    checkBlockRoute(pos:cc.Vec2){
+        return this.mapProxy.checkBlockRoute(pos);
+    }
+    
     moveNext(){
         if(!this.checkAction()){
             // 执行队列行进路径
@@ -139,7 +145,7 @@ export default class Live extends BoxBase {
         this.y = tilePos.y;
     }
     getMoveRoute(toPos:cc.Vec2){        
-        return MapUtils.getRouteList(cc.v2(this.x,this.y),toPos,this.checkBlock.bind(this))
+        return MapUtils.getRouteList(cc.v2(this.x,this.y),toPos,this.checkBlockRoute.bind(this))
     }
 
     clear(){

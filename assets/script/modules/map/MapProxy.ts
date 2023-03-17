@@ -91,6 +91,39 @@ export default class MapProxy extends Proxy {
             return null
         }
     }
+
+    checkBlock(pos: cc.Vec2) {
+        var block = this.getBlock(pos.x,pos.y)
+        if (block) {
+            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+        } else {
+            return false;
+        }
+    }
+
+    //避免遍历死循环。
+    checkBlockRoute(pos: cc.Vec2) {
+        var max_x =  this.margin_x * 2 + 1;
+        var max_y =  this.margin_y * 2 + 1;
+        var x = pos.x;
+        var y = pos.y;
+        if (x <= -max_x || x >=  max_x){
+            return false
+        }
+
+        if (y <= -max_y || y >=  max_y){
+            return false
+        }
+
+        var block = this.getBlock(pos.x,pos.y)
+        if (block) {
+            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+        } else {
+            return false;
+        }
+    }
+
+
     getBuilding(x: number, y: number) {        
         x = this.fixPosX(x);
         y = this.fixPosY(y); 
@@ -103,21 +136,29 @@ export default class MapProxy extends Proxy {
     }
 
     fixPosX(x: number){
-        var num =  this.margin_x * 2 + 1
-        if(x < 0){
-            x = (x % num) + num;
-        }else if(x > num){
-            x = (x % num) - num;
+        var num =  this.margin_x * 2 + 1;
+        x = x % num;
+        if(x >= -this.margin_x && x <= this.margin_x){
+            return x;
+        }
+        if(x < -this.margin_x){
+            x = x + num;
+        }else if(x > this.margin_x){
+            x = x - num;
         }
         return x;
     }
 
     fixPosY(y: number){
-        var num =  this.margin_y * 2 + 1
-        if(y < 0){
-            y = (y % num) + num;
-        }else if(y > num){
-            y = (y % num) - num;
+        var num =  this.margin_y * 2 + 1;
+        y = y % num;
+        if(y >= -this.margin_y && y <= this.margin_y){
+            return y;
+        }
+        if(y < -this.margin_y){
+            y = y + num;
+        }else if(y > this.margin_y){
+            y = y - num;
         }
         return y;
     }

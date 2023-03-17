@@ -31,7 +31,6 @@ var OPERATION_ENUM = {
     DIG: 1,
     BUILD: 2,
 }
-var Math = Math;
 
 const { ccclass, property } = cc._decorator;
 
@@ -124,11 +123,12 @@ export default class MapMainView extends BaseView {
         //方块数据
         let node = cc.instantiate(this.pb_block);
         this.initBlockSize(new cc.Size(node.width, node.height));
-        MapUtils.initBlockSize(new cc.Size(node.width, node.height));
+        MapUtils.initBlockData(new cc.Size(node.width, node.height));
         this.mapSize = new cc.Size(
             (this.margin_x * 2 + 1) * this._blockSize.width
             , (this.margin_y * 2 + 1) * this._blockSize.height
         );
+        MapUtils.initMapData(this.mapSize,this.margin_x,this.margin_y)
         //touch触摸的尺寸。        
         let touchUtils = this.node.getComponent(TouchUtils);
         if (touchUtils) {
@@ -194,12 +194,7 @@ export default class MapMainView extends BaseView {
         this.headquarters = headquarters;
     }
     checkBlock(pos: cc.Vec2) {
-        var block = this.getBlockByPos(pos)
-        if (block) {
-            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
-        } else {
-            return false;
-        }
+        return this.mapProxy.checkBlock(pos);
     }
     digBlock(pos:cc.Vec2){
         var block = this.getBlockByPos(pos)
@@ -211,7 +206,7 @@ export default class MapMainView extends BaseView {
     // 地图触发了点击事件
     onMapClick(event: cc.Event.EventTouch) {
         var touchEndPos = event.getLocation();
-        var viewPos = this.node.convertToNodeSpaceAR(touchEndPos);
+        var viewPos = this.nd_mapRoot.convertToNodeSpaceAR(touchEndPos);
         var tilePos = MapUtils.getTilePosByViewPos(viewPos);
         //todo 角色的行为
         if (this.operation == OPERATION_ENUM.COMMON) {
@@ -246,8 +241,8 @@ export default class MapMainView extends BaseView {
         var maskArea = building.getRealArea();
         var self = this;
         maskArea.forEach((pos) => {
-            let block = self.getBlockByPos(pos);
-            block.createBuilding(building)
+            let block = self.getBlockByPos(pos); 
+            block.createBuilding(building)     
         })
     }
     // 地图移动时，地图重新显示

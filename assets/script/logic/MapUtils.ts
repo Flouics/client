@@ -3,36 +3,47 @@
     // viewPos 基于mapView的地图坐标系，默认描点为(0.5,0.5)
  */
 export default class MapUtils {
-    static size: cc.Size = new cc.Size(1, 1);
+    static size: cc.Size = new cc.Size(1, 1);   //砖块的尺寸
     static sizeVec2: cc.Vec2 = new cc.Vec2(1, 1);
     static perDis:number = 1;
+    static mapSize: cc.Size = new cc.Size(600, 600);   //地图的尺寸
+    static margin_x: number = 10;
+    static margin_y: number = 10;
 
-    static initBlockSize(size: cc.Size) {
+    static initBlockData(size: cc.Size) {
         MapUtils.size = size;
         MapUtils.sizeVec2 = new cc.Vec2(size.width, size.height);
         MapUtils.perDis = size.width;
+    }
+
+    static initMapData(size: cc.Size,margin_x?:number,margin_y?:number) {
+        MapUtils.mapSize = size;
+        MapUtils.margin_x = margin_x || MapUtils.margin_x;
+        MapUtils.margin_y = margin_y || MapUtils.margin_y;
     }
 
     static getTilePosByViewPos(viewPos: cc.Vec2) {
         var size = new cc.Size(MapUtils.size.width / 2,MapUtils.size.height / 2)
         var x = viewPos.x;
         var y = viewPos.y;
-        if(x < -size.width || x > size.width){
-            if(x > 0){
-                x = (x % MapUtils.size.width) - MapUtils.size.width
-            }else{
-                x = (x % MapUtils.size.width) + MapUtils.size.width
-            }
+        x = (x % MapUtils.mapSize.width)
+        y = (y % MapUtils.mapSize.height)
+        if(x < -MapUtils.mapSize.width/2){
+            x = x + MapUtils.mapSize.width
+        }else if(x > MapUtils.mapSize.width/2){
+            x = x - MapUtils.mapSize.width
         }
-        if(y < -size.height || y > size.height){
-            if(y > 0){
-                y = (y % MapUtils.size.height) - MapUtils.size.height
-            }else{
-                y = (y % MapUtils.size.height) + MapUtils.size.height
-            }
+
+        if(y < -MapUtils.mapSize.height/2){
+            y = y + MapUtils.mapSize.height
+        }else if(y > MapUtils.mapSize.height/2){
+            y = y - MapUtils.mapSize.height
         }
+
         x = Math.floor((x + size.width) / MapUtils.size.width);
         y = Math.floor((y + size.height) / MapUtils.size.height);
+    
+        cc.log(cc.js.formatStr("viewPos (x:%s,y:%s) -> tilePos (x:%s,y:%s)",viewPos.x,viewPos.y,x,y));        
         return cc.v2(x, y)
     }
 
@@ -72,6 +83,10 @@ export default class MapUtils {
     }
     // 获取最短路径
     static getRouteList(fromPos: cc.Vec2, toPos: cc.Vec2, checkFun: Function = () => { return true }) {
+        var ret: cc.Vec2[] = []
+        if (fromPos.x == toPos.x && fromPos.y == toPos.y) {
+            return ret //相同地点不用寻路
+        }
         // A*寻路
         //四个方向
         var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
@@ -154,8 +169,7 @@ export default class MapUtils {
             //无路可走,取最短
             result = shortestRoute
         }
-
-        var ret: cc.Vec2[] = []
+        
         while (result) {
             ret.push(cc.v2(result.x, result.y))
             result = result.last
