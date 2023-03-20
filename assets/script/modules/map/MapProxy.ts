@@ -21,10 +21,12 @@ export default class MapProxy extends Proxy {
     margin_x: number = 10;
     @serialize()
     margin_y: number = 10;
-    @serialize()
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
     @serialize()
+    blockMapJson = {};
     buildingMap: { [key: number]: Building } = {};
+    @serialize()
+    buildingMapJson = {};    
     @serialize()
     headquarters: Headquarters = null;
     @serialize()
@@ -50,6 +52,38 @@ export default class MapProxy extends Proxy {
     load(){
 
     }
+
+    dumpPrepare(){
+        this.blockMapJson = {}
+        for (var i in this.blockMap) {
+            this.blockMapJson[i] = {}
+            for (var j in this.blockMap[i]) {
+                this.blockMapJson[i][j] = this.blockMap[i][j].serialize();
+            }
+        }
+
+        this.buildingMapJson = {}
+        for (var i in this.buildingMap) {
+            this.buildingMapJson[i] = this.buildingMap[i].serialize();
+        }
+    }
+
+    getBlockJson(x: number, y: number){
+        if(this.blockMapJson[x]){
+            return this.blockMapJson[x][y];
+        }else{
+            return null;
+        }        
+    }
+
+    getBuildingJson(x: number){
+        return this.buildingMapJson[x];
+    }
+
+    reloadPrepare(){
+        cc.log("reloadPrepare")
+    }
+    
     pushTask(task:TaskBase){
         if(this.checkTask(task)){
             if(task instanceof DigTask){

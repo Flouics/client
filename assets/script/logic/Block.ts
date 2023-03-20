@@ -3,6 +3,7 @@ import UIBlock from "../modules/map/UIBlock";
 import ToolKit from "../utils/ToolKit";
 import Building from "./Building";
 import BoxBase from "./BoxBase";
+import { serialize } from "../utils/Decorator";
 var BLOCK_VALUE_ENUM = {
     EMPTY:0,
     BLOCK:1,
@@ -15,7 +16,9 @@ var CROSS_VALUE =  BLOCK_VALUE_ENUM.EMPTY;
 export default class Block extends BoxBase {
     static BLOCK_VALUE_ENUM = BLOCK_VALUE_ENUM;     //瓦片地图属性枚举
     static CROSS_VALUE = CROSS_VALUE;       //可以通过属性检查
+    @serialize()
     buildingId:number = 0;   // 额外属性，value不同，数据不同
+    @serialize()
     _value:number = null;   // 瓦片上属性 二进制存储数据        
     get value(){
         return this._value;

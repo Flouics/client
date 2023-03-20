@@ -32,13 +32,13 @@ export function jsonToObj(obj:Object,json:string) {
             const serialize = Reflect.getMetadata(SerializeMetaKey, obj, property);
             if (serialize) {
                 if (obj[property] instanceof Element) {
-                    obj[property].jsonToObj(obj[serialize]);
+                    obj[property].jsonToObj(json2obj[serialize]);
                 } else {
-                    obj[property] = obj[serialize];
+                    obj[property] = json2obj[serialize];
                 }
             }
         });
     } catch (error) {
-        cc.error("fromJson is Failed");
+        cc.error(error,"fromJson is Failed",json);
     }
 }

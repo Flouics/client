@@ -16,7 +16,7 @@ export default class Setting extends BaseWin {
 
     onClickLoad(){
         App.reloadFromDb();
-    }    
+    }   
     
     onClickExit(){
         App.exit();

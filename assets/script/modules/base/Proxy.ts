@@ -46,10 +46,19 @@ export default class Proxy extends BaseClass {
         return this._classDbKey + "_" + userId
     }
 
+    dumpPrepare(){
+        
+    }
+
+    reloadPrepare(){
+
+    }
+
     dumpToDb(){
         if (!this.isDump) {
             return
         }
+        this.dumpPrepare()
         var key = this.getDbKey();
         var json = this.serialize();
         cc.log("dumpToDb",json)
@@ -58,12 +67,13 @@ export default class Proxy extends BaseClass {
     reloadFromDb(){
         if (!this.isDump) {
             return
-        }
+        }        
         var key = this.getDbKey();
         var json = DBMgr.getInstance(DBMgr).getItem(key);
         if(json){
             cc.log("reloadFromDb",json)
             this.unserialize(json);
+            this.reloadPrepare()
         }
     }
 }

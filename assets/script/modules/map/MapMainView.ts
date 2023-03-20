@@ -139,7 +139,9 @@ export default class MapMainView extends BaseView {
         for (let i = -this.margin_x; i <= this.margin_x; i++) {
             this.blockMap[i] = {};
             for (let j = -this.margin_y; j <= this.margin_y; j++) {
-                this.blockMap[i][j] = new Block(this, i, j);
+                let block = new Block(this, i, j);
+                block.unserialize(this.mapProxy.getBlockJson(i,j))
+                this.blockMap[i][j] = block;
             }
         }
 
@@ -253,8 +255,9 @@ export default class MapMainView extends BaseView {
 
         var map = {};
         for (var i in this.blockMap) {
+            map[i] = {}
             for (var j in this.blockMap[i]) {
-                map[j][i] = this.blockMap[i][j];
+                map[i][j] = this.blockMap[i][j];
             }
         }
         
