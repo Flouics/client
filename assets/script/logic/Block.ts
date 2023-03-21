@@ -4,10 +4,11 @@ import ToolKit from "../utils/ToolKit";
 import Building from "./Building";
 import BoxBase from "./BoxBase";
 import { serialize } from "../utils/Decorator";
+import TouchUtils from "../utils/TouchUtils";
 var BLOCK_VALUE_ENUM = {
     EMPTY:0,
     BLOCK:1,
-    BOX:2,
+    BUILDING:2,
     MONSTER:4,
     MONSTER_ENTRY:8,
 }
@@ -19,12 +20,17 @@ export default class Block extends BoxBase {
     @serialize()
     buildingId:number = 0;   // 额外属性，value不同，数据不同
     @serialize()
-    _value:number = null;   // 瓦片上属性 二进制存储数据        
-    get value(){
-        return this._value;
+    _type:number = null;   // 瓦片上属性 二进制存储数据        
+    get type(){
+        return this._type;
     }
-    set value(value){
-        this._value = value;       
+    set type(value){
+        this._type = value; 
+        if (this._type == BLOCK_VALUE_ENUM.BLOCK){
+            if(this.data_1 == 0){
+                this.data_1 = 1
+            }
+        }              
     }
     _event:number = 0;     //临时事件等
     get event(){
@@ -50,8 +56,8 @@ export default class Block extends BoxBase {
         node.x = this.x * this.mapMainView._blockSize.width;
         node.y = this.y * this.mapMainView._blockSize.height;
         node.scale = 0.95;
-        if(this.value == null){
-            this.value = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+        if(this.type == null){
+            this.type = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         }        
         this.bindUI(node.getComponent(UIBlock));
         this.updateUI();
@@ -63,8 +69,13 @@ export default class Block extends BoxBase {
     }
     createBuilding(building:Building){
         this.buildingId = building.id; 
+        this.type = BLOCK_VALUE_ENUM.BUILDING;
     }
     resetBuilding(building?:Building){
         this.buildingId = building ? building.id : 0;
+        this.type = BLOCK_VALUE_ENUM.BUILDING;
+    }
+    clearBlock(){
+        this.type = BLOCK_VALUE_ENUM.EMPTY;
     }
 }

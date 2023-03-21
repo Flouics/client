@@ -24,6 +24,33 @@ export default class BoxBase extends BaseClass {
     @serialize()
     isDestroy:boolean = false;
 
+    @serialize()
+    _data_1:number = 0;   //额外存储的数据字段1
+    @serialize()
+    _data_2:number = 0;   //额外存储的数据字段2
+    @serialize()
+    _data_3:number = 0;   //额外存储的数据字段3
+
+    get data_1(){
+        return this._data_1;
+    }
+    set data_1(value){
+        this._data_1 = value;       
+    }
+
+    get data_2(){
+        return this._data_2;
+    }
+    set data_2(value){
+        this._data_2 = value;       
+    }
+    get data_3(){
+        return this._data_3;
+    }
+    set data_3(value){
+        this._data_3 = value;       
+    }
+
     target:BoxBase = null;
     targetExtraList:BoxBase[] = null;   //副目标列表    
     node:cc.Node = null;

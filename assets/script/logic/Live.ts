@@ -28,11 +28,11 @@ export default class Live extends BoxBase {
         this.mapProxy = MapProxy.getInstance(MapProxy);
         this.id = Live._idIndex;
         Live._idIndex += 1;
-        this.stateMachine.regeditHandler(this.enterState.bind(this),this.exitState.bind(this),this.onState.bind(this))       
+        this.stateMachine.regeditHandler(this.onEnterState.bind(this),this.onExitState.bind(this),this.onState.bind(this))       
 
     }
 
-    enterState(params:any){
+    onEnterState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             case StateMachine.STATE_ENUM.IDLE:
@@ -60,7 +60,7 @@ export default class Live extends BoxBase {
         }
     }
 
-    exitState(params:any){
+    onExitState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             default:

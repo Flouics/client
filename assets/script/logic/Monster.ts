@@ -59,11 +59,11 @@ export default class Monster extends Live {
         return true;
     }
 
-    enterState(params:any){
+    onEnterState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             default:
-                super.enterState(params)
+                super.onEnterState(params)
                 break;
         }
     }

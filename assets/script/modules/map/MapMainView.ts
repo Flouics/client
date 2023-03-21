@@ -113,7 +113,7 @@ export default class MapMainView extends BaseView {
     }
     initMonsterEntryPos() {
         this.monsterEntryPos = cc.v2(-10, 10);
-        this.getBlockByPos(this.monsterEntryPos).value = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
+        this.getBlockByPos(this.monsterEntryPos).type = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
     }
     initBlockSize(size: cc.Size) {
         this._blockSize = size;
@@ -199,10 +199,7 @@ export default class MapMainView extends BaseView {
         return this.mapProxy.checkBlock(pos);
     }
     digBlock(pos:cc.Vec2){
-        var block = this.getBlockByPos(pos)
-        if(block && block.value == Block.BLOCK_VALUE_ENUM.BLOCK){
-            block.value = Block.BLOCK_VALUE_ENUM.EMPTY;
-        }
+        //todo
     }
 
     // 地图触发了点击事件
@@ -217,7 +214,7 @@ export default class MapMainView extends BaseView {
         }
         if (this.operation == OPERATION_ENUM.DIG) {
             var block = this.getBlockByPos(tilePos);
-            if (block.value == Block.BLOCK_VALUE_ENUM.BLOCK) {
+            if (block.type == Block.BLOCK_VALUE_ENUM.BLOCK) {
                 //this.mapProxy.pushTask(new DigTask(tilePos.x, tilePos.y))
                 this.command("pushTask",new DigTask(tilePos.x, tilePos.y));
             }

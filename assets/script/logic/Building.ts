@@ -4,9 +4,20 @@ import UIBuilding from "../modules/map/UIBuilding";
 import BoxBase from "./BoxBase";
 import { serialize } from "./../utils/Decorator";
 
+var BUILDING_VALUE_ENUM = {
+    EMPTY:0,
+    COMMON:1,
+}
+
 export default class Building extends BoxBase {
     @serialize()
-    type:number  = 0;
+    _type:number = null;   // 瓦片上属性 二进制存储数据        
+    get type(){
+        return this._type;
+    }
+    set type(value){
+        this._type = value;           
+    }
     @serialize()
     area:cc.Vec2[] = [cc.v2(0,0)];
     @serialize()

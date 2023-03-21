@@ -11,16 +11,22 @@ export function serialize(name?: string) {
 //序列化
 export function objToJson(obj:Object): any {
     const ret = {};
-    Object.keys(obj).forEach( property => {
-        const serialize = Reflect.getMetadata(SerializeMetaKey, obj, property);
-        if (serialize) {
-            if (obj[property] instanceof Element) {
-                ret[serialize] = obj[property].objToJson();
-            } else {
-                ret[serialize] = obj[property];
-            }
+    if (obj instanceof Array){
+        for (let index = 0; index < obj.length; index++) {
+            ret[index] = objToJson(obj[index])            
         }
-    });
+    }else{
+        Object.keys(obj).forEach( property => {
+            const serialize = Reflect.getMetadata(SerializeMetaKey, obj, property);
+            if (serialize) {
+                if (obj[property] instanceof Element) {
+                    ret[serialize] = obj[property].objToJson();
+                } else {
+                    ret[serialize] = obj[property];
+                }
+            }
+        });
+    }  
     return JSON.stringify(ret);
 }
 
@@ -30,7 +36,7 @@ export function jsonToObj(obj:Object,json:string) {
         let json2obj = JSON.parse(json);
         Object.keys(obj).forEach( property => {
             const serialize = Reflect.getMetadata(SerializeMetaKey, obj, property);
-            if (serialize) {
+            if (serialize && json2obj[serialize] !== undefined) {
                 if (obj[property] instanceof Element) {
                     obj[property].jsonToObj(json2obj[serialize]);
                 } else {

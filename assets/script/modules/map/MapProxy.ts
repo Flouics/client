@@ -129,7 +129,7 @@ export default class MapProxy extends Proxy {
     checkBlock(pos: cc.Vec2) {
         var block = this.getBlock(pos.x,pos.y)
         if (block) {
-            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+            return ((block.type | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
         } else {
             return false;
         }
@@ -151,7 +151,7 @@ export default class MapProxy extends Proxy {
 
         var block = this.getBlock(pos.x,pos.y)
         if (block) {
-            return ((block.value | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+            return ((block.type | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
         } else {
             return false;
         }

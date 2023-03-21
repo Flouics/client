@@ -35,6 +35,7 @@ export default class ModuleMgr extends BaseClass{
             cc.error("this func has not exist by " + funcName + " in module " + moduleName);
             return;
         }
+        cc.log(cc.js.formatStr("command->%s.%s %s",moduleName,funcName,params))
         mod.cmd[funcName](params)
     };
 

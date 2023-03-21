@@ -25,7 +25,11 @@ export default class MapCommand extends BaseCommand{
     }
 
     digBlock(pos:cc.Vec2){
-        this.proxy.updateView("digBlock",pos);
+        var block = this.proxy.getBlock(pos.x,pos.y)
+        if(block){
+            block.clearBlock()
+            this.proxy.updateView("digBlock",pos);
+        }        
     }
     
     reloadMapView(){

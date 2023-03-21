@@ -25,7 +25,7 @@ export default class Hero extends Live {
         this.heroMgr = this.mapMainView.heroMgr;
     }
 
-    enterState(params:any){
+    onEnterState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
             case StateMachine.STATE_ENUM.IDLE:               
@@ -38,7 +38,7 @@ export default class Hero extends Live {
             case StateMachine.STATE_ENUM.MOVING:                     
                 //break;
             default:
-                super.enterState(params)
+                super.onEnterState(params)
                 break;
         }
     }
@@ -46,6 +46,9 @@ export default class Hero extends Live {
     onState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
+            case StateMachine.STATE_ENUM.IDLE:
+                this.fetchTask();
+                break;
             default:
                 super.onState(params)
                 break;
@@ -86,7 +89,7 @@ export default class Hero extends Live {
         ToolKit.getInstance(ToolKit).showTip("执行挖掘的动作。");
         var pos = (task as DigTask).digPos
         App.moduleMgr.command("map","digBlock",pos)
-        //this.mapMainView.digBlock(pos)
+        this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
     }
     checkAction():boolean{
         // 检查目标行为，如果有可执行目标就执行。
@@ -100,7 +103,7 @@ export default class Hero extends Live {
                     return false;
                 }
                 if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.digPos)){                    
-                    this.enterState(StateMachine.STATE_ENUM.DIG);
+                    this.stateMachine.switchState(StateMachine.STATE_ENUM.DIG);
                     return true;
                 }      
             }         

@@ -17,9 +17,17 @@ export default class UIBlock extends BaseUI {
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
-        this.updateDataToUI("block.value",logicObj.value,()=>{
-            if(logicObj.value > 0){
-                self.loadSpt(self.spt_item, "block/block_" + logicObj.value)
+        this.updateDataToUI("block.type",logicObj.type,()=>{
+            if(logicObj.type == Block.BLOCK_VALUE_ENUM.BLOCK){
+                self.loadSpt(self.spt_item, "block/block_" + logicObj.data_1)
+            }else{
+                self.spt_item.spriteFrame = null;
+            }           
+        })
+
+        this.updateDataToUI("block.data_1",logicObj.data_1,()=>{
+            if(logicObj.type == Block.BLOCK_VALUE_ENUM.BLOCK){
+                self.loadSpt(self.spt_item, "block/block_" + logicObj.data_1)
             }else{
                 self.spt_item.spriteFrame = null;
             }           
