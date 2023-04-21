@@ -6,7 +6,7 @@ export default class BaseClass {
     _class = null;
     _classId: string = "";
     static _instance = null;       
-    constructor(_class:any){
+    constructor(_class?:any){
         if (_class != null) {
             this._class = _class;
             _class._instance = this;         //单例

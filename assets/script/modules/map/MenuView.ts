@@ -28,7 +28,7 @@ export default class MenuView extends BaseView {
 
     onClickBuild(){
         //this._clickBuilding = new Tower(null);
-        var value = this.tgDig.isChecked ? MapMainView.OPERATION_ENUM.BUILD : MapMainView.OPERATION_ENUM.COMMON;
+        var value = this.tgBuild.isChecked ? MapMainView.OPERATION_ENUM.BUILD : MapMainView.OPERATION_ENUM.COMMON;
         this.mapProxy.updateView("switchOperation",value);
         this.command("onClickBuild")
     }

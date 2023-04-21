@@ -7,6 +7,7 @@ import { serialize } from "./../utils/Decorator";
 var BUILDING_VALUE_ENUM = {
     EMPTY:0,
     COMMON:1,
+    TOWER:2,
 }
 
 export default class Building extends BoxBase {

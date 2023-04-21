@@ -13,8 +13,12 @@ export default class Proxy extends BaseClass {
     constructor(_class:any){       
         super(_class);
         this.app = App.getInstance(App);
+        this.init()
     }
     
+    init(){
+        
+    }
     onHttpMsg(cmd:string,data:any){
         cc.log(cmd,data);
     }

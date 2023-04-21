@@ -11,25 +11,34 @@ export default class UIBlock extends BaseUI {
     spt_item:cc.Sprite = null;
     @property(cc.Sprite)
     spt_event:cc.Sprite = null;
+    @property(cc.Sprite)
+    spt_flag:cc.Sprite = null;
 
     _baseUrl = "texture/map/";
     _logicObj:Block = null;
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
-        this.updateDataToUI("block.type",logicObj.type,()=>{
-            if(logicObj.type == Block.BLOCK_VALUE_ENUM.BLOCK){
-                self.loadSpt(self.spt_item, "block/block_" + logicObj.data_1)
+        var loadBlockSpt = function(){
+            let spt = self.spt_item;
+            if(logicObj.checkType(Block.BLOCK_VALUE_ENUM.BLOCK) && logicObj.data_1 > 0){
+                self.loadSpt(spt, "block/block_" + logicObj.data_1)
             }else{
-                self.spt_item.spriteFrame = null;
-            }           
+                spt.spriteFrame = null;
+            }       
+        }
+        this.updateDataToUI("block.type",logicObj.type,()=>{
+            loadBlockSpt()           
         })
 
-        this.updateDataToUI("block.data_1",logicObj.data_1,()=>{
-            if(logicObj.type == Block.BLOCK_VALUE_ENUM.BLOCK){
-                self.loadSpt(self.spt_item, "block/block_" + logicObj.data_1)
+        this.updateDataToUI("block.data_1",logicObj.data_1,loadBlockSpt)
+
+        this.updateDataToUI("block.data_2",logicObj.data_2,()=>{
+            let spt = self.spt_flag;
+            if(logicObj.data_2 > 0){
+                self.loadSpt(spt, "block/flag_" + logicObj.data_2)
             }else{
-                self.spt_item.spriteFrame = null;
+                spt.spriteFrame = null;
             }           
         })
 

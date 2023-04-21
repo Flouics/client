@@ -8,6 +8,7 @@ import DigTask from "./task/DigTask";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
 import App from "../App";
+import BuildTask from "./task/BuildTask";
 
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
@@ -28,12 +29,14 @@ export default class Hero extends Live {
     onEnterState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
-            case StateMachine.STATE_ENUM.IDLE:               
+            case StateMachine.STATE_ENUM.IDLE:
+                this.clearTask();               
                 break;
             case StateMachine.STATE_ENUM.DIG:   
                 this.digBlock(this.task);                  
                 break;
-            case StateMachine.STATE_ENUM.BUILD:                     
+            case StateMachine.STATE_ENUM.BUILD:
+                this.buildTower(this.task);                     
                 break;
             case StateMachine.STATE_ENUM.MOVING:                     
                 //break;
@@ -64,7 +67,17 @@ export default class Hero extends Live {
         if(this.task){
             this.checkAction();
         }else{
-            return this.fetchDigTask();
+            var task = this.mapProxy.shiftTask();
+            if(task){
+                if(this.moveToPos(task.pos)){
+                    this.task = task;                
+                    return true;
+                }else{
+                    this.mapProxy.pushTask(task);   //无法完成的任务，重新塞回队列。
+                    return false;
+                }           
+            }
+            return false;
         }        
     }
 
@@ -72,41 +85,53 @@ export default class Hero extends Live {
         this.task = null;
         this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
     }
+
     fetchDigTask(){
-        var task = this.mapProxy.shiftDigTask();
-        if(task){
-            if(this.moveToPos(task.digPos)){
-                this.task = task;                
-                return true;
-            }else{
-                this.mapProxy.pushTask(task);   //无法完成的任务，重新塞回队列。
-                return false;
-            }           
-        }
-        return false;
+
     }
     digBlock(task:TaskBase){
         ToolKit.getInstance(ToolKit).showTip("执行挖掘的动作。");
-        var pos = (task as DigTask).digPos
-        App.moduleMgr.command("map","digBlock",pos)
+        var pos = task.pos
+        App.moduleMgr.command("map","digBlock",{pos : pos})
         this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
     }
+
+    buildTower(task:TaskBase){
+        ToolKit.getInstance(ToolKit).showTip("执行建设炮台的动作。");
+        var pos = task.pos
+        App.moduleMgr.command("map","buildTower",{pos : pos})
+        this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
+    }
+    
     checkAction():boolean{
         // 检查目标行为，如果有可执行目标就执行。
         // 子类就是需要处理具体行为。        
         if(this.task){       
             if(this.task instanceof DigTask){
-                var digPos = this.task.digPos
+                var digPos = this.task.pos
                 var block = this.mapProxy.getBlock(digPos.x,digPos.y);
                 if(!block){
                     this.clearTask();
                     return false;
                 }
-                if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.digPos)){                    
+                if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.pos)){                    
                     this.stateMachine.switchState(StateMachine.STATE_ENUM.DIG);
                     return true;
                 }      
-            }         
+            }
+
+            if(this.task instanceof BuildTask){
+                var digPos = this.task.pos
+                var block = this.mapProxy.getBlock(digPos.x,digPos.y);
+                if(!block){
+                    this.clearTask();
+                    return false;
+                }
+                if(this.routeList.length < 1 || MapUtils.isNearBy(this.pos,this.task.pos)){                    
+                    this.stateMachine.switchState(StateMachine.STATE_ENUM.BUILD);
+                    return true;
+                }      
+            }             
         }else{
             this.fetchTask();
         }

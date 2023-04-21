@@ -19,6 +19,7 @@ import BulletMgr from "../../manager/BulletMgr";
 import App from "../../App";
 import BaseView from "../../zero/BaseView";
 import BaseUI from "../../zero/BaseUI";
+import BuildTask from "../../logic/task/BuildTask";
 
 /**
  * Created by Administrator on 2017/9/12.
@@ -198,8 +199,13 @@ export default class MapMainView extends BaseView {
     checkBlock(pos: cc.Vec2) {
         return this.mapProxy.checkBlock(pos);
     }
-    digBlock(pos:cc.Vec2){
+    digBlock(params:any){
         //todo
+    }
+
+    buildTower(params:any){
+        //todo
+        cc.log("随机建造炮台")
     }
 
     // 地图触发了点击事件
@@ -214,14 +220,17 @@ export default class MapMainView extends BaseView {
         }
         if (this.operation == OPERATION_ENUM.DIG) {
             var block = this.getBlockByPos(tilePos);
-            if (block.type == Block.BLOCK_VALUE_ENUM.BLOCK) {
+            if (block.checkType(Block.BLOCK_VALUE_ENUM.BLOCK)) {
                 //this.mapProxy.pushTask(new DigTask(tilePos.x, tilePos.y))
                 this.command("pushTask",new DigTask(tilePos.x, tilePos.y));
             }
             return;
         }
         if (this.operation == OPERATION_ENUM.BUILD) {
-            this.mapProxy.updateView("onMapBuild", { pos: tilePos })
+            var block = this.getBlockByPos(tilePos);
+            if (block.checkType(Block.BLOCK_VALUE_ENUM.EMPTY)) {
+                this.command("pushTask",new BuildTask(tilePos.x, tilePos.y));
+            }
             return
         }
     }

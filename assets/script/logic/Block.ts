@@ -12,11 +12,17 @@ var BLOCK_VALUE_ENUM = {
     MONSTER:4,
     MONSTER_ENTRY:8,
 }
+
+var BLOCK_FLAG_ENUM = {
+    EMPTY:0,
+    DIG:1,
+}
 var CROSS_VALUE =  BLOCK_VALUE_ENUM.EMPTY;
 
 export default class Block extends BoxBase {
     static BLOCK_VALUE_ENUM = BLOCK_VALUE_ENUM;     //瓦片地图属性枚举
     static CROSS_VALUE = CROSS_VALUE;       //可以通过属性检查
+    static BLOCK_FLAG_ENUM = BLOCK_FLAG_ENUM; //标记
     @serialize()
     buildingId:number = 0;   // 额外属性，value不同，数据不同
     @serialize()
@@ -26,7 +32,7 @@ export default class Block extends BoxBase {
     }
     set type(value){
         this._type = value; 
-        if (this._type == BLOCK_VALUE_ENUM.BLOCK){
+        if (this.checkType(BLOCK_VALUE_ENUM.BLOCK)){
             if(this.data_1 == 0){
                 this.data_1 = 1
             }
@@ -77,5 +83,15 @@ export default class Block extends BoxBase {
     }
     clearBlock(){
         this.type = BLOCK_VALUE_ENUM.EMPTY;
+        this.clearFlag();
+    }
+    clearFlag(){
+        this.setFlag(BLOCK_FLAG_ENUM.EMPTY);
+    }
+    checkType(value:number){
+        return this.type == value;
+    }
+    setFlag(value:number){
+        this.data_2 = value;
     }
 }

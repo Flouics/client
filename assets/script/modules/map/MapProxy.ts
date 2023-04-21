@@ -15,6 +15,7 @@ import TowerMgr from "../../manager/TowerMgr";
 import BulletMgr from "../../manager/BulletMgr";
 import { serialize } from "../../utils/Decorator";
 import DBMgr from "../../manager/DBMgr";
+import BuildTask from "../../logic/task/BuildTask";
 export default class MapProxy extends Proxy {
     attrs:{[key:string]:any} = {} 
     @serialize()
@@ -29,24 +30,26 @@ export default class MapProxy extends Proxy {
     buildingMapJson = {};    
     @serialize()
     headquarters: Headquarters = null;
-    @serialize()
-    monsterMgr: MonsterMgr = null;
-    @serialize()
-    heroMgr: HeroMgr = null;
-    @serialize()
-    towerMgr:TowerMgr = null;
-    @serialize()
-    bulletMgr:BulletMgr = null;
 
-    digTask:DigTask[] = [];
-    digTaskMap = {}
+    get monsterMgr (){
+        return MonsterMgr.getInstance(MonsterMgr);
+    }
+    get heroMgr (){
+        return HeroMgr.getInstance(HeroMgr);
+    }
+    get towerMgr (){
+        return TowerMgr.getInstance(TowerMgr);
+    }
+    get bulletMgr (){
+        return BulletMgr.getInstance(BulletMgr);
+    }
+
+    task:TaskBase[] = [];
+    taskMap = {}
 
     //方法
     init(){
-        this.monsterMgr = MonsterMgr.getInstance(MonsterMgr);
-        this.heroMgr = HeroMgr.getInstance(MonsterMgr);
-        this.towerMgr = TowerMgr.getInstance(MonsterMgr);
-        this.bulletMgr = BulletMgr.getInstance(MonsterMgr);
+
     }
 
     load(){
@@ -83,38 +86,69 @@ export default class MapProxy extends Proxy {
     reloadPrepare(){
         cc.log("reloadPrepare")
     }
+
+    sortTask(){
+        var taskList = this.task;
+        if(!taskList){
+            return;
+        }
+        taskList.sort((a,b)=>{
+            return a.priority - b.priority;
+        })
+        taskList.forEach((task,index) => {
+            task.index = index;
+        });
+    }
     
     pushTask(task:TaskBase){
-        if(this.checkTask(task)){
+        if(this.checkTask(task)){  
+            this.task.push(task)
+            var key = this.getTaskMapKey(task);
+            this.taskMap[key] = task;
             if(task instanceof DigTask){
-                this.digTask.push(task)
+                var block = this.getBlock(task.pos.x,task.pos.y)
+                if(block){
+                    block.setFlag(Block.BLOCK_FLAG_ENUM.DIG);
+                }
             }
         }
     }
-    checkTask(task:TaskBase){
-        if(task instanceof DigTask){
-           return !this.digTaskMap[MapUtils.getKey(task.digPos)]
+
+    getTaskMapKey(task:TaskBase){
+        var key = ""
+        if(task instanceof DigTask || task instanceof BuildTask){
+            key = cc.js.formatStr("%s_%s_%s",task.type,task.pos.x,task.pos.y)
+        }else{
+            key = cc.js.formatStr("%s_%s_%s",task.type,task.id)
         }
+        return key;
+    }
+    checkTask(task:TaskBase){
+        var key = this.getTaskMapKey(task);
+        return !this.taskMap[key]
     }
     delTask(task:TaskBase){
-        var taskList = null;
-        if(task instanceof DigTask){
-            taskList = this.digTask;
-        }
+        var taskList = this.task;
+        var ret = false;
         if(taskList){
             for (let index = 0; index < taskList.length; index++) {
                 if(taskList[index].id == task.id){
                     taskList.splice(index)
-                    return true;
+                    ret = true;
+                    break;
                 }                
             }
         }
-        return false;
+        var key = this.getTaskMapKey(task);
+        this.taskMap[key] = null;
+        return ret;
     }
-    shiftDigTask(){
-        var task = this.digTask.shift()
+
+    shiftTask(){
+        var task = this.task.shift()
         return task;
     }
+
     getBlock(x: number, y: number) {        
         x = this.fixPosX(x);
         y = this.fixPosY(y); 
