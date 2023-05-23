@@ -8,7 +8,10 @@ var STATE_ENUM = {
     ATTACK:3,
     DIG:4,
     BUILD:5,
-    PATHFINDING:6             // 寻路中
+    PATHFINDING:6,             // 寻路中
+    GOTO_MINE:7,             //去挖矿
+    MINING:8,                //挖矿ing
+    CARRY_RESOURCES:9,     // 搬运资源
 }
 
 export default class StateMachine {

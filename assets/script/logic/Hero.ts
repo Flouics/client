@@ -9,9 +9,11 @@ import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
 import App from "../App";
 import BuildTask from "./task/BuildTask";
+import CarryTask from "./task/CarryTask";
 
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
+    carryWeight: number = 1000;     //负重
     task:TaskBase = null;
     heroMgr:HeroMgr = null;
     static _idIndex = 1000;
@@ -131,7 +133,12 @@ export default class Hero extends Live {
                     this.stateMachine.switchState(StateMachine.STATE_ENUM.BUILD);
                     return true;
                 }      
-            }             
+            }        
+            
+            if(this.task instanceof CarryTask){
+                this.clearTask();
+                return false;
+            }  
         }else{
             this.fetchTask();
         }
