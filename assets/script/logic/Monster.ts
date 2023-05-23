@@ -16,7 +16,7 @@ export default class Monster extends Live {
     monsterMgr:MonsterMgr = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
-        this.id = Monster._idIndex;
+        this.idx = Monster._idIndex;
         Monster._idIndex += 1;
         this.init();
     }
@@ -25,7 +25,7 @@ export default class Monster extends Live {
         this.monsterMgr = this.mapMainView.monsterMgr;
     }
     clear(){
-        this.monsterMgr.clear(this.id);        
+        this.monsterMgr.clear(this.idx);        
     }    
     attackHeadquarters(){
         var target = this.mapMainView.headquarters;
@@ -55,7 +55,7 @@ export default class Monster extends Live {
 
     //攻击 
     onAtk() {
-        MonsterMgr.getInstance(MonsterMgr).clear(this.id)
+        MonsterMgr.getInstance(MonsterMgr).clear(this.idx)
         return true;
     }
 

@@ -17,6 +17,7 @@ import SoundMgr from "./manager/SoundMgr";
 import BaseClass from "./zero/BaseClass";
 import AppView from "./AppView";
 import TouchUtils from "./utils/TouchUtils";
+import Proxy from "./modules/base/Proxy";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -26,6 +27,42 @@ enum EventEnum {
     EVENT_HIDE = 1
     ,EVENT_SHOW = 2
 };
+
+//global
+let empty = function(value:any){
+    if(!!value){
+        return false
+    }
+    if(typeof(value) == "string"){
+        return value == ""
+    }else{
+        return !value
+    }
+
+}
+let deepCopy = function <T>(obj: T): T {
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+    
+    const newObj: any = Array.isArray(obj) ? [] : {};
+    
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+        newObj[key] = deepCopy(obj[key]);
+        }
+    }
+    
+    return newObj;
+}
+let getProxy = function (str:string): Proxy {
+    return  App.moduleMgr.getProxy(str);
+}
+
+window.empty = empty;
+window.deepCopy = deepCopy;
+window.clone  = deepCopy;
+window.getProxy = getProxy;
 
 //全局太麻烦了，老是有红线，直接静态处理吧。App只会有一个。
 export default class App extends BaseClass{
@@ -58,7 +95,7 @@ export default class App extends BaseClass{
     static RES_EFFECT:{[key:string]:any} = {};
     static game:{[key:string]:any} = {};
 
-    static ui:AppView = null;
+    static ui:AppView = null; 
 
     // use App for initialization
     static onLoad () {

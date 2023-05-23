@@ -18,7 +18,7 @@ export default class Hero extends Live {
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.HERO;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
-        this.id = Hero._idIndex;
+        this.idx = Hero._idIndex;
         Hero._idIndex += 1;
         this.init();
     }
@@ -138,6 +138,6 @@ export default class Hero extends Live {
         return false;
     }
     clear(){
-        this.heroMgr.clear(this.id)
+        this.heroMgr.clear(this.idx)
     }
 }

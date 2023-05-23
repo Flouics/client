@@ -12,12 +12,12 @@ var BUILDING_VALUE_ENUM = {
 
 export default class Building extends BoxBase {
     @serialize()
-    _type:number = null;   // 瓦片上属性 二进制存储数据        
-    get type(){
-        return this._type;
+    _id:number = null;   // 瓦片上属性 二进制存储数据        
+    get id(){
+        return this._id;
     }
-    set type(value){
-        this._type = value;           
+    set id(value){
+        this._id = value;           
     }
     @serialize()
     area:cc.Vec2[] = [cc.v2(0,0)];
@@ -52,8 +52,8 @@ export default class Building extends BoxBase {
             }
         })
     }
-    setId(){
-        this.id = Building._idIndex;
+    setIdx(){
+        this.idx = Building._idIndex;
         Building._idIndex += 1;
     }
     initSchedule(){
@@ -61,7 +61,7 @@ export default class Building extends BoxBase {
         this.mapMainView.schedule(this.update.bind(this),0.05);
     }
     createBuilding(toPos:cc.Vec2){
-        this.setId();       
+        this.setIdx();       
         this.x = toPos.x;
         this.y = toPos.y;        
         this.initUI(this.mapMainView.nd_buildingRoot)       

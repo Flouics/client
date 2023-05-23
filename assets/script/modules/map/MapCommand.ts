@@ -30,7 +30,7 @@ export default class MapCommand extends BaseCommand{
         var pos = params.pos || {}
         var block = this.proxy.getBlock(pos.x,pos.y)
         if(block && block.checkType(Block.BLOCK_VALUE_ENUM.BLOCK)){
-            block.clearBlock()
+            block.onDig()
             this.proxy.updateView("digBlock", params);
         }        
     }
@@ -42,7 +42,7 @@ export default class MapCommand extends BaseCommand{
             //todo tower
             var towerType = 1001;
             this.proxy.towerMgr.create(pos.x,pos.y,towerType)
-            block.type = Block.BLOCK_VALUE_ENUM.BUILDING;
+            block.id = Block.BLOCK_VALUE_ENUM.BUILDING;
             this.proxy.updateView("buildTower", params);
         }    
     }

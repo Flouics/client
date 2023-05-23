@@ -12,9 +12,9 @@ export default class UIBuilding extends BaseUI {
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
-        this.updateDataToUI("building.type",logicObj.type,()=>{
-            if(logicObj.type > 0){
-                self.loadSpt(self.spt_face, "building/building_" + logicObj.type)
+        this.updateDataToUI("building.type",logicObj.id,()=>{
+            if(logicObj.id > 0){
+                self.loadSpt(self.spt_face, "building/building_" + logicObj.id)
             }else{
                 self.spt_face.spriteFrame = null;
             }           

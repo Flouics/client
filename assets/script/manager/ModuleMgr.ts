@@ -1,6 +1,8 @@
 import Init from "../modules/base/Init";
 import MapInit from "../modules/map/MapInit";
+import PackageInit from "../modules/package/PackageInit";
 import PlayerInit from "../modules/player/PlayerInit";
+import TimeInit from "../modules/time/TimeInit";
 import BaseClass from "../zero/BaseClass";
 
 export default class ModuleMgr extends BaseClass{
@@ -17,8 +19,10 @@ export default class ModuleMgr extends BaseClass{
 
     init () {
         ModuleMgr._modules = {}
-        this.loadModule("player",new PlayerInit())
-        this.loadModule("map",new MapInit())        
+        this.loadModule("player",new PlayerInit());
+        this.loadModule("map",new MapInit());    
+        this.loadModule("package",new PackageInit());
+        this.loadModule("time",new TimeInit());
     };
 
     loadModule(moduleName:string,moduleInit:Init){

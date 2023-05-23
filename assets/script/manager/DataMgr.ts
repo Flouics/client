@@ -116,7 +116,41 @@ export default class DataMgr extends BaseClass {
     };
 
     getTable(filename: string) {
-        return this.dataPool[filename];
+        var data = this.dataPool[filename];
+        if(data == null){
+            var self = this;
+            const promise = new Promise((resolve, reject) => {
+                cc.loader.loadRes('data/' + filename + '.json', function (err: any, textAsset: any) {
+                    if (!err) {
+                        try {
+                            let mapData = textAsset.json
+                            for (const key in mapData) {
+                                if (Object.prototype.hasOwnProperty.call(mapData, key)) {
+                                    const element = mapData[key];
+                                    self.dataPool[key] = new Data(element);
+                                }
+                            }
+                            self.onLoadTable(filename);
+                            resolve(self.dataPool[filename])
+                        } catch (error) {
+                            cc.error("data load failed by name->",filename)
+                            reject(null)
+                        }                
+                    }
+                });
+            });
+              
+            promise.then((result) => {
+                return clone(result);
+            }).catch((error) => {
+                console.error(error);
+                return null;
+            });
+              
+        }else{
+            return clone(this.dataPool[filename]);
+        }
+       
     };
     
     static findById(filename:string,id: number | string){

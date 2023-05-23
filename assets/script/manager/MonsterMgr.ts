@@ -38,7 +38,7 @@ export default class MonsterMgr extends BaseClass {
         monster.initUI(this._nodeRoot,()=>{
             if(!!task) task(monster);    
         });
-        this.monsterMap[monster.id] = monster;        
+        this.monsterMap[monster.idx] = monster;        
         return monster;
     }
 

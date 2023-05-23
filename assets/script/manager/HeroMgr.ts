@@ -36,7 +36,7 @@ export default class HeroMgr extends BaseClass{
     create( x: number = 0, y: number = 0){
         let hero = new Hero(this._mapMainView,x,y)
         hero.initUI(this._nodeRoot)
-        this.heroMap[hero.id] = hero;        
+        this.heroMap[hero.idx] = hero;        
         return hero;
     }
 

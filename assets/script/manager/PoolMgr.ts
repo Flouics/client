@@ -74,6 +74,7 @@ var POOL_TAG_ENUM = {
     MONSTER:"monster",
     HERO:"hero",
     BULLET:"bullet",
+    ITEM:"item",
 }
 
 export default class PoolMgr extends BaseClass {

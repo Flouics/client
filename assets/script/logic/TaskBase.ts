@@ -3,6 +3,7 @@ var TASK_VALUE_ENUM = {
     IDLE:0,
     DIG:1,
     BUILD:2,
+    CARRY:4,
 }
 
 export default class TaskBase extends BaseClass {

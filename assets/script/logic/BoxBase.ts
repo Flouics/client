@@ -5,7 +5,7 @@ import BaseClass from "../zero/BaseClass";
 
 export default class BoxBase extends BaseClass {
     @serialize()
-    id: number = 0;
+    idx: number = 0;
     @serialize()
     x: number = 0;  //瓦片地图坐标
     @serialize()
@@ -106,7 +106,7 @@ export default class BoxBase extends BaseClass {
     }
     getUIPos(){
         if(this.node){
-            return this.node.position;
+            return cc.v2(this.node.position.x, this.node.position.y);
         }else{
             return MapUtils.getViewPosByTilePos(this.pos);
         }        

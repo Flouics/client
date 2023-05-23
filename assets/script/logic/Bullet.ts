@@ -27,7 +27,7 @@ export default class Bullet extends BoxBase {
         this.viewPos = viewPos;
         this.data = bulletData;
         this.mapMainView = mapMainView;    
-        this.id = Bullet._idIndex;
+        this.idx = Bullet._idIndex;
         Bullet._idIndex += 1;
     }
 
@@ -45,7 +45,7 @@ export default class Bullet extends BoxBase {
     }
 
     clear(){
-        this.bulletMgr.clear(this.id);       
+        this.bulletMgr.clear(this.idx);       
     }
 
     checkTargetIntoRange(target:BoxBase){

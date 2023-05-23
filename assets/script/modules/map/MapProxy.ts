@@ -14,8 +14,9 @@ import HeroMgr from "../../manager/HeroMgr";
 import TowerMgr from "../../manager/TowerMgr";
 import BulletMgr from "../../manager/BulletMgr";
 import { serialize } from "../../utils/Decorator";
-import DBMgr from "../../manager/DBMgr";
 import BuildTask from "../../logic/task/BuildTask";
+import MineMgr from "../../manager/MineMgr";
+
 export default class MapProxy extends Proxy {
     attrs:{[key:string]:any} = {} 
     @serialize()
@@ -30,6 +31,9 @@ export default class MapProxy extends Proxy {
     buildingMapJson = {};    
     @serialize()
     headquarters: Headquarters = null;
+    @serialize()
+    mineMapJson = {};  
+
 
     get monsterMgr (){
         return MonsterMgr.getInstance(MonsterMgr);
@@ -42,6 +46,10 @@ export default class MapProxy extends Proxy {
     }
     get bulletMgr (){
         return BulletMgr.getInstance(BulletMgr);
+    }
+
+    get mineMgr(){
+        return MineMgr.getInstance(MineMgr);
     }
 
     task:TaskBase[] = [];
@@ -68,6 +76,10 @@ export default class MapProxy extends Proxy {
         this.buildingMapJson = {}
         for (var i in this.buildingMap) {
             this.buildingMapJson[i] = this.buildingMap[i].serialize();
+        }
+        this.mineMapJson = {};
+        for (var i in this.mineMgr.mineMap) {
+            this.mineMapJson[i] = this.mineMgr.mineMap[i].serialize();
         }
     }
 
@@ -163,7 +175,7 @@ export default class MapProxy extends Proxy {
     checkBlock(pos: cc.Vec2) {
         var block = this.getBlock(pos.x,pos.y)
         if (block) {
-            return ((block.type | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+            return ((block.id | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
         } else {
             return false;
         }
@@ -185,7 +197,7 @@ export default class MapProxy extends Proxy {
 
         var block = this.getBlock(pos.x,pos.y)
         if (block) {
-            return ((block.type | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
+            return ((block.id | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
         } else {
             return false;
         }

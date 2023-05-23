@@ -53,7 +53,6 @@ export default class TowerMgr extends BaseClass{
         this.towerMap[tower.id] = tower;        
         return tower;
     }
-
     
     refresh(){
         for (const key in this.towerMap) {

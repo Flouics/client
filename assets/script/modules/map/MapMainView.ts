@@ -20,6 +20,7 @@ import App from "../../App";
 import BaseView from "../../zero/BaseView";
 import BaseUI from "../../zero/BaseUI";
 import BuildTask from "../../logic/task/BuildTask";
+import MineMgr from "../../manager/MineMgr";
 
 /**
  * Created by Administrator on 2017/9/12.
@@ -68,6 +69,7 @@ export default class MapMainView extends BaseView {
     heroMgr: HeroMgr = null;
     towerMgr:TowerMgr = null;
     bulletMgr:BulletMgr = null;
+    mineMgr:MineMgr = null;
     monsterEntryPos: cc.Vec2 = cc.v2(0, 0);
     moduleName = "map";
     centerPos: cc.Vec2 = cc.v2(0, 0);
@@ -90,6 +92,7 @@ export default class MapMainView extends BaseView {
         this.monsterMgr.reset();
         this.heroMgr.reset();
         this.bulletMgr.reset();    
+        this.mineMgr.reset();    
         this.initMap();
     }
 
@@ -98,10 +101,13 @@ export default class MapMainView extends BaseView {
         this.heroMgr = HeroMgr.getInstance(HeroMgr);
         this.towerMgr = TowerMgr.getInstance(TowerMgr);
         this.bulletMgr = BulletMgr.getInstance(BulletMgr);
+        this.mineMgr = BulletMgr.getInstance(BulletMgr);
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);
         this.bulletMgr.init(this);
+        this.mineMgr.init(this);
+        this.mineMgr.loadJson(this.mapProxy.mineMapJson);
         this.margin_x = this.mapProxy.margin_x;
         this.margin_y = this.mapProxy.margin_y;             
         
@@ -114,7 +120,7 @@ export default class MapMainView extends BaseView {
     }
     initMonsterEntryPos() {
         this.monsterEntryPos = cc.v2(-10, 10);
-        this.getBlockByPos(this.monsterEntryPos).type = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
+        this.getBlockByPos(this.monsterEntryPos).id = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
     }
     initBlockSize(size: cc.Size) {
         this._blockSize = size;
@@ -193,7 +199,7 @@ export default class MapMainView extends BaseView {
     initBuildings() {
         let headquarters = new Headquarters(this);
         this.createBuilding(headquarters, cc.v2(0, 0));
-        this.buildingMap[headquarters.id] = headquarters;
+        this.buildingMap[headquarters.idx] = headquarters;
         this.headquarters = headquarters;
     }
     checkBlock(pos: cc.Vec2) {

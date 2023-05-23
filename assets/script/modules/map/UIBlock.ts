@@ -27,7 +27,7 @@ export default class UIBlock extends BaseUI {
                 spt.spriteFrame = null;
             }       
         }
-        this.updateDataToUI("block.type",logicObj.type,()=>{
+        this.updateDataToUI("block.type",logicObj.id,()=>{
             loadBlockSpt()           
         })
 

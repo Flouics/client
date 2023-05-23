@@ -32,6 +32,16 @@ export default class UILive extends BaseUI {
         this._moveAction = null;
     }
 
+    updateDirection(direction:number){
+        if(direction == 0){
+            return
+        }
+        var scaleV2 = cc.v2()
+        this.node.getScale(scaleV2);
+        scaleV2.y = Math.abs(scaleV2.y) * (direction > 0 ? 1 : -1)
+        this.node.setScale(scaleV2);
+    }
+
     onBeAtked(damage:number){
         if(this._beAtkedAction) return;
         var duration = 0.5;

@@ -77,7 +77,7 @@ export default class Tower extends Building {
         return false;
     }
     clear(){
-        this.towerMgr.clear(this.id);        
+        this.towerMgr.clear(this.idx);        
     }    
     update(){
         if(this.target){

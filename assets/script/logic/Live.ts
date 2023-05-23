@@ -26,7 +26,7 @@ export default class Live extends BoxBase {
         this.y = y;
         this.mapMainView = mapMainView;
         this.mapProxy = MapProxy.getInstance(MapProxy);
-        this.id = Live._idIndex;
+        this.idx = Live._idIndex;
         Live._idIndex += 1;
         this.stateMachine.regeditHandler(this.onEnterState.bind(this),this.onExitState.bind(this),this.onState.bind(this))       
 
@@ -89,8 +89,15 @@ export default class Live extends BoxBase {
         this.mapMainView.printBlocks(moveRouteList);
         this.routeList = moveRouteList;
         this.ui.stopMoveAction();
-        this.stateMachine.switchState(StateMachine.STATE_ENUM.PATHFINDING)     
+        this.stateMachine.switchState(StateMachine.STATE_ENUM.PATHFINDING)
+        this.updateDirection(toPos);     
         return true;
+    }
+    // 修改朝向
+    updateDirection(toPos: cc.Vec2){
+        // 只有两个朝向
+        var direction = this.x - toPos.x;
+        this.ui.updateDirection(direction)
     }
 
     getNearByPos(area: cc.Vec2[]):cc.Vec2 {

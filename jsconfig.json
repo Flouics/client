@@ -2,8 +2,7 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "experimentalDecorators": true
     },
     "exclude": [
         "node_modules",

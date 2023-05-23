@@ -46,7 +46,7 @@ export default class Proxy extends BaseClass {
 
     getDbKey(){        
         var playerProxy = App.moduleMgr.getProxy("player");
-        var userId = playerProxy.uuid;
+        var userId = playerProxy.attrs.uuid;
         return this._classDbKey + "_" + userId
     }
 

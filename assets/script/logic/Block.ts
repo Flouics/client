@@ -11,6 +11,7 @@ var BLOCK_VALUE_ENUM = {
     BUILDING:2,
     MONSTER:4,
     MONSTER_ENTRY:8,
+    MINE:16,
 }
 
 var BLOCK_FLAG_ENUM = {
@@ -26,12 +27,14 @@ export default class Block extends BoxBase {
     @serialize()
     buildingId:number = 0;   // 额外属性，value不同，数据不同
     @serialize()
-    _type:number = null;   // 瓦片上属性 二进制存储数据        
-    get type(){
-        return this._type;
+    _id:number = null;   // 瓦片上属性 二进制存储数据       
+    @serialize() 
+    _idPre:number = 0; // 预定的属性 挖掉之后显示
+    get id(){
+        return this._id;
     }
-    set type(value){
-        this._type = value; 
+    set id(value){
+        this._id = value; 
         if (this.checkType(BLOCK_VALUE_ENUM.BLOCK)){
             if(this.data_1 == 0){
                 this.data_1 = 1
@@ -62,8 +65,8 @@ export default class Block extends BoxBase {
         node.x = this.x * this.mapMainView._blockSize.width;
         node.y = this.y * this.mapMainView._blockSize.height;
         node.scale = 0.95;
-        if(this.type == null){
-            this.type = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+        if(this.id == null){
+            this.id = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         }        
         this.bindUI(node.getComponent(UIBlock));
         this.updateUI();
@@ -74,24 +77,33 @@ export default class Block extends BoxBase {
         this.node.y = this.y * this.mapMainView._blockSize.height + offsetPos.y;
     }
     createBuilding(building:Building){
-        this.buildingId = building.id; 
-        this.type = BLOCK_VALUE_ENUM.BUILDING;
+        this.buildingId = building.idx; 
+        this.id = BLOCK_VALUE_ENUM.BUILDING;
     }
     resetBuilding(building?:Building){
-        this.buildingId = building ? building.id : 0;
-        this.type = BLOCK_VALUE_ENUM.BUILDING;
+        this.buildingId = building ? building.idx : 0;
+        this.id = BLOCK_VALUE_ENUM.BUILDING;
     }
     clearBlock(){
-        this.type = BLOCK_VALUE_ENUM.EMPTY;
+        this.id = BLOCK_VALUE_ENUM.EMPTY;
         this.clearFlag();
     }
     clearFlag(){
         this.setFlag(BLOCK_FLAG_ENUM.EMPTY);
     }
     checkType(value:number){
-        return this.type == value;
+        return this.id == value;
     }
     setFlag(value:number){
         this.data_2 = value;
+    }
+    onDig(){
+        if (this._idPre > 0){
+            this.id = this._idPre;
+            this.clearFlag();
+            return true
+        }
+        this.clearBlock()
+        return false;
     }
 }

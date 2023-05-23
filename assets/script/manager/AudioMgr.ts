@@ -1,4 +1,5 @@
-﻿import BaseClass from "../zero/BaseClass";
+﻿import App from "../App";
+import BaseClass from "../zero/BaseClass";
 
 var basePath = '/resources/music/';
 var AUDIO_TYPE = '.mp3';
