@@ -34,7 +34,7 @@ export default class Tower extends Building {
 
     setBullet(bulletId:number){
         this.bulletId = bulletId;
-        this.bulletCfg = DataMgr.getInstance(DataMgr).getTable("bullet_type").findById(this.bulletId);
+        this.bulletCfg = DataMgr.findById("bullet_type",this.bulletId);
     }
 
     atkTarget(){

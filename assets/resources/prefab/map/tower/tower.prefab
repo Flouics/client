@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "tower_1",
+    "_name": "tower",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -269,7 +269,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9e8246a5-26bd-4339-8648-5a5f41bff605"
+      "__uuid__": "b7f304bd-676b-4c7c-bdd4-bc31a0e17d11"
     },
     "fileId": "a2yyzNRPFBV5Jxd/xT254L",
     "sync": false
@@ -280,7 +280,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9e8246a5-26bd-4339-8648-5a5f41bff605"
+      "__uuid__": "b7f304bd-676b-4c7c-bdd4-bc31a0e17d11"
     },
     "fileId": "a8zfqJekFJb4yX65XWItNe",
     "sync": false
@@ -291,9 +291,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9e8246a5-26bd-4339-8648-5a5f41bff605"
+      "__uuid__": "b7f304bd-676b-4c7c-bdd4-bc31a0e17d11"
     },
-    "fileId": "ddT5ud8lVCmJ9zKWByDXnP",
+    "fileId": "",
     "sync": false
   }
 ]

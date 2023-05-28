@@ -78,6 +78,17 @@ export default class BaseUI extends cc.Component {
         });
     };
 
+    
+    loadSptEx(spt: cc.Sprite, res_url: string = null, cb?: Function) {
+        if (!res_url) return;
+        cc.loader.loadRes(res_url, cc.SpriteFrame, function (err, spriteFrame) {
+            if (!err && spt && spt.node) {
+                spt.spriteFrame = spriteFrame;
+                if (!!cb) cb(err, spriteFrame);
+            }
+        });
+    };
+
     updateDataToUI(key: string, data: any, cb: Function) {
         let dataKey = this.getDataKey(key)
         let dataUnique = this.getDataUnique(data)

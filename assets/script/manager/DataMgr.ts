@@ -26,25 +26,25 @@ class Data {
         for (i in this.data) {
             item = this.data[i];
             if (item[attr] == value) {
-                result.push(item);
+                result.push(clone(item));
             }
         }
         return result;
     };
 
     findById(id: number | string) {
-        return this.data[id];
+        return clone(this.data[id]);
     };
 
     random() {
         var length = this.ids.length;
         var rid = this.ids[Math.floor(Math.random() * length)];
-        return this.data[rid];
+        return clone(this.data[rid]);
     };
 
     getFirst() {
         var rid = this.ids[0];
-        return this.data[rid];
+        return clone(this.data[rid]);
     };
 
     all() {
@@ -141,19 +141,25 @@ export default class DataMgr extends BaseClass {
             });
               
             promise.then((result) => {
-                return clone(result);
+                return result;
             }).catch((error) => {
                 console.error(error);
                 return null;
             });
               
         }else{
-            return clone(this.dataPool[filename]);
+            return this.dataPool[filename];
         }
        
     };
     
     static findById(filename:string,id: number | string){
-        return DataMgr.getInstance(DataMgr).getTable(filename).findById(id);
+        var data = DataMgr.getInstance(DataMgr).getTable(filename)
+        if(data){
+            return data.findById(id);
+        }else{
+            return null;
+        }
+        
     }
 };

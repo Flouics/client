@@ -14,7 +14,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class MenuView extends BaseView {
     _clickBuilding:Building
-    mapProxy:MapProxy = null;
+
     @property(cc.Toggle)
     tgBuild:cc.Toggle = null;
     @property(cc.Toggle)
@@ -23,19 +23,18 @@ export default class MenuView extends BaseView {
     
     onLoad(){
         super.onLoad()
-        this.mapProxy = this.proxy as MapProxy;
     }
 
     onClickBuild(){
         //this._clickBuilding = new Tower(null);
         var value = this.tgBuild.isChecked ? MapMainView.OPERATION_ENUM.BUILD : MapMainView.OPERATION_ENUM.COMMON;
-        this.mapProxy.updateView("switchOperation",value);
+        this.proxy.updateView("switchOperation",value);
         this.command("onClickBuild")
     }
 
     onClickDig(){
         var value = this.tgDig.isChecked ? MapMainView.OPERATION_ENUM.DIG : MapMainView.OPERATION_ENUM.COMMON;
-        this.mapProxy.updateView("switchOperation",value);
+        this.proxy.updateView("switchOperation",value);
         this.command("onClickDig")
     }
 

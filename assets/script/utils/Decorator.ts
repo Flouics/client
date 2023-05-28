@@ -31,7 +31,7 @@ export function objToJson(obj:Object): any {
 }
 
 //反序列化
-export function jsonToObj(obj:Object,json:string) {
+export function jsonToObj(obj:Object,json:string = "") {
     try {
         let json2obj = JSON.parse(json);
         Object.keys(obj).forEach( property => {

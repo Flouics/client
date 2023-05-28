@@ -101,7 +101,7 @@ export default class MapMainView extends BaseView {
         this.heroMgr = HeroMgr.getInstance(HeroMgr);
         this.towerMgr = TowerMgr.getInstance(TowerMgr);
         this.bulletMgr = BulletMgr.getInstance(BulletMgr);
-        this.mineMgr = BulletMgr.getInstance(BulletMgr);
+        this.mineMgr = MineMgr.getInstance(MineMgr);
         this.monsterMgr.init(this);
         this.heroMgr.init(this);
         this.towerMgr.init(this);

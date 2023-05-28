@@ -48,9 +48,7 @@ let deepCopy = function <T>(obj: T): T {
     const newObj: any = Array.isArray(obj) ? [] : {};
     
     for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
         newObj[key] = deepCopy(obj[key]);
-        }
     }
     
     return newObj;
