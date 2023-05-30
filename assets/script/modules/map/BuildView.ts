@@ -9,10 +9,13 @@ export default class BuildView extends BaseView {
     moduleName = "map";
     _baseUrl = "texture/map/";
     @property(cc.Prefab)
-    buildItem:cc.Prefab ;    
 
     onLoad(){
         super.onLoad()
+    }
+
+    initBuildListView(){
+
     }
 
 }
