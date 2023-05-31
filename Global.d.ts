@@ -10,3 +10,4 @@ declare function empty(arg:T):boolean;
 declare function clone(arg:T):T;
 declare function deepCopy(arg:T):T;
 declare function getProxy(arg:T):T;
+declare function nullfun(arg:T):T;

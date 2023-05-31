@@ -34,7 +34,7 @@ let empty = function(value:any){
         return false
     }
     if(typeof(value) == "string"){
-        return value == ""
+        return value.length == 0;
     }else{
         return !value
     }
@@ -53,14 +53,18 @@ let deepCopy = function <T>(obj: T): T {
     
     return newObj;
 }
-let getProxy = function (str:string): Proxy {
-    return  App.moduleMgr.getProxy(str);
+let getProxy = function (moduleName:string): Proxy {
+    return  App.moduleMgr.getProxy(moduleName);
 }
+
+let nullfun = function () {}
+
 
 window.empty = empty;
 window.deepCopy = deepCopy;
 window.clone  = deepCopy;
 window.getProxy = getProxy;
+window.nullfun = nullfun;
 
 //全局太麻烦了，老是有红线，直接静态处理吧。App只会有一个。
 export default class App extends BaseClass{

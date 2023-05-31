@@ -1,6 +1,5 @@
 import App from "../App";
 import Proxy from "../modules/base/Proxy";
-import BaseClass from "./BaseClass";
 import BaseUI from "./BaseUI";
 
 const { ccclass, property } = cc._decorator;
@@ -125,7 +124,7 @@ export default class BaseView extends BaseUI {
     }
 
     command(funcName:string,params?:any){
-        if (!App.toolKit.empty(this.moduleName){
+        if (!App.toolKit.empty(this.moduleName)){
             App.moduleMgr.command(this.moduleName,funcName,params)
         }
     }

@@ -1,6 +1,5 @@
-import Proxy from "../modules/base/Proxy";
+
 import BoxBase from "../logic/BoxBase";
-import BaseView from "./BaseView";
 
 const { ccclass, property } = cc._decorator;
 var global = window;
