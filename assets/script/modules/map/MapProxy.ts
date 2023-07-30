@@ -35,20 +35,20 @@ export default class MapProxy extends Proxy {
     mineMapJson = {};  
 
 
-    get monsterMgr (){
+    get monsterMgr ():MonsterMgr{
         return MonsterMgr.getInstance(MonsterMgr);
     }
-    get heroMgr (){
+    get heroMgr ():HeroMgr{
         return HeroMgr.getInstance(HeroMgr);
     }
-    get towerMgr (){
+    get towerMgr ():TowerMgr{
         return TowerMgr.getInstance(TowerMgr);
     }
-    get bulletMgr (){
+    get bulletMgr ():BulletMgr{
         return BulletMgr.getInstance(BulletMgr);
     }
 
-    get mineMgr(){
+    get mineMgr():MineMgr{
         return MineMgr.getInstance(MineMgr);
     }
 

@@ -58,7 +58,7 @@ export default class DataMgr extends BaseClass {
     dataPool:{[key:string]:Data} = {}
     loadTexts = [
         'config'
-        , 'bullet_type'
+        , 'base'
         , 'building'
     ];
 
@@ -79,7 +79,30 @@ export default class DataMgr extends BaseClass {
         for (var i = 0; i < this.maxLoad; ++i) {
             this.loadTable(this.loadTexts[i]);
         }
+        this.loadFileKeyTables();
     };
+
+    loadFileKeyTables(){
+        var self = this;
+        cc.loader.loadRes('data/fileKey.json', function (err: any, textAsset: any) {
+            if (!err) {
+                try {
+                    let mapData = textAsset.json                    
+                    for (const key in mapData) {
+                        if (Object.prototype.hasOwnProperty.call(mapData, key)) {
+                            const element = mapData[key];
+                            App.asyncTaskMgr.newAsyncTask(() => {
+                                self.loadTable(element);
+                            })                         
+                        }
+                    }
+                    
+                } catch (error) {
+                    cc.error("data load failed by name->fileKey.json")
+                }                
+            }
+        });
+    }
 
     loadTable(filename: string) {
         var self = this;
@@ -114,47 +137,48 @@ export default class DataMgr extends BaseClass {
             }
         }
     };
-
-    getTable(filename: string) {
-        var data = this.dataPool[filename];
-        if(data == null){
-            var self = this;
-            const promise = new Promise((resolve, reject) => {
-                cc.loader.loadRes('data/' + filename + '.json', function (err: any, textAsset: any) {
-                    if (!err) {
-                        try {
-                            let mapData = textAsset.json
-                            for (const key in mapData) {
-                                if (Object.prototype.hasOwnProperty.call(mapData, key)) {
-                                    const element = mapData[key];
-                                    self.dataPool[key] = new Data(element);
-                                }
+    parseData (filename: string){
+        var self = this;
+        return new Promise((resolve, reject) => {
+            cc.loader.loadRes('data/' + filename + '.json', function (err: any, textAsset: any) {
+                if (!err) {
+                    try {
+                        let mapData = textAsset.json
+                        for (const key in mapData) {
+                            if (Object.prototype.hasOwnProperty.call(mapData, key)) {
+                                const element = mapData[key];
+                                self.dataPool[key] = new Data(element);
                             }
-                            self.onLoadTable(filename);
-                            resolve(self.dataPool[filename])
-                        } catch (error) {
-                            cc.error("data load failed by name->",filename)
-                            reject(null)
-                        }                
-                    }
-                });
+                        }
+                        self.onLoadTable(filename);
+                        resolve(self.dataPool[filename])
+                    } catch (error) {
+                        cc.error("data load failed by name->",filename)
+                        reject(null)
+                    }                
+                }
             });
-              
-            promise.then((result) => {
-                return result;
-            }).catch((error) => {
+        });
+    }
+
+    async getTable(filename: string) {
+        var data = this.dataPool[filename];
+        if(data == null){      
+            try {
+                var ret = await this.parseData(filename);
+                return ret as Data
+            } catch (error) {
                 console.error(error);
                 return null;
-            });
-              
+            }
         }else{
             return this.dataPool[filename];
         }
        
     };
     
-    static findById(filename:string,id: number | string){
-        var data = DataMgr.getInstance(DataMgr).getTable(filename)
+    static async findById(filename:string,id: number | string){
+        var data = await DataMgr.getInstance(DataMgr).getTable(filename)
         if(data){
             return data.findById(id);
         }else{

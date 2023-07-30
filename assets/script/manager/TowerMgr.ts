@@ -17,6 +17,7 @@ export default class TowerMgr extends BaseClass{
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;
         this._nodeRoot = mapMainView.nd_buildingRoot;
+        this.initTowerTypeMap();
         this.reset()
     }
     
@@ -45,7 +46,7 @@ export default class TowerMgr extends BaseClass{
 
     create(x: number = 0, y: number = 0,towerType:number,task?:Function){
         let TowerClass = this.getTowerClass(towerType);
-        let tower = new TowerClass(this._mapMainView);
+        let tower = new TowerClass(this._mapMainView) as Tower;
         tower.initUI(this._nodeRoot,()=>{
             if(!!task) task(tower);    
         });

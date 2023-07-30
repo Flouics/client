@@ -32,9 +32,9 @@ export default class Tower extends Building {
         this.initSchedule();
     }
 
-    setBullet(bulletId:number){
+    async setBullet(bulletId:number){
         this.bulletId = bulletId;
-        this.bulletCfg = DataMgr.findById("bullet_type",this.bulletId);
+        this.bulletCfg = await DataMgr.findById("bullet_type",this.bulletId);
     }
 
     atkTarget(){

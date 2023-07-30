@@ -61,6 +61,7 @@ export default class Building extends BoxBase {
         this.mapMainView.schedule(this.update.bind(this),0.05);
     }
     createBuilding(toPos:cc.Vec2){
+        cc.log("createBuilding",toPos)
         this.setIdx();       
         this.x = toPos.x;
         this.y = toPos.y;        

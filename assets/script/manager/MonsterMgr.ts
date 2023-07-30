@@ -4,6 +4,7 @@ import MapMainView from "../modules/map/MapMainView";
 import AsyncTaskMgr from "./AsyncTaskMgr";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
+import App from "../App";
 
 // 怪物管理器
 export default class MonsterMgr extends BaseClass {
@@ -45,7 +46,7 @@ export default class MonsterMgr extends BaseClass {
     createMultiple(count:number = 1,x: number = 0, y: number = 0,task?:Function){
         var self = this;
         for (let i = 0; i < count; i++) {
-            AsyncTaskMgr.getInstance(AsyncTaskMgr).newAsyncTask(()=>{
+            App.asyncTaskMgr.newAsyncTask(()=>{
                 self.create(x,y,task);      
             })           
         }

@@ -183,7 +183,7 @@ export default class MapMainView extends BaseView {
     }
     initMonsters() {
         this.initMonsterEntryPos();        
-        this.monsterMgr.createMultiple(2, this.monsterEntryPos.x, this.monsterEntryPos.y, (monster: Monster) => {
+        this.monsterMgr.createMultiple(10, this.monsterEntryPos.x, this.monsterEntryPos.y, (monster: Monster) => {
             monster.attackHeadquarters();
         });
     }

@@ -4,6 +4,8 @@
 4 怪物攻击状态
 5 近距离攻击
 
+炮台攻击，怪兽间隔生成
+
 this.heroMgr.refresh();
 this.monsterMgr.refresh();
 this.towerMgr.refresh();

@@ -83,10 +83,19 @@ export default class MapUtils {
     }
     // 获取最短路径
     static getRouteList(fromPos: cc.Vec2, toPos: cc.Vec2, checkFun: Function = () => { return true }) {
+        var getKey = (pos: cc.Vec2) => { return MapUtils.getKey(pos) }
+        var getDis = (pos: cc.Vec2) => { return MapUtils.getDis(pos,toPos) }
         var ret: cc.Vec2[] = []
-        if (fromPos.x == toPos.x && fromPos.y == toPos.y) {
+        var dis = getDis(fromPos)
+        if (checkFun(toPos) ){
+            if (dis == 0){
+                return ret //相同地点不用寻路
+            }
+        }else 
+            if (dis == 1) {
             return ret //相同地点不用寻路
         }
+
         // A*寻路
         //四个方向
         var dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]];
@@ -94,8 +103,7 @@ export default class MapUtils {
         var openList = []
         var closeList = []
         var filterMap = {}
-        var getKey = (pos: cc.Vec2) => { return MapUtils.getKey(pos) }
-        var getDis = (pos: cc.Vec2) => { return MapUtils.getDis(pos,toPos) }
+
         class Route {
             key: string;
             dis: number;
@@ -153,10 +161,15 @@ export default class MapUtils {
                 //无路可走
                 return null;
             }
-            if (curRoute.x == toPos.x && curRoute.y == toPos.y) {
+            var dis = getDis(cc.v2(curRoute.x,curRoute.y))
+            if (checkFun(toPos) ){
+                if (dis == 0){
+                    return curRoute
+                }
+            }else 
+                if (dis == 1) {
                 return curRoute
             }
-
             closeList.push(curRoute);
             return findRoute(curRoute)
         }

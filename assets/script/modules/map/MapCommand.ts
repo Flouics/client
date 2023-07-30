@@ -6,10 +6,10 @@ import App from "../../App";
 import MapProxy from "./MapProxy";
 import Block from "../../logic/Block";
 import TaskBase from "../../logic/TaskBase";
-import Tower from "../../logic/tower/Tower";
 
 export default class MapCommand extends BaseCommand{
     proxy:MapProxy;
+    moduleName:String = "map";
     showMapView(params:any){
         let proxy = ModuleMgr.getInstance(ModuleMgr).getProxy("map")
         WindowMgr.getInstance(WindowMgr).open("");
@@ -38,6 +38,7 @@ export default class MapCommand extends BaseCommand{
     buildTower(params:any){
         var pos = params.pos || {}
         var block = this.proxy.getBlock(pos.x,pos.y)
+        //todo 修改炮塔
         if(block && block.checkType(Block.BLOCK_VALUE_ENUM.EMPTY)){
             //todo tower
             var towerType = 1001;
