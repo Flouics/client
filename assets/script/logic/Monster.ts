@@ -21,7 +21,7 @@ export default class Monster extends Live {
         this.init();
     }
     init(){
-        this.life = 10;
+        this.life = 1000;
         this.monsterMgr = this.mapMainView.monsterMgr;
     }
     clear(){
@@ -54,8 +54,10 @@ export default class Monster extends Live {
     }
 
     //攻击 
-    onAtk() {
-        MonsterMgr.getInstance(MonsterMgr).clear(this.idx)
+    onAtk(target = this.target) {
+        if (target){
+            super.onAtk(target);
+        }        
         return true;
     }
 

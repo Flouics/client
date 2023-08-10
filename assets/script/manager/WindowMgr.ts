@@ -189,9 +189,7 @@ export default class WindowMgr extends BaseClass {
     };
 
     getUIRoot() {
-        var canvas = cc.find('Canvas');
-        var uiRoot = cc.find('uiRoot', canvas);
-        return uiRoot || canvas;
+        return App.getUIRoot();
     };
 
     getUIMask() {

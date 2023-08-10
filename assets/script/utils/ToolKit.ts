@@ -501,4 +501,19 @@ export default class ToolKit extends BaseClass{
         }
 
     };
+    limitNum(value:number,min?:number,max?:number){
+        if(min && value < min){
+            value = min;
+        }
+        if(max && value > max){
+            value = max;
+        }
+        return value;
+    };
+/*     保持队列索引始终在范围内
+    超出范围的，会重新修正 如-1 ,则在在队尾 */
+    queueIndexd(index:number,len:number){
+        var i = index % len;
+        return (i + len - 1) % len  + 1
+    }
 };

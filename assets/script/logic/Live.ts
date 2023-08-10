@@ -158,6 +158,10 @@ export default class Live extends BoxBase {
     clear(){
         this.destory();
     }
+    onAtk(target:BoxBase){
+        //发起攻击
+        super.onAtk(target);
+    }
     onBeAtked(damage:number,atker:BoxBase){
         this.life += -damage;
         if(this.ui){
@@ -167,6 +171,7 @@ export default class Live extends BoxBase {
         if(!this.checkLive()) {
             this.clear();
         }
+        super.onBeAtked(damage,atker);
     }
 
     destory(){

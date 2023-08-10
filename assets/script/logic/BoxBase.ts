@@ -14,7 +14,9 @@ export default class BoxBase extends BaseClass {
     @serialize()
     name:string = "";
     @serialize()
-    life:number = 1;
+    life:number = 10;
+    @serialize()
+    lifeMax:number = 10;    
     @serialize()
     atk:number = 0;
     @serialize()
@@ -112,6 +114,11 @@ export default class BoxBase extends BaseClass {
         }        
     }
 
+    //发起攻击
+    onAtk(target:BoxBase){
+    }
+
+    //受到攻击
     onBeAtked(damage:number,atker:BoxBase){
 
     }

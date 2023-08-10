@@ -67,8 +67,11 @@ export default class Bullet extends BoxBase {
     }
 
     getDamage(){
+        var damage = baseDamage;
         var baseDamage = this.data.power;
-        return baseDamage;
+        var shooterAct = this.shooter.atk;
+        damage = baseDamage + shooterAct;   
+        return damage;
     }
 
     update(dt:number){
@@ -80,7 +83,7 @@ export default class Bullet extends BoxBase {
         this.node.x += dirV2.x;
         this.node.y += dirV2.y;
         if(this.checkTargetIntoRange(this.target)){
-            this.target.onBeAtked(this.getDamage(),this);
+            this.target.onBeAtked(this.getDamage(),this.shooter);
             this.clear()
         }
     }

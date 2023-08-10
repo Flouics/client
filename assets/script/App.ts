@@ -18,6 +18,8 @@ import BaseClass from "./zero/BaseClass";
 import AppView from "./AppView";
 import TouchUtils from "./utils/TouchUtils";
 import Proxy from "./modules/base/Proxy";
+import EffetMgr from "./manager/EffectMgr";
+import EffectMgr from "./manager/EffectMgr";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -91,6 +93,7 @@ export default class App extends BaseClass{
     static dataMgr:DataMgr = null;
     static loginMgr:LoginMgr = null;
     static soundMgr:SoundMgr = null;
+    static effectMgr:EffectMgr = null;
 
     static RES_WINDOW:{[key:string]:any} = {}
     static RES_ITEM:{[key:string]:any} = {};
@@ -138,7 +141,9 @@ export default class App extends BaseClass{
         App.timeMgr = App.getInstance(TimeMgr);
         App.dataMgr = App.getInstance(DataMgr);
         App.loginMgr = App.getInstance(LoginMgr);
-        App.soundMgr = App.getInstance(SoundMgr);      
+        App.soundMgr = App.getInstance(SoundMgr);   
+        App.effectMgr = App.getInstance(EffectMgr);  
+
         
         App.RES_WINDOW= {};
         App.RES_ITEM = {};
@@ -167,6 +172,7 @@ export default class App extends BaseClass{
         App.clearInstance(DataMgr);
         App.clearInstance(LoginMgr);
         App.clearInstance(SoundMgr);
+        App.clearInstance(EffectMgr);
     }
 
     static onMsg () {
@@ -277,6 +283,12 @@ export default class App extends BaseClass{
     static hotUpdateCheck (cb:Function) {        
         //先不加进度条，就一个文本。
         App.dataMgr.tryLoadAllTable(cb);
+    };
+
+    static getUIRoot() {
+        var canvas = cc.find('Canvas');
+        var uiRoot = cc.find('uiRoot', canvas);
+        return uiRoot || canvas;
     };
 
     static dumpToDb(){       

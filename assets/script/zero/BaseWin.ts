@@ -62,6 +62,14 @@ export default class BaseWin extends BaseUI{
         super.hide();
         //todod ddz 动画待添加。
         this.node.active = false;
+        var self = this;
+        if(this.is_destroy){    // 30秒后销毁
+            this.scheduleOnce(()=>{
+                if(self.node.isValid && self.node.active == true){
+                    this.node.removeFromParent();
+                }
+            },30.0)
+        }
     }
 
     onBgClick (event:any) {
