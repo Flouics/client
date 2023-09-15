@@ -12,7 +12,7 @@ var BUILDING_VALUE_ENUM = {
 
 export default class Building extends BoxBase {
     @serialize()
-    _id:number = null;   // 瓦片上属性 二进制存储数据        
+    _id:number = null;   //type属性 二进制存储数据        
     get id(){
         return this._id;
     }
@@ -42,7 +42,7 @@ export default class Building extends BoxBase {
         }
         cc.loader.loadRes(this._pb_url, cc.Prefab, function (err: any, prefab: any) {
             if (err) {
-                cc.error(this._pb_url, err);
+                cc.error(self._pb_url, err);
             }else{
                 let node = cc.instantiate(prefab);
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
@@ -52,17 +52,14 @@ export default class Building extends BoxBase {
             }
         })
     }
-    setIdx(){
-        this.idx = Building._idIndex;
-        Building._idIndex += 1;
-    }
+
     initSchedule(){
         this.mapMainView.unschedule(this.update.bind(this));
         this.mapMainView.schedule(this.update.bind(this),0.05);
     }
     createBuilding(toPos:cc.Vec2){
         cc.log("createBuilding",toPos)
-        this.setIdx();       
+        this.setIdx(Building);       
         this.x = toPos.x;
         this.y = toPos.y;        
         this.initUI(this.mapMainView.nd_buildingRoot)       

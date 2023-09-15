@@ -13,7 +13,7 @@ class Data {
         for (const key in data) {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
                 const element = data[key];
-                this.data[element.id] = data
+                this.data[element.id] = element;
                 this.list.push(element)
                 this.ids.push(element.id)
             }

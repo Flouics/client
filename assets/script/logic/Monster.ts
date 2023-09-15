@@ -8,6 +8,7 @@ import Building from "./Building";
 import PoolMgr from "../manager/PoolMgr";
 import BoxBase from "./BoxBase";
 import StateMachine from "./stateMachine/StateMachine";
+import App from "../App";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
     static _idIndex = 100000;
@@ -16,12 +17,13 @@ export default class Monster extends Live {
     monsterMgr:MonsterMgr = null;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
-        this.idx = Monster._idIndex;
-        Monster._idIndex += 1;
+        this.setIdx(Monster);
         this.init();
+        this.name = "Monster_" +  this.idx;
     }
+
     init(){
-        this.life = 1000;
+        this.life = App.toolKit.getRand(10,50);
         this.monsterMgr = this.mapMainView.monsterMgr;
     }
     clear(){
@@ -53,14 +55,6 @@ export default class Monster extends Live {
         return !!isCross;
     }
 
-    //攻击 
-    onAtk(target = this.target) {
-        if (target){
-            super.onAtk(target);
-        }        
-        return true;
-    }
-
     onEnterState(params:any){
         var stateId = this.stateMachine.state.id;
         switch (stateId) {
@@ -77,7 +71,7 @@ export default class Monster extends Live {
                 this.attackHeadquarters();
                 break;
             case StateMachine.STATE_ENUM.ATTACK:
-                this.onAtk();
+                this.atkTarget();
                 break;
             default:
                 super.onState(params)
@@ -86,6 +80,7 @@ export default class Monster extends Live {
     }
 
     update(){
-        this.stateMachine.checkState()
+        this.stateMachine.checkState();
+        super.update();
     }
 }

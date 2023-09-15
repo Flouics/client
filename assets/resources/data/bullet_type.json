@@ -1,7 +1,7 @@
 {"bullet_type": [
     {
-        "coldown": 0.3,
         "per_shoot_num": 1,
+        "colddown": 2,
         "name": "基础",
         "icon": "icon",
         "data1": 0,
@@ -14,8 +14,8 @@
         "speed": 800
     },
     {
-        "coldown": 0.3,
         "per_shoot_num": 1,
+        "colddown": 2,
         "name": "对地",
         "icon": "icon",
         "data1": 0,
@@ -28,8 +28,8 @@
         "speed": 800
     },
     {
-        "coldown": 0.3,
         "per_shoot_num": 1,
+        "colddown": 2,
         "name": "对人",
         "icon": "icon",
         "data1": 0,

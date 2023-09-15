@@ -17,15 +17,15 @@ export default class Tower extends Building {
     bulletId = 100101;
     bulletCfg:any = {};
     towerMgr:TowerMgr = null;
-    @serialize()
-    lastShootTime:number = 0;
+    lastAttackTime:number = 0;
     constructor(mapMainView: MapMainView) {
         super(mapMainView)
         this.init()
     } 
     init(){
         //不能直接引用TowerMgr，会导致交叉引用的问题。
-        this.towerMgr = this.mapMainView.towerMgr;  
+        this.towerMgr = this.mapMainView.towerMgr;
+        this.setIdx(Tower);  
         this.atk = 1;
         this.range = 100;
         this.setBullet(this.bulletId);
@@ -40,10 +40,37 @@ export default class Tower extends Building {
     atkTarget(){
         if(this.target){
             var nowTimeStamp = TimeMgr.getInstance(TimeMgr).getTime();
-            if(nowTimeStamp > this.lastShootTime){
+            var deltaAngle = this.setDirection(this.target);
+            if (Math.abs(deltaAngle) > 30){
+                return
+            }
+            if(nowTimeStamp > this.lastAttackTime){
                 this.genBullet()
-                this.lastShootTime = nowTimeStamp + this.bulletCfg.coldown * 1000
+                this.lastAttackTime = nowTimeStamp + this.bulletCfg.colddown * 1000;
             }            
+        }
+    }
+
+    setDirection(target:BoxBase){
+        if (!this.ui){
+            return
+        }
+        var angle = MapUtils.getAngle(cc.v2(this.x,this.y),cc.v2(target.x,target.y));
+        var deltaAngle = angle - this.ui.node.angle;
+        if (Math.abs(deltaAngle) > 180){
+            if(deltaAngle > 0){
+                deltaAngle += -360;
+            }else{
+                deltaAngle += 360;
+            }
+        }
+        this.ui.playDirectAction(this.ui.node.angle + deltaAngle);
+        return deltaAngle;
+    }
+
+    stopDirectAction(){
+        if(this.ui){
+            this.ui.stopDirectAction();
         }
     }
 
@@ -83,6 +110,7 @@ export default class Tower extends Building {
         if(this.target){
             if (!this.checkTargetIntoRange(this.target)) {
                 this.target = null;
+                this.stopDirectAction();                
             } else{
                 this.atkTarget();
             }

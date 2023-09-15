@@ -48,12 +48,12 @@ export default class HeroMgr extends BaseClass{
         }
     }
 
-    clear(id:number){
-        let obj = this.heroMap[id];
+    clear(idx:number){
+        let obj = this.heroMap[idx];
         if(obj){
             obj.destory();
         }
-        delete this.heroMap[id]
+        delete this.heroMap[idx]
     }
     
     update(){

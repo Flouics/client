@@ -64,6 +64,11 @@ export default class MapUtils {
         return shortest;
     }
 
+    static getAngle(fromPos: cc.Vec2,toPos:cc.Vec2){
+        var angle = toPos.sub(fromPos).angle(cc.v2(1,0))    //和水平夹角的弧度
+        return angle * 180 / Math.PI; //转成角度
+    }
+
     static getDis(fromPos: cc.Vec2,toPos:cc.Vec2){
         return Math.abs(toPos.x - fromPos.x) + Math.abs(toPos.y - fromPos.y)
     }

@@ -186,12 +186,12 @@ export default class MapMainView extends BaseView {
         var self = this;
         var createMonster = function(){
             var monsterType = 0;        
-            self.monsterMgr.createMultiple(monsterType,2, self.monsterEntryPos, (monster: Monster) => {
+            self.monsterMgr.createMultiple(monsterType,1, self.monsterEntryPos, (monster: Monster) => {
                 monster.attackHeadquarters();
             });
         }
-        this.monsterMgr.addScheduleTask(200,10 * 1000,{},createMonster,"CreateMonster");
-
+        this.monsterMgr.addScheduleTask(200,10 * 1000,{},createMonster,"createMonster");
+        //createMonster();
     }
     initTowers(){
         this.towerMgr.create(-2,0,1001);

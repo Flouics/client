@@ -36,7 +36,7 @@ export default class Mine extends BoxBase {
     constructor(mapMainView: MapMainView,id:number = 1001,x:number = 0,y:number = 0) {
         super(Mine);
         this.mapMainView = mapMainView;
-        this.setIdx();
+        this.setIdx(Mine);
         this.id = id;
         this.x = x;
         this.y = y;
@@ -67,11 +67,6 @@ export default class Mine extends BoxBase {
         })
     }
     
-    setIdx(){
-        this.idx = Mine._idIndex;
-        Mine._idIndex += 1;
-    }
-
     initSchedule(){
         this.mapMainView.unschedule(this.update.bind(this));
         this.mapMainView.schedule(this.update.bind(this),0.05);

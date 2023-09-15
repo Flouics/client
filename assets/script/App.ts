@@ -20,6 +20,7 @@ import TouchUtils from "./utils/TouchUtils";
 import Proxy from "./modules/base/Proxy";
 import EffetMgr from "./manager/EffectMgr";
 import EffectMgr from "./manager/EffectMgr";
+import TimeProxy from "./modules/time/TimeProxy";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -61,12 +62,14 @@ let getProxy = function (moduleName:string): Proxy {
 
 let nullfun = function () {}
 
-
+//全局函数
 window.empty = empty;
 window.deepCopy = deepCopy;
 window.clone  = deepCopy;
 window.getProxy = getProxy;
 window.nullfun = nullfun;
+
+
 
 //全局太麻烦了，老是有红线，直接静态处理吧。App只会有一个。
 export default class App extends BaseClass{
@@ -151,7 +154,10 @@ export default class App extends BaseClass{
         App.game = {};
 
         //需要初始化的模块
-        App.moduleMgr.init();  
+        App.moduleMgr.init();
+        
+        //全局变量
+        window.timeProxy = getProxy("time") as TimeProxy;
         
         //重新加载数据
         App.reloadFromDb();

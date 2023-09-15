@@ -22,7 +22,11 @@
       }
     ],
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 7
+      }
+    ],
     "_prefab": {
       "__id__": 8
     },
@@ -88,7 +92,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 7
+      "__id__": 6
     },
     "_opacity": 255,
     "_color": {
@@ -149,13 +153,10 @@
     "_components": [
       {
         "__id__": 4
-      },
-      {
-        "__id__": 5
       }
     ],
     "_prefab": {
-      "__id__": 6
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -167,27 +168,27 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 164
+      "width": 165,
+      "height": 198
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0
+      "y": 0.5
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
         0,
-        -32,
         0,
         0,
         0,
         0,
-        1,
-        1,
-        1,
+        -0.7071067811865475,
+        0.7071067811865476,
+        0.25,
+        0.25,
         1
       ]
     },
@@ -195,7 +196,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": -90
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -223,7 +224,7 @@
       "__uuid__": "f0e73234-1bc7-4a18-be8c-d1c040643d19"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -234,33 +235,6 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": null,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.Widget",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 3
-    },
-    "_enabled": true,
-    "alignMode": 0,
-    "_target": null,
-    "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": -100,
-    "_bottom": 0,
-    "_verticalCenter": 0,
-    "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
-    "_isAbsTop": true,
-    "_isAbsBottom": true,
-    "_isAbsHorizontalCenter": true,
-    "_isAbsVerticalCenter": true,
-    "_originalWidth": 512,
-    "_originalHeight": 512,
     "_id": ""
   },
   {
@@ -284,6 +258,19 @@
     },
     "fileId": "a8zfqJekFJb4yX65XWItNe",
     "sync": false
+  },
+  {
+    "__type__": "d1df9xJLudJGbWSH57kxj4l",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "spt_face": {
+      "__id__": 4
+    },
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",

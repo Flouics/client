@@ -20,6 +20,7 @@ export default class Live extends BoxBase {
     mapProxy:MapProxy = null;
     static _idIndex = 1;
     _pb_tag:string = "";
+    lastAttackTime:number = 0;
     constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
         super(Live)
         this.x = x;
@@ -158,10 +159,47 @@ export default class Live extends BoxBase {
     clear(){
         this.destory();
     }
-    onAtk(target:BoxBase){
-        //发起攻击
-        super.onAtk(target);
+    
+    atkTarget(){
+        if(this.target){
+            var nowTimeStamp = timeProxy.getTime();
+            var deltaAngle = this.setDirection(this.target);
+            if (Math.abs(deltaAngle) > 30){
+                return
+            }
+            if(nowTimeStamp > this.lastAttackTime){
+                //发起攻击
+                var damage = this.getDamage();
+                this.target.onBeAtked(damage,this);
+                this.lastAttackTime = nowTimeStamp + this.atkColddown * 1000;
+                this.onAtk(this.target);
+            }            
+        }
     }
+
+    setDirection(target:BoxBase){
+        if (!this.ui){
+            return
+        }
+        var angle = MapUtils.getAngle(cc.v2(this.x,this.y),cc.v2(target.x,target.y));
+        var deltaAngle = angle - this.ui.node.angle;
+        if (Math.abs(deltaAngle) > 180){
+            if(deltaAngle > 0){
+                deltaAngle += -360;
+            }else{
+                deltaAngle += 360;
+            }
+        }
+        this.ui.playDirectAction(this.ui.node.angle + deltaAngle);
+        return deltaAngle;
+    }
+
+    getDamage(){
+        var baseDamage = this.atk;
+        var damage = baseDamage;
+        return damage;
+    }
+
     onBeAtked(damage:number,atker:BoxBase){
         this.life += -damage;
         if(this.ui){
@@ -180,6 +218,5 @@ export default class Live extends BoxBase {
         this.node.removeFromParent();
     }
     update(){
-        
     }
 }

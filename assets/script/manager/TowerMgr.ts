@@ -51,7 +51,7 @@ export default class TowerMgr extends BaseClass{
             if(!!task) task(tower);    
         });
         tower.createBuilding(cc.v2(x,y));
-        this.towerMap[tower.id] = tower;        
+        this.towerMap[tower.idx] = tower;        
         return tower;
     }
     
@@ -63,12 +63,12 @@ export default class TowerMgr extends BaseClass{
         }
     }
 
-    clear(id:number){
-        let obj = this.towerMap[id];
+    clear(idx:number){
+        let obj = this.towerMap[idx];
         if(obj){
             obj.destory();
         }
-        delete this.towerMap[id]
+        delete this.towerMap[idx]
     }
 
     update(){

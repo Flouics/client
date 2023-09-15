@@ -26,6 +26,7 @@ export default class BulletMgr extends BaseClass {
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;
         this._nodeRoot = mapMainView.nd_bulletRoot;
+        this.initBulletTypeMap();
         this.reset()
     }
 
@@ -50,7 +51,7 @@ export default class BulletMgr extends BaseClass {
         bullet.initUI(this._nodeRoot,()=>{
             if(!!cb) cb(bullet);    
         });
-        this.bulletMap[bullet.id] = bullet;        
+        this.bulletMap[bullet.idx] = bullet;        
         return bullet;
     }
 
@@ -62,12 +63,12 @@ export default class BulletMgr extends BaseClass {
         }
     }
 
-    clear(id:number){
-        let obj = this.bulletMap[id];
+    clear(idx:number){
+        let obj = this.bulletMap[idx];
         if(obj){
             obj.destory();
         }
-        delete this.bulletMap[id]
+        delete this.bulletMap[idx]
     }
 
     update(){

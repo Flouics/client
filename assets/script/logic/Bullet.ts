@@ -27,8 +27,7 @@ export default class Bullet extends BoxBase {
         this.viewPos = viewPos;
         this.data = bulletData;
         this.mapMainView = mapMainView;    
-        this.idx = Bullet._idIndex;
-        Bullet._idIndex += 1;
+        this.setIdx(Bullet);
     }
 
     initUI(parent:cc.Node,cb?:Function) {
@@ -66,12 +65,17 @@ export default class Bullet extends BoxBase {
         }        
     }
 
-    getDamage(){
-        var damage = baseDamage;
+    getDamage(){        
         var baseDamage = this.data.power;
+        var damage = baseDamage;
         var shooterAct = this.shooter.atk;
         damage = baseDamage + shooterAct;   
         return damage;
+    }
+
+    doAtk(){
+        this.target.onBeAtked(this.getDamage(),this.shooter);
+        this.clear()
     }
 
     update(dt:number){
@@ -83,9 +87,8 @@ export default class Bullet extends BoxBase {
         this.node.x += dirV2.x;
         this.node.y += dirV2.y;
         if(this.checkTargetIntoRange(this.target)){
-            this.target.onBeAtked(this.getDamage(),this.shooter);
-            this.clear()
-        }
+            this.doAtk();
+        }   
     }
 
 }

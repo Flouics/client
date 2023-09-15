@@ -9,6 +9,26 @@ export default class UIBuilding extends BaseUI {
     spt_face:cc.Sprite = null;
     _baseUrl = "texture/map/";
     _logicObj:Building = null;
+    _directAction:cc.Tween = null;
+    
+    playDirectAction(angle:number):void {
+        if(!!this._directAction) return;
+        var duration = 0.3;
+        var self = this;
+        this._directAction = cc.tween(this.node)
+        .to(duration,
+            { angle: angle})
+        .call(() => {                
+            //todo
+            self.stopDirectAction();
+        })
+        this._directAction.start();
+    }
+    
+    stopDirectAction(): void {
+        this._directAction = null;
+    }
+
     updateUI(){
         var self = this;
         var logicObj = this._logicObj

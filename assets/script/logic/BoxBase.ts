@@ -5,7 +5,9 @@ import BaseClass from "../zero/BaseClass";
 
 export default class BoxBase extends BaseClass {
     @serialize()
-    idx: number = 0;
+    idx: number = 0;    // 唯一的识别码，直接自增
+    static _idIndex = 1;
+
     @serialize()
     x: number = 0;  //瓦片地图坐标
     @serialize()
@@ -23,6 +25,9 @@ export default class BoxBase extends BaseClass {
     def:number = 0;
     @serialize()
     range:number = 0;
+    @serialize()
+    atkColddown:number = 1.0;
+
     @serialize()
     isDestroy:boolean = false;
 
@@ -65,6 +70,11 @@ export default class BoxBase extends BaseClass {
         this.ui = ui;
         this.node = ui.node;
         this.ui.bindBox(this);
+    }
+    
+    setIdx(_class:any){
+        this.idx = _class._idIndex;
+        _class._idIndex += 1;
     }
     updateUI() {
         if(this.ui){
@@ -115,7 +125,7 @@ export default class BoxBase extends BaseClass {
     }
 
     //发起攻击
-    onAtk(target:BoxBase){
+    onAtk(target:BoxBase = this.target){
     }
 
     //受到攻击
