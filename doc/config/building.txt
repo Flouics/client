@@ -1,7 +1,0 @@
-﻿ID  类型  区域  名字  图片  力度  血量  额外参数
-id  type    areaJson    name    icon    power   life   data1
-100101  1001    [[0,0]]    基地  icon    1   100   0
-100201  1002    [[0,0]]    金矿  icon    1   100   0
-200101  2001    [[0,0]]    基础炮塔  icon    1   100   0
-
-
