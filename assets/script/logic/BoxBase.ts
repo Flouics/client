@@ -5,7 +5,17 @@ import BaseClass from "../zero/BaseClass";
 
 export default class BoxBase extends BaseClass {
     @serialize()
+    _id:number = null;   //type属性 二进制存储数据        
+    get id(){
+        return this._id;
+    }
+    set id(value:any){
+        this._id = value;           
+    }
+
+    @serialize()
     idx: number = 0;    // 唯一的识别码，直接自增
+
     static _idIndex = 1;
 
     @serialize()

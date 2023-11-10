@@ -11,18 +11,14 @@ import UIItem from "../modules/package/UIItem";
 
 export default class Item extends BoxBase {
     @serialize()
-    _type:number = null;   // 道具类型 
+    _id:number = null;   // 道具类型 
     @serialize()
     _count:number = 0;     // 数量
 
     data:any = {};
 
-
-    get type(){
-        return this._type;
-    }
-    set type(value){
-        this._type = value;
+    set id(value:any){
+        this._id = value;
         this.initData();            
     }
     
@@ -40,22 +36,22 @@ export default class Item extends BoxBase {
         super(Item)
         this.idx = Item._idIndex;
         Item._idIndex += 1;
-        this.type = id;
+        this.id = id;
         this.count = count;
     }
 
-    initData(){
-        this.data = DataMgr.findById("item",this.type)
+    async initData(){
+        this.data = await DataMgr.findById("item",this.type)
     }
 
     addItem(item:any){
-        if(empty(this.type)){
+        if(empty(this.id)){
             return;
         }        
         if(empty(this.data)){
-            this.type = item.id;
+            this.id = item.id;
         }else{
-            if(this.type != item.id){
+            if(this.id != item.id){
                 return;
             }
         }

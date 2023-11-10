@@ -50,7 +50,7 @@ export default class MonsterMgr extends BaseClass {
 
     create(monsterType:number = 0,pos:cc.Vec2,task?:Function){
         cc.log("createMoster",monsterType,pos)
-        let monster = new Monster(this._mapMainView,pos.x,pos.y);
+        let monster = new Monster(this._mapMainView,monsterType,pos.x,pos.y);
         monster.initUI(this._nodeRoot,()=>{
             if(!!task) task(monster);    
         });

@@ -1,12 +1,10 @@
 import MapMainView from "../modules/map/MapMainView";
 import MapUtils from "./MapUtils";
-import UIBuilding from "../modules/map/UIBuilding";
 import BoxBase from "./BoxBase";
 import { serialize } from "../utils/Decorator";
 import UIMine from "../modules/map/UIMine";
 import DataMgr from "../manager/DataMgr";
 import Item from "./Item";
-import TimeProxy from "../modules/time/TimeProxy";
 
 export default class Mine extends BoxBase {
     @serialize()
@@ -19,10 +17,7 @@ export default class Mine extends BoxBase {
     @serialize()
     produceTimeLast:number = null;    
 
-    get id(){
-        return this._id;
-    }
-    set id(value){
+    set id(value:any){
         this._id = value;
         this.initData();     
     }
@@ -84,7 +79,7 @@ export default class Mine extends BoxBase {
     }
 
     calcProduct(deltaTime:number){
-        if(empty(this.data){
+        if(empty(this.data)){
             return
         }
 
@@ -94,7 +89,7 @@ export default class Mine extends BoxBase {
     }
 
     calcProductTime(){
-        if(empty(this.data){
+        if(empty(this.data)){
             return
         }
         let timeProxy = getProxy("time");
@@ -111,10 +106,10 @@ export default class Mine extends BoxBase {
     }
 
     addItem(item:Item){
-        if (this.itemMap[item.type] == null){
-            this.itemMap[item.type] = new Item(item.type);
+        if (this.itemMap[item.id] == null){
+            this.itemMap[item.id] = new Item(item.id);
         }
-        this.itemMap[item.type].addItem(item);
+        this.itemMap[item.id].addItem(item);
     }
 
     update(){

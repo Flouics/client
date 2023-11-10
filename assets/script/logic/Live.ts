@@ -74,9 +74,8 @@ export default class Live extends BoxBase {
         let node = pool.getItem(this);
         let viewPos = MapUtils.getViewPosByTilePos(this.pos);
         node.parent = parent;
-        node.position = viewPos;
-        this.node = node;
-        this.ui = this.node.getComponent(UILive);
+        node.position = viewPos;        
+        this.bindUI(node.getComponent(UILive))
         if(!!cb) cb(this);
     }
 

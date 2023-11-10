@@ -7,9 +7,7 @@ const {ccclass, property} = cc._decorator;
 export default class Tips extends BaseWin {
     @property(cc.Label)
     lb_content:cc.Label = null;
-    @property({
-        type:cc.Integer
-    })
+    @property
     num_tipShowTime:number = 1500;
     index:number = 499;
 

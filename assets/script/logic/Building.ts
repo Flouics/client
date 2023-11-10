@@ -11,14 +11,7 @@ var BUILDING_VALUE_ENUM = {
 }
 
 export default class Building extends BoxBase {
-    @serialize()
-    _id:number = null;   //type属性 二进制存储数据        
-    get id(){
-        return this._id;
-    }
-    set id(value){
-        this._id = value;           
-    }
+
     @serialize()
     area:cc.Vec2[] = [cc.v2(0,0)];
     @serialize()

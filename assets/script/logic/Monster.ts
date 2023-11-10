@@ -1,31 +1,39 @@
 import MapMainView from "../modules/map/MapMainView";
-import MapUtils from "./MapUtils";
 import Live from "./Live";
-import UIManster from "../modules/map/UIMaster";
 import MonsterMgr from "../manager/MonsterMgr";
-import Headquarters from "./building/Headquarters";
 import Building from "./Building";
 import PoolMgr from "../manager/PoolMgr";
-import BoxBase from "./BoxBase";
 import StateMachine from "./stateMachine/StateMachine";
-import App from "../App";
+import DataMgr from "../manager/DataMgr";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
+    data:any = null;
     static _idIndex = 100000;
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.MONSTER;
     target:Live|Building = null;
     monsterMgr:MonsterMgr = null;
-    constructor(mapMainView: MapMainView, x: number = 0, y: number = 0) {
+    constructor(mapMainView: MapMainView,monsterType:number,x: number = 0, y: number = 0) {
         super(mapMainView,x,y)
         this.setIdx(Monster);
+        this.id = monsterType;
         this.init();
-        this.name = "Monster_" +  this.idx;
+        this.name = "Monster_" +  this.idx;       
     }
 
     init(){
-        this.life = App.toolKit.getRand(10,50);
+        this.initData();
         this.monsterMgr = this.mapMainView.monsterMgr;
     }
+    async initData(){
+        this.data = await DataMgr.findById("monster",this.id)
+        this.life = this.data.life;
+        this.atk = this.data.atk;
+    }
+
+    initUI(parent:cc.Node,cb?:Function) {
+        super.initUI(parent,cb);
+    }
+
     clear(){
         this.monsterMgr.clear(this.idx);        
     }    

@@ -46,6 +46,8 @@ export default class BaseClass {
     }
     //反序列号
     unserialize(json:string){
-        jsonToObj(this,json);
+        if(json){
+            jsonToObj(this,json);
+        }        
     }
 }

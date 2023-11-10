@@ -185,7 +185,7 @@ export default class MapMainView extends BaseView {
         this.initMonsterEntryPos();
         var self = this;
         var createMonster = function(){
-            var monsterType = 0;        
+            var monsterType = App.toolKit.getRand(10001,10005);
             self.monsterMgr.createMultiple(monsterType,1, self.monsterEntryPos, (monster: Monster) => {
                 monster.attackHeadquarters();
             });

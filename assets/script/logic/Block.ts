@@ -26,14 +26,10 @@ export default class Block extends BoxBase {
     static BLOCK_FLAG_ENUM = BLOCK_FLAG_ENUM; //标记
     @serialize()
     buildingId:number = 0;   // 额外属性，value不同，数据不同
-    @serialize()
-    _id:number = null;   // 瓦片上属性 二进制存储数据       
+
     @serialize() 
     _idPre:number = 0; // 预定的属性 挖掉之后显示
-    get id(){
-        return this._id;
-    }
-    set id(value){
+    set id(value:any){
         this._id = value; 
         if (this.checkType(BLOCK_VALUE_ENUM.BLOCK)){
             if(this.data_1 == 0){

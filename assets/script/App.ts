@@ -21,6 +21,7 @@ import Proxy from "./modules/base/Proxy";
 import EffetMgr from "./manager/EffectMgr";
 import EffectMgr from "./manager/EffectMgr";
 import TimeProxy from "./modules/time/TimeProxy";
+import * as i18n from './i18n/i18n';
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -62,12 +63,17 @@ let getProxy = function (moduleName:string): Proxy {
 
 let nullfun = function () {}
 
+let lang = function(key:string,...params:any[]){
+    return i18n.t(key,params);
+}
+
 //全局函数
 window.empty = empty;
 window.deepCopy = deepCopy;
 window.clone  = deepCopy;
 window.getProxy = getProxy;
 window.nullfun = nullfun;
+window.lang = lang;
 
 
 
@@ -109,7 +115,7 @@ export default class App extends BaseClass{
     static onLoad () {
         App.onMsg();
 
-        // 通用接口
+        // 通用窗口
         App.RES_WINDOW = {
             loadingAm: "prefab/dialog/loadingAm",
             msgBox: "prefab/dialog/msgBox",

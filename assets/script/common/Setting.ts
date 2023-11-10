@@ -16,9 +16,17 @@ export default class Setting extends BaseWin {
 
     onClickLoad(){
         App.reloadFromDb();
+    }
+    
+    onClickClear(){    
+        App.toolKit.showMsgBox(lang("setting_clear_cache_1"),()=>{
+            App.dbMgr.clear();
+            App.toolKit.showTip(lang("setting_clear_cache_2"));
+        },nullfun);
     }   
     
     onClickExit(){
-        App.exit();
+        this.close();
+        //App.exit();
     }
 }

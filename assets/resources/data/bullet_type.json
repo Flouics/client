@@ -16,7 +16,7 @@
     {
         "per_shoot_num": 1,
         "colddown": 2,
-        "name": "对地",
+        "name": "献祭光环",
         "icon": "icon",
         "data1": 0,
         "shootType": 1,
@@ -33,7 +33,7 @@
         "name": "对人",
         "icon": "icon",
         "data1": 0,
-        "shootType": 2,
+        "shootType": 1,
         "_id": 2,
         "id": 100301,
         "power": 1,

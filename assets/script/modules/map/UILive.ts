@@ -37,9 +37,9 @@ export default class UILive extends BaseUI {
         if(direction == 0){
             return
         }
-        var scaleV2 = cc.v2()
+        var scaleV2 = cc.v2(1,1);
         this.node.getScale(scaleV2);
-        scaleV2.y = Math.abs(scaleV2.y) * (direction > 0 ? 1 : -1)
+        scaleV2.x = Math.abs(scaleV2.x) * (direction > 0 ? -1 : 1)
         this.node.setScale(scaleV2);
     }
 

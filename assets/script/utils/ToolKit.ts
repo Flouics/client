@@ -278,6 +278,16 @@ export default class ToolKit extends BaseClass{
             }
         });
     };
+    
+    //弹窗提示
+    showMsgBox(content:string,cb_ok:Function = nullfun, cb_cancel?:Function) {
+        App.windowMgr.open(App.RES_WINDOW.msgBox, function (uiNode:cc.Node) {
+            var msgBox = uiNode.getComponent("MsgBox");
+            if (msgBox) {
+                msgBox.open(content,cb_ok,cb_cancel);
+            }
+        });
+    };
 
     //从网络获取图片
     loadWebImg(url:string, spt:cc.Sprite) {

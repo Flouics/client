@@ -4,5 +4,6 @@
     "bullet_type": "bullet_type",
     "config": "config",
     "building": "building",
-    "base": "base"
+    "base": "base",
+    "monster": "monster"
 }
