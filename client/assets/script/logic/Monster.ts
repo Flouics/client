@@ -5,6 +5,8 @@ import Building from "./Building";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
 import DataMgr from "../manager/DataMgr";
+import App from "../App";
+import { Node } from "cc";
 export default class Monster extends Live {
     moveSpeed: number = 180;    //1秒
     data:any = null;
@@ -25,17 +27,17 @@ export default class Monster extends Live {
         this.monsterMgr = this.mapMainView.monsterMgr;
     }
     async initData(){
-        this.data = await DataMgr.findById("monster",this.id)
+        this.data = await App.dataMgr.findById("monster",this.id)
         this.life = this.data.life;
         this.atk = this.data.atk;
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         super.initUI(parent,cb);
     }
 
     clear(){
-        this.monsterMgr.clear(this.idx);        
+        this.monsterMgr.clearMonster(this.idx);        
     }    
     attackHeadquarters(){
         var target = this.mapMainView.headquarters;

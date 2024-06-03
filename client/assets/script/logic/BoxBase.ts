@@ -2,6 +2,7 @@ import MapUtils from "./MapUtils";
 import { serialize } from "../utils/Decorator";
 import BaseUI from "../zero/BaseUI";
 import BaseClass from "../zero/BaseClass";
+import { Node, v2, Vec2 } from "cc";
 
 export default class BoxBase extends BaseClass {
     @serialize()
@@ -70,7 +71,7 @@ export default class BoxBase extends BaseClass {
 
     target:BoxBase = null;
     targetExtraList:BoxBase[] = null;   //副目标列表    
-    node:cc.Node = null;
+    node:Node = null;
     ui:BaseUI = null;
 
     bindUI(ui:BaseUI){
@@ -119,16 +120,16 @@ export default class BoxBase extends BaseClass {
 
 
     get pos(){
-        return cc.v2(this.x,this.y)
+        return v2(this.x,this.y)
     }
-    getDistance(toPos:cc.Vec2){
+    getDistance(toPos:Vec2){
         var abs_delta_x = Math.abs(this.x - toPos.x);
         var abs_delta_y = Math.abs(this.y - toPos.y);
         return abs_delta_x + abs_delta_y;
     }
     getUIPos(){
         if(this.node){
-            return cc.v2(this.node.position.x, this.node.position.y);
+            return v2(this.node.position.x, this.node.position.y);
         }else{
             return MapUtils.getViewPosByTilePos(this.pos);
         }        

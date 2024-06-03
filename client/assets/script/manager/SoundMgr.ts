@@ -3,7 +3,9 @@
  * 游戏声音单独一个类，方便后续游戏扩展。
  */
 
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
+import { toolKit } from "../utils/ToolKit";
 
 
 var CommonSoundKeys = {
@@ -14,7 +16,7 @@ var CommonSoundKeys = {
     player_die: 'player_die',
     settle: 'settle',
 };
-var global = window
+
 export default class SoundMgr extends BaseClass {
     CommonSoundKeys = CommonSoundKeys;
     
@@ -23,7 +25,7 @@ export default class SoundMgr extends BaseClass {
      */
     playSound(name: string, isLoop: boolean = false) {
         if (Array.isArray(name)) {
-            name = App.toolKit.getRandFromArray(name);
+            name = toolKit.getRandFromArray(name);
         }
 
         if (name) {

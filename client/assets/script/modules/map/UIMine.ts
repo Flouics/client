@@ -1,12 +1,13 @@
 import Mine from "../../logic/Mine";
 import BaseUI from "../../zero/BaseUI";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Sprite} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIMine")
 export default class UIMine extends BaseUI {
-    @property(cc.Sprite)
-    spt_face:cc.Sprite = null;
+    @property(Sprite)
+    spt_face:Sprite = null;
     _baseUrl = "texture/map/";
     _logicObj:Mine = null;
     updateUI(){

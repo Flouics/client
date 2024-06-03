@@ -1,16 +1,18 @@
 /**
  * Created by Administrator on 2017/7/30.
- * 所有需要用cc.NodePool缓存处理的管理池
+ * 所有需要用NodePool缓存处理的管理池
  */
 
+import { instantiate, Node, NodePool } from "cc";
 import BaseClass from "../zero/BaseClass";
+import Debug from "../utils/Debug";
 
 class Pool {
     _scriptName: string;
     _pb_item: any;
     buffMinCount: number = 5;
     buffMaxCount: number = 10;
-    _pool: cc.NodePool;
+    _pool: NodePool;
     constructor(pb_item: any, scriptName: string, buffMinCount: number = 5, buffMaxCount: number = 10) {
         if (!pb_item) {
             return;
@@ -19,31 +21,31 @@ class Pool {
         this._pb_item = pb_item;
         this.buffMinCount = buffMinCount;
         this.buffMaxCount = buffMaxCount;
-        this._pool = new cc.NodePool(scriptName);
+        this._pool = new NodePool(scriptName);
     }
 
     initialize() {
         for (var i = 0; i < this.buffMinCount; i++) {
-            this._pool.put(cc.instantiate(this._pb_item));
+            this._pool.put(instantiate(this._pb_item));
         }
     };
 
     getItem(data: any) {
         //有奇怪的BUG。
         if (this._pool.size() < this.buffMinCount) {
-            this._pool.put(cc.instantiate(this._pb_item));
+            this._pool.put(instantiate(this._pb_item));
         }
         var item = this._pool.get(data);
         (item as any).itemPool = this;
         return item;
     };
 
-    recycleItem(item: cc.Node) {
+    recycleItem(item: Node) {
         if (!item) {
             return;
         }
         if (this._scriptName != '' && !item.getComponent(this._scriptName)) {
-            cc.warn('item is not pool member', item.name);
+            Debug.warn('item is not pool member', item.name);
             item.destroy();
             return;
         }

@@ -1,16 +1,17 @@
 import BaseClass from "../zero/BaseClass";
+import Debug from "../utils/Debug";
 export default class AsyncTaskMgr extends BaseClass {
     tasks: Function[] = [];
     lowTasks: Function[] = [];
     taskCount: number = 0;
     maxCount: number = 4;
     timeInterval: number = 0.1;
-    timeId: number = -1;
+    timeRef: any ;
 
     process() {
         var self = this;
-        this.timeId = setTimeout(function () {
-            var task: Function;
+        this.timeRef = setTimeout(function () {
+            var task: Function|undefined;
             if (self.tasks.length < 1 || (self.taskCount > 10 && self.lowTasks.length > 0)) {
                 self.taskCount = 0;
                 task = self.lowTasks.shift();
@@ -22,10 +23,10 @@ export default class AsyncTaskMgr extends BaseClass {
                 self.process();
             } else {
                 if (self.tasks.length > 0 || self.lowTasks.length > 0) {
-                    cc.error('AsyncTaskMgr process has a error');
+                    Debug.error('AsyncTaskMgr process has a error');
                     self.process();
                 }
-                self.timeId = -1;
+                self.timeRef = null;
             }
         }, self.timeInterval);
     };
@@ -37,13 +38,13 @@ export default class AsyncTaskMgr extends BaseClass {
             } else {
                 this.tasks.push(cb);
             }
-            if (this.timeId == -1) {
+            if (!this.timeRef) {
                 this.process();
             }
         }
     };
 
-    clear() {
+    destory() {
         this.tasks = [];
     };
 };

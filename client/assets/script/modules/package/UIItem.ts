@@ -1,12 +1,13 @@
 import BaseUI from "../../zero/BaseUI";
 import Block from "../../logic/Block";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Sprite} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIItem")
 export default class UIItem extends BaseUI {
-    @property(cc.Sprite)
-    spt_item:cc.Sprite = null;
+    @property(Sprite)
+    spt_item:Sprite = null;
 
     _baseUrl = "texture/package/";
     _logicObj:Block = null;
@@ -16,7 +17,7 @@ export default class UIItem extends BaseUI {
         var loadSpt = function(){
             let spt = self.spt_item;
             if(logicObj.id > 0){
-                self.loadSpt(spt, "package/item/" + logicObj.id)
+                self.loadSpt(spt, "item/" + logicObj.id)
             }else{
                 spt.spriteFrame = null;
             }       

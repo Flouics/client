@@ -8,6 +8,7 @@ import StateMachine from "./stateMachine/StateMachine";
 import App from "../App";
 import DataMgr from "../manager/DataMgr";
 import UIItem from "../modules/package/UIItem";
+import { empty } from "../Global";
 
 export default class Item extends BoxBase {
     @serialize()
@@ -41,7 +42,7 @@ export default class Item extends BoxBase {
     }
 
     async initData(){
-        this.data = await DataMgr.findById("item",this.type)
+        this.data = await App.dataMgr.findById("item",this.id)
     }
 
     addItem(item:any){
@@ -58,7 +59,7 @@ export default class Item extends BoxBase {
         this.count += item.count || 0;
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
         let viewPos = MapUtils.getViewPosByTilePos(this.pos);

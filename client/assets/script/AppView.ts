@@ -3,19 +3,19 @@ import App from "./App";
 import BaseUI from "./zero/BaseUI";
 import BaseView from "./zero/BaseView";
 import SceneBase from "./zero/SceneBase";
-
-const {ccclass, property} = cc._decorator;
+import { _decorator, Component, director, find, Node, profiler, Widget } from 'cc';
+const {ccclass, property} = _decorator;
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
  * 挂在启动场景。
  */
 
-@ccclass
+@ccclass("AppView")
 export default class AppView extends BaseView{
-    @property(cc.Node)
-    public nd_effectPool: cc.Node = null;
-    @property(cc.Node)
-    public nd_uiPool: cc.Node = null;
+    @property(Node)
+    public nd_effectPool: Node = null;
+    @property(Node)
+    public nd_uiPool: Node = null;
     
     // use this for initialization
     onLoad () {
@@ -23,11 +23,13 @@ export default class AppView extends BaseView{
         App.onLoad();
 
         //设置为常驻借点。
-        cc.game.addPersistRootNode(this.node);
+        director.addPersistRootNode(this.node);
         //关闭帧数显示。
-        cc.debug.setDisplayStats(false);
+        profiler.hideStats();
+
         //适配相关的
-        cc.view.setResizeCallback(this.onViewResize.bind(this));        
+        // 废弃 todo
+        //cc.view.setResizeCallback(this.onViewResize.bind(this));        
     }
 
     start () {
@@ -35,17 +37,17 @@ export default class AppView extends BaseView{
     }
 
     restart () {
-        cc.game.removePersistRootNode(this.node);
+        director.removePersistRootNode(this.node);
     }
 
     exit () {
-        cc.game.removePersistRootNode(this.node);
+        director.removePersistRootNode(this.node);
     }
 
     onViewResize () {
         //遍历所有的节点。
         //this.toolKit.showTip("onViewResize");
-        var root = cc.find('Canvas');
+        var root = find('Canvas');
         var scene_comp = root.getComponent(SceneBase);
         if (scene_comp && scene_comp.fitWinSize) {
             scene_comp.fitWinSize();
@@ -53,15 +55,15 @@ export default class AppView extends BaseView{
         this.updateNodeWidget(root);
     }
 
-    updateNodeWidget (node:cc.Node) {
-        if (!!node && node instanceof cc.Node) {
-            var widget = node.getComponent(cc.Widget);
+    updateNodeWidget (node:Node) {
+        if (!!node && node instanceof Node) {
+            var widget = node.getComponent(Widget);
             if (!!widget) {
                 widget.updateAlignment();
             }
             var children = node.children;
             if (!!children) {
-                children.forEach(function (child:cc.Node) {
+                children.forEach(function (child:Node) {
                     this.updateNodeWidget(child);
                 }.bind(this))
             }

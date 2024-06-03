@@ -4,9 +4,10 @@ import ListViewSimple from "../../ui/ListViewSimple";
 import BaseUI from "../../zero/BaseUI";
 import BaseView from "../../zero/BaseView";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Node} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("BuildView")
 export default class BuildView extends BaseView {
     moduleName = "map";
     _baseUrl = "texture/map/";
@@ -25,7 +26,7 @@ export default class BuildView extends BaseView {
         this.listView.updateContent(data);
     }
 
-    setItem(item:cc.Node,v:any){
+    setItem(item:Node,v:any){
         item.getComponent(BaseUI).init()
     }
 

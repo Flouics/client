@@ -1,21 +1,22 @@
 import Building from "../../logic/Building";
 import BaseUI from "../../zero/BaseUI";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Node, Sprite, tween, Tween} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIBuilding")
 export default class UIBuilding extends BaseUI {
-    @property(cc.Sprite)
-    spt_face:cc.Sprite = null;
+    @property(Sprite)
+    spt_face:Sprite = null;
     _baseUrl = "texture/map/";
     _logicObj:Building = null;
-    _directAction:cc.Tween = null;
+    _directAction:Tween<Node> = null;
     
     playDirectAction(angle:number):void {
         if(!!this._directAction) return;
         var duration = 0.3;
         var self = this;
-        this._directAction = cc.tween(this.node)
+        this._directAction = tween(this.node)
         .to(duration,
             { angle: angle})
         .call(() => {                

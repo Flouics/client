@@ -2,8 +2,9 @@
 import BoxBase from "../logic/BoxBase";
 import BaseUI from "./BaseUI";
 
-const { ccclass, property } = cc._decorator;
-@ccclass
+import { _decorator } from 'cc';
+const {ccclass, property} = _decorator;
+@ccclass("BaseUIItem")
 export default class BaseUIItem extends BaseUI {
 
     reuse(data:any){

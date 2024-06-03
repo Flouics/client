@@ -1,15 +1,22 @@
 import Proxy from "./PlayerProxy";
 import Command from "./PlayerCommand";
 import Init from "../base/Init";
-var global = window;
-export default class PlayerInit extends Init {
+import App from "../../App";
+
+export default class PlayerInit extends Init{
     proxy:Proxy;
     cmd:Command;
+    moduleName:string = "player";
+
     init(){
-        this.proxy = new Proxy(Proxy);
-        this.cmd = new Command();
-        //监听服务端消息
-        
+        this.moduleName = "player";
+        this.proxy = Proxy.getInstance(Proxy);
+        this.cmd = new Command();        
+    }
+
+    onMsg(){
+        //监听服务端消息   
+
     }
 }
 

@@ -1,15 +1,16 @@
 import App from "../App";
 import BaseWin from "../zero/BaseWin";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator,RichText,Label} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("Tips")
 export default class Tips extends BaseWin {
-    @property(cc.Label)
-    lb_content:cc.Label = null;
+    @property(Label)
+    lb_content:Label = null;
     @property
     num_tipShowTime:number = 1500;
-    index:number = 499;
+    _index:number = 499;
 
     tipsList:any[] = [];
     closeTime:number = 0;

@@ -1,9 +1,10 @@
 
 import UITower from "./UITower";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator,RichText,Label} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UITower_1001")
 export default class UITower_1001 extends UITower {
     _baseUrl = "texture/map/";
 }

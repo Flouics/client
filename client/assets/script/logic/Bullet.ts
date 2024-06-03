@@ -5,6 +5,7 @@ import MapProxy from "../modules/map/MapProxy";
 import PoolMgr from "../manager/PoolMgr";
 import MapUtils from "./MapUtils";
 import BulletMgr from "../manager/BulletMgr";
+import { Node, v2, Vec2 } from "cc";
 
 export default class Bullet extends BoxBase {    
     moveSpeed: number = 720;    //1秒
@@ -12,7 +13,7 @@ export default class Bullet extends BoxBase {
     ui:UIBullet = null;
     bulletId:number = 100101;
     data:any = {};
-    viewPos:cc.Vec2 = cc.v2(0,0);
+    viewPos:Vec2 = v2(0,0);
     shooter:BoxBase = null;
     target:BoxBase = null;
     bulletMgr:BulletMgr = null;
@@ -20,7 +21,7 @@ export default class Bullet extends BoxBase {
     static _idIndex = 1;
     static _atkRange = 32;//子弹的命中距离。真实尺寸
     _pb_tag:string = PoolMgr.POOL_TAG_ENUM.BULLET;
-    constructor(mapMainView: MapMainView,shooter:BoxBase,target:BoxBase, viewPos:cc.Vec2,bulletData:any) {
+    constructor(mapMainView: MapMainView,shooter:BoxBase,target:BoxBase, viewPos:Vec2,bulletData:any) {
         super(Bullet)
         this.shooter = shooter;
         this.target = target;
@@ -30,7 +31,7 @@ export default class Bullet extends BoxBase {
         this.setIdx(Bullet);
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         //不能直接引用TowerMgr，会导致交叉引用的问题。
         this.bulletMgr = this.mapMainView.bulletMgr;  
         //实现基本的子弹逻辑
@@ -44,7 +45,7 @@ export default class Bullet extends BoxBase {
     }
 
     clear(){
-        this.bulletMgr.clear(this.idx);       
+        this.bulletMgr.clearBullet(this.idx);       
     }
 
     checkTargetIntoRange(target:BoxBase){
@@ -80,12 +81,14 @@ export default class Bullet extends BoxBase {
 
     update(dt:number){
         var moveDis = this.moveSpeed * dt;
-        var dirV2 = this.target.getUIPos().sub(this.getUIPos());
-        dirV2.normalizeSelf();
-        dirV2.scaleSelf(cc.v2(moveDis,moveDis));
+        var dirV2 = this.target.getUIPos().subtract(this.getUIPos());
+        dirV2.normalize();
+        dirV2.multiply(v2(moveDis,moveDis));
         // todo 角度。
-        this.node.x += dirV2.x;
-        this.node.y += dirV2.y;
+        var v3 = this.node.position.clone();
+        v3.x += dirV2.x;
+        v3.y += dirV2.y;
+        this.node.setPosition(v3);
         if(this.checkTargetIntoRange(this.target)){
             this.doAtk();
         }   

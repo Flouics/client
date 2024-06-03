@@ -6,10 +6,13 @@ export default class TimeInit extends Init {
     proxy:Proxy;
     cmd:Command;
     init(){
-        this.proxy = new Proxy(Proxy);
+        this.moduleName = "time";
+        this.proxy = Proxy.getInstance(Proxy);
         this.cmd = new Command();
-        //监听服务端消息
-        
+    }
+
+    onMsg(){
+        //监听服务端消息   
     }
 }
 

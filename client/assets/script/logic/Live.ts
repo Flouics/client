@@ -7,6 +7,10 @@ import { serialize } from "../utils/Decorator";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
 import App from "../App";
+import { Node, v2, Vec2 } from "cc";
+import { toolKit } from "../utils/ToolKit";
+import TimeProxy, { getTimeProxy } from "../modules/time/TimeProxy";
+import Debug from "../utils/Debug";
 
 export default class Live extends BoxBase {
     @serialize()
@@ -14,7 +18,7 @@ export default class Live extends BoxBase {
     stateMachine:StateMachine = new StateMachine();      //执行的动作行为
     @serialize()
     moveSpeed: number = 180;    //1秒
-    routeList:cc.Vec2[] = [];    // 移动路径图
+    routeList:Vec2[] = [];    // 移动路径图
     mapMainView: MapMainView = null;    //地图
     ui:UILive = null;
     mapProxy:MapProxy = null;
@@ -69,7 +73,7 @@ export default class Live extends BoxBase {
         }
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
         let viewPos = MapUtils.getViewPosByTilePos(this.pos);
@@ -79,11 +83,11 @@ export default class Live extends BoxBase {
         if(!!cb) cb(this);
     }
 
-    moveToPos(toPos: cc.Vec2) {
+    moveToPos(toPos: Vec2) {
         //this.fixPosition();
         //test
         var moveRouteList = this.getMoveRoute(toPos)
-        if (App.toolKit.empty(moveRouteList)){
+        if (toolKit.empty(moveRouteList)){
             return false;
         }
         this.mapMainView.printBlocks(moveRouteList);
@@ -94,22 +98,22 @@ export default class Live extends BoxBase {
         return true;
     }
     // 修改朝向
-    updateDirection(toPos: cc.Vec2){
+    updateDirection(toPos: Vec2){
         // 只有两个朝向
         var direction = this.x - toPos.x;
         this.ui.updateDirection(direction)
     }
 
-    getNearByPos(area: cc.Vec2[]):cc.Vec2 {
+    getNearByPos(area: Vec2[]):Vec2 {
         return MapUtils.getNearByPos(area,this.pos);
     }
     //检查是否可以通过
-    checkBlock(pos:cc.Vec2){
+    checkBlock(pos:Vec2){
         return this.mapProxy.checkBlock(pos);
     }
 
     //避免遍历死循环。
-    checkBlockRoute(pos:cc.Vec2){
+    checkBlockRoute(pos:Vec2){
         return this.mapProxy.checkBlockRoute(pos);
     }
     
@@ -128,13 +132,13 @@ export default class Live extends BoxBase {
         return false;
     }
     //只能移动到相邻的格子
-    moveStepCheck(toPos: cc.Vec2) {
+    moveStepCheck(toPos: Vec2) {
         if (this.getDistance(toPos) > 1) {
             return;
         }
         this.stateMachine.switchState(StateMachine.STATE_ENUM.MOVING,{toPos:toPos})  
     }
-    moveStep(toPos: cc.Vec2) {
+    moveStep(toPos: Vec2) {
         if (this.getDistance(toPos) > 1) {
             return;
         }     
@@ -142,7 +146,7 @@ export default class Live extends BoxBase {
         let self = this, x = toPos.x, y = toPos.y;
         self.x = x;
         self.y = y;
-        this.ui.moveStep(duration,toPos.scale(this.mapMainView._blockSizeVec2),() => {
+        this.ui.moveStep(duration,toPos.multiply(this.mapMainView._blockSizeVec2),() => {
             this.stateMachine.switchState(this.stateMachine.lastState.id)
         })
     }
@@ -151,8 +155,8 @@ export default class Live extends BoxBase {
         this.x = tilePos.x;
         this.y = tilePos.y;
     }
-    getMoveRoute(toPos:cc.Vec2){        
-        return MapUtils.getRouteList(cc.v2(this.x,this.y),toPos,this.checkBlockRoute.bind(this))
+    getMoveRoute(toPos:Vec2){        
+        return MapUtils.getRouteList(v2(this.x,this.y),toPos,this.checkBlockRoute.bind(this))
     }
 
     clear(){
@@ -161,7 +165,7 @@ export default class Live extends BoxBase {
     
     atkTarget(){
         if(this.target){
-            var nowTimeStamp = timeProxy.getTime();
+            var nowTimeStamp = getTimeProxy().getTime();
             var deltaAngle = this.setDirection(this.target);
             if (Math.abs(deltaAngle) > 30){
                 return
@@ -180,7 +184,7 @@ export default class Live extends BoxBase {
         if (!this.ui){
             return
         }
-        var angle = MapUtils.getAngle(cc.v2(this.x,this.y),cc.v2(target.x,target.y));
+        var angle = MapUtils.getAngle(v2(this.x,this.y),v2(target.x,target.y));
         var deltaAngle = angle - this.ui.node.angle;
         if (Math.abs(deltaAngle) > 180){
             if(deltaAngle > 0){
@@ -204,7 +208,7 @@ export default class Live extends BoxBase {
         if(this.ui){
             this.ui.onBeAtked(damage);
         }
-        cc.log(this.name,this.life);
+        Debug.log(this.name,this.life);
         if(!this.checkLive()) {
             this.clear();
         }

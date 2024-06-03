@@ -34,7 +34,7 @@ export default class PlayerProxy extends BaseProxy {
         
             
             // 设备ID                  
-           ,deviceId : "aa.bb.cc.ddc"
+           ,deviceId : "aa.bb.ddc"
         }
     }
     load(){
@@ -42,4 +42,7 @@ export default class PlayerProxy extends BaseProxy {
     }
 };
 
+export function getPlayerProxy(): PlayerProxy {
+    return PlayerProxy._instance;
+}
 

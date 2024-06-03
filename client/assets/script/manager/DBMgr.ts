@@ -1,6 +1,8 @@
 import App from "../App";
-import PlayerProxy from "../modules/player/PlayerProxy";
+import PlayerProxy, { getPlayerProxy } from "../modules/player/PlayerProxy";
 import BaseClass from "../zero/BaseClass";
+import { sys } from "cc";
+import Debug from "../utils/Debug";
 
 var localStorageEnum = {
     AUDIO_SETTING: 'audio_setting',
@@ -8,7 +10,7 @@ var localStorageEnum = {
 };
 var global = window;
 export default class DBMgr extends BaseClass {
-    ls: any = cc.sys.localStorage;
+    ls: any = sys.localStorage;
     Enum: any = localStorageEnum;
 
     getItem(_key: string) {
@@ -61,7 +63,7 @@ export default class DBMgr extends BaseClass {
         try {
             ret = JSON.parse(ret);
         } catch (e) {
-            cc.error("could not parse data");
+            Debug.error("could not parse data");
             ret = null;
         }
 
@@ -75,7 +77,7 @@ export default class DBMgr extends BaseClass {
                 this._setItem(key, ret);
                 return true;
             } catch (e) {
-                cc.error("could not stringify data", obj);
+                Debug.error("could not stringify data", obj);
                 return false;
             }
         }
@@ -87,18 +89,18 @@ export default class DBMgr extends BaseClass {
             this._removeItem(key);
             return true;
         } catch (e) {
-            cc.error("could not remove data", key);
+            Debug.error("could not remove data", key);
             return false;
         }
     };
 
-    clear() {
+    destory() {
         this.ls.clear();
     };
 
     //防止不同用户之间用户数据冲突
     getKey(key: string) {
-        var uid = PlayerProxy.getInstance(PlayerProxy).attrs.uid || 'someone';
+        var uid = getPlayerProxy().attrs.uid.toString() || 'someone';
         var key_prefix = uid.slice(0, 7);
         return key_prefix + key;
     };

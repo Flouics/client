@@ -1,9 +1,10 @@
 
 import BaseUI from "../zero/BaseUI";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator,RichText,Label} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIEffect")
 export default class UIEffect extends BaseUI {
     
     onLoad () {

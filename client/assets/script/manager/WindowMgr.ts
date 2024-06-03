@@ -1,19 +1,24 @@
-import BaseWin from "../zero/BaseWin";
-import BaseView from "../zero/BaseUI";
+import BaseUI from "../zero/BaseUI";
 import BaseClass from "../zero/BaseClass";
 import App from "../App";
-import BaseUI from "../zero/BaseUI";
+import BaseView from "../zero/BaseView";
+import Debug from "../utils/Debug";
+import { find, Node, Prefab, resources, instantiate} from "cc";
+import UIMask from "../ui/UIMask";
+import { RES_WINDOW } from "../Global";
+import BaseWin from "../zero/BaseWin";
+
 
 export default class WindowMgr extends BaseClass {
     creatingCB = {};
     ui = {};    
 
-    create(uiName: string, cb?: Function, parent?: cc.Node) {
+    create(uiName: string, cb?: Function, parent?: Node) {
         var self = this;
         var ret = this.ui[uiName];
         if (ret && ret.isValid) {
             ret.active = true;
-            if (parent == undefined) parent = cc.find('Canvas');
+            if (parent == undefined) parent = find('Canvas');
             if (parent && ret.parent != parent) {
                 ret.parent = parent;
             }
@@ -32,19 +37,19 @@ export default class WindowMgr extends BaseClass {
         this.creatingCB[uiName] = [cb];
 
         var self = this;
-        cc.loader.loadRes(uiName,cc.Prefab, function (err: any, prefab: any) {
-            cc.log('[ui] end create: ', uiName, new Date());
+        resources.load(uiName,Prefab, function (err: any, prefab: any) {
+            Debug.log('[ui] end create: ', uiName, new Date());
             var cbs = self.creatingCB[uiName] || [];
             delete self.creatingCB[uiName];
 
             if (err) {
-                cc.error(uiName, err);
+                Debug.error(uiName, err);
                 cbs.forEach(function (cb:Function) {
                     cb(err, null);
                 })
             }
             else {
-                var ui = cc.instantiate(prefab);
+                var ui = instantiate(prefab);
                 ui.active = false;
                 if (parent == undefined) parent = self.getUIRoot();        //解决异步场景多次进入的问题
                 if (parent && parent.isValid) {
@@ -59,22 +64,23 @@ export default class WindowMgr extends BaseClass {
         });
     };
     // 打开
-    open(uiName: string, cb?: Function, parent?: cc.Node, errorCb?: Function) {
-        // cc.log('open ui: ', uiName);
+    open(uiName: string, cb?: Function, parent?: Node, errorCb?: Function) {
+        // Debug.log('open ui: ', uiName);
         var time1 = new Date().getTime();
         this.create(uiName, function (err, ui) {
             if (err) {
-                cc.error('open ui failed ', uiName, err);
+                Debug.error('open ui failed ', uiName, err);
                 if (!!errorCb) {
                     errorCb()
                 }
                 return;
             }
             var time2 = new Date().getTime();
-            cc.log('open ui cost:', uiName, time2 - time1);
+            Debug.log('open ui cost:', uiName, time2 - time1);
             if (!!ui) {
-                var baseUI = ui.getComponent(BaseWin);
+                var baseUI = ui.getComponent(BaseUI);
                 if (!!baseUI) {
+                    baseUI._show();
                     baseUI.show();
                 } else {
                     ui.active = true;
@@ -89,12 +95,12 @@ export default class WindowMgr extends BaseClass {
     // 预加载
     preload(uiName: string, cb?: Function) {
         var parent = App.ui.nd_uiPool;
-        this.create(uiName, function (err, ui:BaseUI) {
+        this.create(uiName, function (err, ui:Node) {
             if (err) {
-                cc.error('preload ui failed ', uiName, err);
+                Debug.error('preload ui failed ', uiName, err);
                 return;
             } else {
-                var baseUI = ui.getComponent(BaseWin);
+                var baseUI = ui.getComponent(BaseUI);
                 if (!!baseUI && baseUI.init) {
                     baseUI.init();
                 }
@@ -106,7 +112,7 @@ export default class WindowMgr extends BaseClass {
 
     // 关闭
     close(uiName: string) {
-        // cc.log('close ui: ', uiName);
+        // Debug.log('close ui: ', uiName);
         var self = this;
         var ui = this.ui[uiName];
         if (!!ui) {
@@ -122,24 +128,20 @@ export default class WindowMgr extends BaseClass {
         this._close(ui, ui.uiName);
     };
 
-    _close(ui: any, uiName: string) {
-        if (!(ui instanceof cc.Node)) {
-            cc.error('close ui must use node.');
+    _close(ui: Node, uiName: string) {
+        if (!(ui instanceof Node)) {
+            Debug.error('close ui must use node.');
             return;
         }
 
         if (ui.isValid) {
-            var baseUI = ui.getComponent(BaseWin);
+            var baseUI = ui.getComponent(BaseUI);
             if (!!baseUI) {
+                baseUI._hide();
                 baseUI.hide();
             } else {
-                var baseView = ui.getComponent(BaseView);
-                if (!!baseView) {
-                    baseView.hide();
-                } else {
-                    ui.active = false;
-                }
-            }
+                ui.active = false;
+            }     
         }
     };
 
@@ -166,7 +168,7 @@ export default class WindowMgr extends BaseClass {
     };
 
     //关闭特定层级的窗口,除了特定窗口。
-    closeWindowByZIndex(zIndex: string, exceptUI: cc.Node) {
+    closeWindowByZIndex(zIndex: string, exceptUI: Node) {
         var ui_list = this.getWindowByZIndex(zIndex, exceptUI);
         var self = this;
         ui_list.forEach(function (ui) {
@@ -175,7 +177,7 @@ export default class WindowMgr extends BaseClass {
     };
 
     // 获取冲突的窗口
-    getWindowByZIndex(zIndex: string, exceptUI: cc.Node) {
+    getWindowByZIndex(zIndex: string, exceptUI: Node) {
         var self = this;
         var ui_list = [];
         for (var name in this.ui) {
@@ -192,17 +194,11 @@ export default class WindowMgr extends BaseClass {
         return App.getUIRoot();
     };
 
-    getUIMask() {
-        var canvas = cc.find('Canvas');
-        var mask = cc.find('mask', canvas);
-        return mask;
-    };
-
-    setUIBlock(minisec: number) {
-        var mask = this.getUIMask();
-        if (!mask) return;
-        mask.active = true;
-        mask.getComponent('UIMask').setUIMaskBlockTime();
+    block(sec: number) {
+        this.open(RES_WINDOW.mask, function (uiNode:Node) {
+            var ui = uiNode.getComponent(UIMask)
+            ui.setUIMaskBlockTime(sec);
+        });
     };
 
 };

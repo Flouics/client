@@ -1,8 +1,9 @@
 import UILive from "./UILive";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIMonster")
 export default class UIMonster extends UILive {    
     _baseUrl = "texture/master/";
     reuse(){

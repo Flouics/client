@@ -1,9 +1,10 @@
 import Hero from "../../logic/Hero";
 import UILive from "./UILive";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIHero")
 export default class UIHero extends UILive {    
     _baseUrl = "texture/hero/";
     _logicObj:Hero = null;

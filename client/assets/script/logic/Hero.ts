@@ -3,13 +3,13 @@ import MapUtils from "./MapUtils";
 import Live from "./Live";
 import HeroMgr from "../manager/HeroMgr";
 import TaskBase from "./TaskBase";
-import ToolKit from "../utils/ToolKit";
 import DigTask from "./task/DigTask";
 import PoolMgr from "../manager/PoolMgr";
 import StateMachine from "./stateMachine/StateMachine";
 import App from "../App";
 import BuildTask from "./task/BuildTask";
 import CarryTask from "./task/CarryTask";
+import { toolKit } from "../utils/ToolKit";
 
 export default class Hero extends Live {
     moveSpeed: number = 180;    //1秒
@@ -92,14 +92,14 @@ export default class Hero extends Live {
 
     }
     digBlock(task:TaskBase){
-        ToolKit.getInstance(ToolKit).showTip("执行挖掘的动作。");
+        toolKit.showTip("执行挖掘的动作。");
         var pos = task.pos
         App.moduleMgr.command("map","digBlock",{pos : pos})
         this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
     }
 
     buildTower(task:TaskBase){
-        ToolKit.getInstance(ToolKit).showTip("执行建设炮台的动作。");
+        toolKit.showTip("执行建设炮台的动作。");
         var pos = task.pos
         App.moduleMgr.command("map","buildTower",{pos : pos})
         this.stateMachine.switchState(StateMachine.STATE_ENUM.IDLE);
@@ -145,6 +145,6 @@ export default class Hero extends Live {
         return false;
     }
     clear(){
-        this.heroMgr.clear(this.idx)
+        this.heroMgr.clearHero(this.idx)
     }
 }

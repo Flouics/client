@@ -1,15 +1,17 @@
+import { nullfun } from "../Global";
 import BaseWin from "../zero/BaseWin";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator,RichText,Node,Label} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("MsgBox")
 export default class MsgBox extends BaseWin {
-    @property(cc.Node)
-    nd_btnOK:cc.Node = null;
-    @property(cc.Node)
-    nd_btnCancel:cc.Node = null;
-    @property(cc.Label)
-    lb_content:cc.Label = null;
+    @property(Node)
+    nd_btnOK:Node = null;
+    @property(Node)
+    nd_btnCancel:Node = null;
+    @property(Label)
+    lb_content:Label = null;
     cb_ok:Function = nullfun;
     cb_cancel:Function = nullfun;
 

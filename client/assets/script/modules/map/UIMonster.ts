@@ -1,9 +1,9 @@
 import Monster from "../../logic/Monster";
 import UILive from "./UILive";
+import { _decorator} from 'cc';
+const {ccclass, property} = _decorator;
 
-const { ccclass, property } = cc._decorator;
-
-@ccclass
+@ccclass("UIMonster")
 export default class UIMonster extends UILive {    
     _baseUrl = "texture/monster/";
     _logicObj:Monster = null;

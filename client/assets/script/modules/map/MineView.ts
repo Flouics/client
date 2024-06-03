@@ -1,17 +1,14 @@
-import Building from "../../logic/Building";
-import Tower from "../../logic/tower/Tower";
-import ModuleMgr from "../../manager/ModuleMgr";
+
 import MapProxy from "./MapProxy";
-import ToolKit from "../../utils/ToolKit";
-import MapMainView from "./MapMainView";
 import BaseView from "../../zero/BaseView";
 import App from "../../App";
 import BaseUI from "../../zero/BaseUI";
 import TouchUtils from "../../utils/TouchUtils";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("MineView")
 export default class MineView extends BaseView {
     mapProxy:MapProxy = null;
     mineId:number = 0; //矿山id

@@ -9,7 +9,7 @@ export default class MineMgr extends BaseClass{
     @serialize()
     mineMap:{[key:number]:Mine} = {};
     _mapMainView:MapMainView = null;
-    _nodeRoot:cc.Node = null;
+    _nodeRoot:Node = null;
 
     init(mapMainView:MapMainView){
         this._mapMainView = mapMainView;

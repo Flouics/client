@@ -16,6 +16,8 @@ import BulletMgr from "../../manager/BulletMgr";
 import { serialize } from "../../utils/Decorator";
 import BuildTask from "../../logic/task/BuildTask";
 import MineMgr from "../../manager/MineMgr";
+import Debug from "../../utils/Debug";
+import { js, Vec2 } from "cc";
 
 export default class MapProxy extends Proxy {
     attrs:{[key:string]:any} = {} 
@@ -96,7 +98,7 @@ export default class MapProxy extends Proxy {
     }
 
     reloadPrepare(){
-        cc.log("reloadPrepare")
+        Debug.log("reloadPrepare")
     }
 
     sortTask(){
@@ -129,9 +131,9 @@ export default class MapProxy extends Proxy {
     getTaskMapKey(task:TaskBase){
         var key = ""
         if(task instanceof DigTask || task instanceof BuildTask){
-            key = cc.js.formatStr("%s_%s_%s",task.type,task.pos.x,task.pos.y)
+            key = js.formatStr("%s_%s_%s",task.type,task.pos.x,task.pos.y)
         }else{
-            key = cc.js.formatStr("%s_%s_%s",task.type,task.id)
+            key = js.formatStr("%s_%s_%s",task.type,task.id)
         }
         return key;
     }
@@ -172,7 +174,7 @@ export default class MapProxy extends Proxy {
         }
     }
 
-    checkBlock(pos: cc.Vec2) {
+    checkBlock(pos: Vec2) {
         var block = this.getBlock(pos.x,pos.y)
         if (block) {
             return ((block.id | Block.CROSS_VALUE) == 0 && block.buildingId == 0)
@@ -182,7 +184,7 @@ export default class MapProxy extends Proxy {
     }
 
     //避免遍历死循环。
-    checkBlockRoute(pos: cc.Vec2) {
+    checkBlockRoute(pos: Vec2) {
         var max_x =  this.margin_x * 2 + 1;
         var max_y =  this.margin_y * 2 + 1;
         var x = pos.x;
@@ -243,5 +245,10 @@ export default class MapProxy extends Proxy {
         return y;
     }
 };
+
+export function getMapProxy(): MapProxy {
+    return MapProxy._instance;
+}
+
 
 

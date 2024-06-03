@@ -4,13 +4,14 @@ import Tower from "../logic/tower/Tower";
 import Tower_1001 from "../logic/tower/Tower_1001";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
+import { Node, v2 } from "cc";
 
 // 怪物管理器
 export default class TowerMgr extends BaseClass{
     @serialize()
     towerMap:{[key:number]:Tower} = {};
     _mapMainView:MapMainView = null;
-    _nodeRoot:cc.Node = null;
+    _nodeRoot:Node = null;
     _towerTypeClassMap = {};
     
 
@@ -50,7 +51,7 @@ export default class TowerMgr extends BaseClass{
         tower.initUI(this._nodeRoot,()=>{
             if(!!task) task(tower);    
         });
-        tower.createBuilding(cc.v2(x,y));
+        tower.createBuilding(v2(x,y));
         this.towerMap[tower.idx] = tower;        
         return tower;
     }
@@ -63,7 +64,7 @@ export default class TowerMgr extends BaseClass{
         }
     }
 
-    clear(idx:number){
+    clearTower(idx:number){
         let obj = this.towerMap[idx];
         if(obj){
             obj.destory();

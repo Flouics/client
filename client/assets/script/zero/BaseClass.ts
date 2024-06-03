@@ -20,7 +20,11 @@ export default class BaseClass {
     }
 
     static clearInstance(_class:any){
-        _class._instance = null
+        if(_class._instance){
+            let instance = _class._instance;
+            instance.destory();
+            _class._instance = null;
+        }        
     }
     
     //单例
@@ -30,6 +34,17 @@ export default class BaseClass {
         }else{
             let instance = new _class(_class);
             return instance
+        }
+    }
+
+    clear(){
+
+    }
+
+    destory(){
+        this.clear();
+        if(this._class){
+            this._class.instance = null;
         }
     }
 

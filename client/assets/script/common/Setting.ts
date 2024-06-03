@@ -1,9 +1,12 @@
 import App from "../App";
+import { lang, nullfun } from "../Global";
+import { toolKit } from "../utils/ToolKit";
 import BaseWin from "../zero/BaseWin";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator,RichText,Label} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("Setting")
 export default class Setting extends BaseWin {
     
     onLoad () {
@@ -19,9 +22,9 @@ export default class Setting extends BaseWin {
     }
     
     onClickClear(){    
-        App.toolKit.showMsgBox(lang("setting_clear_cache_1"),()=>{
+        toolKit.showMsgBox(lang("setting_clear_cache_1"),()=>{
             App.dbMgr.clear();
-            App.toolKit.showTip(lang("setting_clear_cache_2"));
+            toolKit.showTip(lang("setting_clear_cache_2"));
         },nullfun);
     }   
     

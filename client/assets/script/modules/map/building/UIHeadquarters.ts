@@ -1,24 +1,33 @@
 import App from "../../../App";
-import ToolKit from "../../../utils/ToolKit";
+import { toolKit } from "../../../utils/ToolKit";
 import UIBuilding from "../UIBuilding";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Color, Node, ProgressBar, Sprite, tween, Tween} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIHeadquarters")
 export default class UIHeadquarters extends UIBuilding {
     _baseUrl = "texture/map/";
-    _beAtkedAction:cc.Tween;
-    @property(cc.ProgressBar)
-    lifeBar:cc.ProgressBar = null;
+    _beAtkedAction:Tween<Node>;
+    @property(ProgressBar)
+    lifeBar:ProgressBar = null;
     onBeAtked(damage:number){
         if(this._beAtkedAction) return;
         var duration = 0.5;
         var self = this;
-        this._beAtkedAction = cc.tween(this.node)
+        this._beAtkedAction = tween(this.node)
         .to(duration,
-            { color: cc.Color.RED})
+            { },{
+                onUpdate(){
+                    self.node.getComponent(Sprite).color = Color.RED;
+                }
+            })
         .to(duration,
-            { color: cc.Color.WHITE})
+            { },{
+                onUpdate(){
+                    self.node.getComponent(Sprite).color = Color.WHITE;
+                }
+            })
         .call(() => {                
             //todo
             self.stopBeAtkedAction();
@@ -31,7 +40,7 @@ export default class UIHeadquarters extends UIBuilding {
         this.removeTweenAction(this._beAtkedAction);
         this._beAtkedAction = null;
     }
-    removeTweenAction(actionTween:cc.Tween){
+    removeTweenAction(actionTween:Tween<Node>){
         if(actionTween){
             actionTween.stop()
             actionTween.removeSelf()
@@ -44,7 +53,7 @@ export default class UIHeadquarters extends UIBuilding {
         var data = {life : logicObj.life,lifeMax : logicObj.lifeMax}
         this.updateDataToUI("headquarters.life",data,()=>{
             var percent = data.life * 100 / data.lifeMax;
-            percent = App.toolKit.limitNum(percent,0,100);
+            percent = toolKit.limitNum(percent,0,100);
             this.lifeBar.progress = percent/100;
         });
     }

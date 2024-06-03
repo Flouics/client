@@ -21,4 +21,8 @@ export default class PackageProxy extends BaseProxy {
     }
 };
 
+export function getPackageProxy(): PackageProxy {
+    return PackageProxy._instance;
+}
+
 

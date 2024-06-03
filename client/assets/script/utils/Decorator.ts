@@ -45,6 +45,6 @@ export function jsonToObj(obj:Object,json:string = "") {
             }
         });
     } catch (error) {
-        cc.error(error,"fromJson is Failed",json);
+        Debug.error(error,"fromJson is Failed",json);
     }
 }

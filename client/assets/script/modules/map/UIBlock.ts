@@ -1,18 +1,19 @@
 import BaseUI from "../../zero/BaseUI";
 import Block from "../../logic/Block";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Sprite} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIBlock")
 export default class UIBlock extends BaseUI {
-    @property(cc.Sprite)
-    spt_floor:cc.Sprite = null;
-    @property(cc.Sprite)
-    spt_item:cc.Sprite = null;
-    @property(cc.Sprite)
-    spt_event:cc.Sprite = null;
-    @property(cc.Sprite)
-    spt_flag:cc.Sprite = null;
+    @property(Sprite)
+    spt_floor:Sprite = null;
+    @property(Sprite)
+    spt_item:Sprite = null;
+    @property(Sprite)
+    spt_event:Sprite = null;
+    @property(Sprite)
+    spt_flag:Sprite = null;
 
     _baseUrl = "texture/map/";
     _logicObj:Block = null;

@@ -3,8 +3,6 @@ import AsyncTaskMgr from "../../manager/AsyncTaskMgr";
 import Block from "../../logic/Block";
 import Hero from "../../logic/Hero";
 import TouchUtils from "../../utils/TouchUtils";
-import MapUtils from "../../logic/MapUtils";
-import ToolKit from "../../utils/ToolKit";
 import Debug from "../../utils/Debug";
 import Building from "../../logic/Building";
 import Headquarters from "../../logic/building/Headquarters";
@@ -21,6 +19,10 @@ import BaseView from "../../zero/BaseView";
 import BaseUI from "../../zero/BaseUI";
 import BuildTask from "../../logic/task/BuildTask";
 import MineMgr from "../../manager/MineMgr";
+import { _decorator, EventTouch, instantiate, Node, Prefab, Size, UITransform, v2, Vec2, Vec3 } from "cc";
+import { UITRANSFORM } from "../../../../extensions/plugin-import-2x/creator/components/UITransform";
+import MapUtils from "../../logic/MapUtils";
+import { toolKit } from "../../utils/ToolKit";
 
 /**
  * Created by Administrator on 2017/9/12.
@@ -33,33 +35,31 @@ var OPERATION_ENUM = {
     DIG: 1,
     BUILD: 2,
 }
-
-const { ccclass, property } = cc._decorator;
-
-@ccclass
+const {ccclass, property} = _decorator;
+@ccclass("MapMainView")
 export default class MapMainView extends BaseView {
     @property()
     margin_x: number = 10;
     @property()
     margin_y: number = 10;
-    @property(cc.Node)
-    nd_mapRoot: cc.Node = null;  //基础的地图层
-    @property(cc.Node)
-    nd_heroRoot: cc.Node = null;  //人物的地图层
-    @property(cc.Node)
-    nd_masterRoot: cc.Node = null;  //怪物的地图层
-    @property(cc.Node)
-    nd_bulletRoot: cc.Node = null;  //怪物的地图层
-    @property(cc.Node)
-    nd_buildingRoot: cc.Node = null;  //建筑地图层    
-    @property(cc.Prefab)
+    @property(Node)
+    nd_mapRoot: Node = null;  //基础的地图层
+    @property(Node)
+    nd_heroRoot: Node = null;  //人物的地图层
+    @property(Node)
+    nd_masterRoot: Node = null;  //怪物的地图层
+    @property(Node)
+    nd_bulletRoot: Node = null;  //怪物的地图层
+    @property(Node)
+    nd_buildingRoot: Node = null;  //建筑地图层    
+    @property(Prefab)
     pb_block = null;            //瓦片资源
 
     mapProxy: MapProxy = null;
     static OPERATION_ENUM = OPERATION_ENUM;
     operation: number = OPERATION_ENUM.COMMON;
-    _blockSize: cc.Size = null;
-    _blockSizeVec2: cc.Vec2 = null;         //size 转成矢量，方便转化真实尺寸。
+    _blockSize: Size = null;
+    _blockSizeVec2: Vec2 = null;         //size 转成矢量，方便转化真实尺寸。
     blockMap: { [k1: number]: { [k2: number]: Block } } = {};
     buildingMap: { [key: number]: Building } = {}
 
@@ -70,16 +70,15 @@ export default class MapMainView extends BaseView {
     towerMgr:TowerMgr = null;
     bulletMgr:BulletMgr = null;
     mineMgr:MineMgr = null;
-    monsterEntryPos: cc.Vec2 = cc.v2(0, 0);
+    monsterEntryPos: Vec2 = v2(0, 0);
     moduleName = "map";
-    centerPos: cc.Vec2 = cc.v2(0, 0);
-    mapSize:cc.Size = new cc.Size(0,0);
+    centerPos: Vec2 = v2(0, 0);
+    mapSize:Size = new Size(0,0);
 
     // use this for initialization
     onLoad() {
         super.onLoad();
-        App.game = App.game || {}
-        App.game.temp = this;
+        window["temp"] = this;
         this.mapProxy = this.proxy as MapProxy;
         this.blockMap = this.mapProxy.blockMap;
         this.buildingMap = this.mapProxy.buildingMap;        
@@ -119,19 +118,19 @@ export default class MapMainView extends BaseView {
         this.node.on("map_click", this.onMapClick.bind(this));
     }
     initMonsterEntryPos() {
-        this.monsterEntryPos = cc.v2(-10, 10);
+        this.monsterEntryPos = v2(-10, 10);
         this.getBlockByPos(this.monsterEntryPos).id = Block.BLOCK_VALUE_ENUM.MONSTER_ENTRY;
     }
-    initBlockSize(size: cc.Size) {
+    initBlockSize(size: Size) {
         this._blockSize = size;
-        this._blockSizeVec2 = new cc.Vec2(size.width, size.height);
+        this._blockSizeVec2 = new Vec2(size.width, size.height);
     }
     initBlocks() {
         //方块数据
-        let node = cc.instantiate(this.pb_block);
-        this.initBlockSize(new cc.Size(node.width, node.height));
-        MapUtils.initBlockData(new cc.Size(node.width, node.height));
-        this.mapSize = new cc.Size(
+        let node = instantiate(this.pb_block);
+        this.initBlockSize(new Size(node.width, node.height));
+        MapUtils.initBlockData(new Size(node.width, node.height));
+        this.mapSize = new Size(
             (this.margin_x * 2 + 1) * this._blockSize.width
             , (this.margin_y * 2 + 1) * this._blockSize.height
         );
@@ -171,7 +170,7 @@ export default class MapMainView extends BaseView {
             block.initUI()
         }
     }
-    getBlockByPos(tilePos: cc.Vec2) {
+    getBlockByPos(tilePos: Vec2) {
         return this.getBlock(tilePos.x, tilePos.y);
     }
     getBlock(x: number, y: number) {
@@ -185,7 +184,7 @@ export default class MapMainView extends BaseView {
         this.initMonsterEntryPos();
         var self = this;
         var createMonster = function(){
-            var monsterType = App.toolKit.getRand(10001,10005);
+            var monsterType = toolKit.getRand(10001,10005);
             self.monsterMgr.createMultiple(monsterType,1, self.monsterEntryPos, (monster: Monster) => {
                 monster.attackHeadquarters();
             });
@@ -197,18 +196,18 @@ export default class MapMainView extends BaseView {
         this.towerMgr.create(-2,0,1001);
     }
     clearHero(heroId: number) {
-        this.heroMgr.clear(heroId);
+        this.heroMgr.clearHero(heroId);
     }
     clearMonster(monsterId: number) {
-        this.monsterMgr.clear(monsterId);
+        this.monsterMgr.clearMonster(monsterId);
     }
     initBuildings() {
         let headquarters = new Headquarters(this);
-        this.createBuilding(headquarters, cc.v2(0, 0));
+        this.createBuilding(headquarters, v2(0, 0));
         this.buildingMap[headquarters.idx] = headquarters;
         this.headquarters = headquarters;
     }
-    checkBlock(pos: cc.Vec2) {
+    checkBlock(pos: Vec2) {
         return this.mapProxy.checkBlock(pos);
     }
     digBlock(params:any){
@@ -217,13 +216,13 @@ export default class MapMainView extends BaseView {
 
     buildTower(params:any){
         //todo
-        cc.log("随机建造炮台")
+        Debug.log("随机建造炮台")
     }
 
     // 地图触发了点击事件
-    onMapClick(event: cc.Event.EventTouch) {
+    onMapClick(event: EventTouch) {
         var touchEndPos = event.getLocation();
-        var viewPos = this.nd_mapRoot.convertToNodeSpaceAR(touchEndPos);
+        var viewPos = this.nd_mapRoot.getComponent(UITransform).convertToNodeSpaceAR(new Vec3(touchEndPos.x, touchEndPos.y,0));
         var tilePos = MapUtils.getTilePosByViewPos(viewPos);
         //todo 角色的行为
         if (this.operation == OPERATION_ENUM.COMMON) {
@@ -256,7 +255,7 @@ export default class MapMainView extends BaseView {
             }
         }
     }
-    createBuilding(building: Building, toPos: cc.Vec2) {
+    createBuilding(building: Building, toPos: Vec2) {
         building.createBuilding(toPos);
         var maskArea = building.getRealArea();
         var self = this;
@@ -267,7 +266,7 @@ export default class MapMainView extends BaseView {
     }
     // 地图移动时，地图重新显示
     onMapMove(){
-        var offsetPos = new cc.Vec2(this.node.x - this.centerPos.x,this.node.y - this.centerPos.y);
+        var offsetPos = new Vec2(this.node.position.x - this.centerPos.x,this.node.position.y - this.centerPos.y);
         var x = Math.ceil(offsetPos.x/this._blockSize.width)
         var y = Math.ceil(offsetPos.y/this._blockSize.height)
 
@@ -285,7 +284,7 @@ export default class MapMainView extends BaseView {
                 for (const key in blocks) {
                     if (Object.prototype.hasOwnProperty.call(blocks, key)) {
                         const block = blocks[key];
-                        block.move(new cc.Vec2(this.mapSize.width,0))
+                        block.move(new Vec2(this.mapSize.width,0))
                     }
                 }
             }
@@ -295,7 +294,7 @@ export default class MapMainView extends BaseView {
                 for (const key in blocks) {
                     if (Object.prototype.hasOwnProperty.call(blocks, key)) {
                         const block = blocks[key];
-                        block.move(new cc.Vec2(-this.mapSize.width,0))
+                        block.move(new Vec2(-this.mapSize.width,0))
                     }
                 }
             }
@@ -307,7 +306,7 @@ export default class MapMainView extends BaseView {
                 for (const key in blocks) {
                     if (Object.prototype.hasOwnProperty.call(blocks, key)) {
                         const block = blocks[key];
-                        block.move(new cc.Vec2(0,this.mapSize.height))
+                        block.move(new Vec2(0,this.mapSize.height))
                     }
                 }
             }
@@ -317,7 +316,7 @@ export default class MapMainView extends BaseView {
                 for (const key in blocks) {
                     if (Object.prototype.hasOwnProperty.call(blocks, key)) {
                         const block = blocks[key];
-                        block.move(new cc.Vec2(0,-this.mapSize.height))
+                        block.move(new Vec2(0,-this.mapSize.height))
                     }
                 }
             }
@@ -326,7 +325,7 @@ export default class MapMainView extends BaseView {
     }
 
     //测试区域
-    printBlocks(posList: cc.Vec2[]) {
+    printBlocks(posList: Vec2[]) {
         var self = this;
         this.dealAllBlocks((block: Block) => {
             block.event = 0;

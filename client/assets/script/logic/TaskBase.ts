@@ -1,3 +1,4 @@
+import { Vec2 } from "cc";
 import BaseClass from "../zero/BaseClass";
 var TASK_VALUE_ENUM = {
     IDLE:0,
@@ -13,7 +14,7 @@ export default class TaskBase extends BaseClass {
     index:number = 0;
     static _idIndex = 1;
     type:number = 0;
-    pos:cc.Vec2 = cc.v2(0,0);
+    pos:Vec2 = new Vec2(0,0);
     constructor(_class:any){
         super(_class);
     }

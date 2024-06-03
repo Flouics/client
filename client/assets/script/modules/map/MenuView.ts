@@ -1,24 +1,20 @@
 import Building from "../../logic/Building";
-import Tower from "../../logic/tower/Tower";
-import ModuleMgr from "../../manager/ModuleMgr";
-import MapProxy from "./MapProxy";
-import ToolKit from "../../utils/ToolKit";
 import MapMainView from "./MapMainView";
 import BaseView from "../../zero/BaseView";
 import App from "../../App";
-import BaseUI from "../../zero/BaseUI";
-import TouchUtils from "../../utils/TouchUtils";
 
-const {ccclass, property} = cc._decorator;
+import { _decorator, Toggle} from 'cc';
+import { RES_WINDOW } from "../../Global";
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("MenuView")
 export default class MenuView extends BaseView {
     _clickBuilding:Building
 
-    @property(cc.Toggle)
-    tgBuild:cc.Toggle = null;
-    @property(cc.Toggle)
-    tgDig:cc.Toggle = null;
+    @property(Toggle)
+    tgBuild:Toggle = null;
+    @property(Toggle)
+    tgDig:Toggle = null;
     moduleName = "map";
     
     onLoad(){
@@ -43,7 +39,7 @@ export default class MenuView extends BaseView {
     }
 
     onClickSetting(){
-        App.windowMgr.open(App.RES_WINDOW.setting, function (uiNode:cc.Node) {
+        App.windowMgr.open(RES_WINDOW.setting, function (uiNode:Node) {
         });
     }
 }

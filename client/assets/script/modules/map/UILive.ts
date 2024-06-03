@@ -1,28 +1,29 @@
 import BaseUI from "../../zero/BaseUI";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator, Color, Node, Sprite, tween, Tween, v2, Vec2, Vec3} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UILive")
 export default class UILive extends BaseUI {
-    @property(cc.Sprite)
-    spt_role:cc.Sprite = null;    
+    @property(Sprite)
+    spt_role:Sprite = null;    
     _baseUrl = "texture/hero/";
-    _moveAction:cc.Tween;
-    _beAtkedAction:cc.Tween;
-    _directAction:cc.Tween;
+    _moveAction:Tween<Node>;
+    _beAtkedAction:Tween<Node>;
+    _directAction:Tween<Node>;
     reuse(data:any){
 
     }
-    moveStep(duration:number,toPos:cc.Vec2,cb?:Function) {
-        this._moveAction = cc.tween(this.node)
+    moveStep(duration:number,toPos:Vec2,cb?:Function) {
+        this._moveAction = tween(this.node)
             .to(duration,
-                { position: toPos})
+                { position: new Vec3(toPos.x,toPos.y)})
             .call(() => {                
                 if (!!cb) cb()
             })
         this._moveAction.start();
     }
-    removeTweenAction(actionTween:cc.Tween){
+    removeTweenAction(actionTween:Tween<Node>){
         if(actionTween){
             actionTween.stop()
             actionTween.removeSelf()
@@ -37,21 +38,29 @@ export default class UILive extends BaseUI {
         if(direction == 0){
             return
         }
-        var scaleV2 = cc.v2(1,1);
-        this.node.getScale(scaleV2);
-        scaleV2.x = Math.abs(scaleV2.x) * (direction > 0 ? -1 : 1)
-        this.node.setScale(scaleV2);
+        var scaleV3 = new Vec3(1,1,1);
+        this.node.getScale(scaleV3);
+        scaleV3.x = Math.abs(scaleV3.x) * (direction > 0 ? -1 : 1)
+        this.node.setScale(scaleV3);
     }
 
     onBeAtked(damage:number){
         if(this._beAtkedAction) return;
         var duration = 0.5;
         var self = this;
-        this._beAtkedAction = cc.tween(this.spt_role.node)
+        this._beAtkedAction = tween(this.spt_role.node)
         .to(duration,
-            { color: cc.Color.RED})
+            { },{
+                onUpdate(){
+                    self.node.getComponent(Sprite).color = Color.RED;
+                }
+            })
         .to(duration,
-            { color: cc.Color.WHITE})
+            { },{
+                onUpdate(){
+                    self.node.getComponent(Sprite).color = Color.RED;
+                }
+            })
         .call(() => {                
             //todo
             self.stopBeAtkedAction();
@@ -68,7 +77,7 @@ export default class UILive extends BaseUI {
         if(!!this._directAction) return;
         var duration = 0.3;
         var self = this;
-        this._directAction = cc.tween(this.node)
+        this._directAction = tween(this.node)
         .to(duration,
             { angle: angle})
         .call(() => {                

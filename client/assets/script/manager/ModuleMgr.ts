@@ -1,61 +1,81 @@
 import Init from "../modules/base/Init";
-import MapInit from "../modules/map/MapInit";
-import PackageInit from "../modules/package/PackageInit";
-import PlayerInit from "../modules/player/PlayerInit";
-import TimeInit from "../modules/time/TimeInit";
 import BaseClass from "../zero/BaseClass";
+import Proxy from "../modules/base/Proxy";
+import Debug from "../utils/Debug";
+import { js } from "cc";
 
 export default class ModuleMgr extends BaseClass{
-    static _modules = {}  
+    _modules = {}  
 
-    getProxy(moduleName:string):any{
-        let mod = ModuleMgr._modules[moduleName];
+    getProxy<T extends Proxy>(proxy:string|object):T{
+        var moduleName = "";
+        if(typeof proxy === "object"){
+            moduleName = (proxy as any)._moduleName as string;
+        }else{
+            moduleName = proxy;
+        }
+        let mod = this._modules[moduleName];
         if(!mod){
-            cc.error("this module has not exist by " + moduleName);
+            Debug.error("this module has not exist by " + moduleName);
             return;
         }
         return mod.proxy;
     }
 
     init () {
-        ModuleMgr._modules = {}
-        this.loadModule("player",new PlayerInit());
-        this.loadModule("map",new MapInit());    
-        this.loadModule("package",new PackageInit());
-        this.loadModule("time",new TimeInit());
+        this._modules = {}
     };
 
+    clear() {
+        this.clearAllModules();
+    }
+
+    load(moduleName:string,moduleInit:Init){
+        return this.loadModule(moduleName,moduleInit);
+    }
+
     loadModule(moduleName:string,moduleInit:Init){
-        ModuleMgr._modules[moduleName] = moduleInit;
-    };
+        moduleInit.initModule();
+        this._modules[moduleName] = moduleInit;        
+    }
+
+    clearAllModules(): void {
+        for (const key in this._modules) {
+            if (Object.prototype.hasOwnProperty.call(this._modules, key)) {
+                var mod = this._modules[key];
+                mod.proxy.destory();
+            }
+        }
+        this._modules = {}
+    }
     command(moduleName:string,funcName:string,params?:any){
-        let mod = ModuleMgr._modules[moduleName];
+        let mod = this._modules[moduleName];
         if(!mod){
-            cc.error("this module has not exist by " + moduleName);
+            Debug.error("this module has not exist by " + moduleName);
             return;
         }
 
         if(!mod.cmd[funcName]){
-            cc.error("this func has not exist by " + funcName + " in module " + moduleName);
+            Debug.error("this func has not exist by " + funcName + " in module " + moduleName);
             return;
         }
-        cc.log(cc.js.formatStr("command->%s.%s %s",moduleName,funcName,params))
+        Debug.log(js.formatStr("command->%s.%s %s",moduleName,funcName,params))
         mod.cmd[funcName](params)
     };
 
     dumpToDb(){
-        for (const key in ModuleMgr._modules) {
-            if (Object.prototype.hasOwnProperty.call(ModuleMgr._modules, key)) {
-                var mod = ModuleMgr._modules[key];
+        for (const key in this._modules) {
+            if (Object.prototype.hasOwnProperty.call(this._modules, key)) {
+                var mod = this._modules[key];
                 mod.proxy.dumpToDb();
             }
         }
     }
 
     reloadFromDb(){
-        for (const key in ModuleMgr._modules) {
-            if (Object.prototype.hasOwnProperty.call(ModuleMgr._modules, key)) {
-                var mod = ModuleMgr._modules[key];
+        for (const key in this._modules) {
+            if (Object.prototype.hasOwnProperty.call(this._modules, key)) {
+                var mod = this._modules[key];
                 mod.proxy.reloadFromDb();
             }
         }

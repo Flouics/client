@@ -7,6 +7,7 @@ import Tower from "../logic/tower/Tower";
 import BoxBase from "../logic/BoxBase";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
+import { Node, Vec2 } from "cc";
 
 // 子弹管理器
 export default class BulletMgr extends BaseClass {
@@ -14,7 +15,7 @@ export default class BulletMgr extends BaseClass {
     bulletMap:{[key:number]:Bullet} = {};
     _bulletTypeClassMap = {};
     _mapMainView:MapMainView = null;
-    _nodeRoot:cc.Node = null;
+    _nodeRoot:Node = null;
     lastScheduleTime = null;  
     
     initSchedule(){
@@ -42,7 +43,7 @@ export default class BulletMgr extends BaseClass {
         this.initSchedule()
     }
 
-    create(shooter:BoxBase,target:BoxBase,fromViewPos:cc.Vec2,data:any,cb?:Function){    
+    create(shooter:BoxBase,target:BoxBase,fromViewPos:Vec2,data:any,cb?:Function){    
         var BulletClass = this.getBulletClass(data.type);
         if (!BulletClass) {
             return null;
@@ -63,7 +64,7 @@ export default class BulletMgr extends BaseClass {
         }
     }
 
-    clear(idx:number){
+    clearBullet(idx:number){
         let obj = this.bulletMap[idx];
         if(obj){
             obj.destory();

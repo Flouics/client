@@ -4,13 +4,16 @@
  * 独立所有场景之外。
  */
 
-var global = window;
-const {ccclass, property} = cc._decorator;
-@ccclass
-export default class App extends cc.Component{
+import App from "../App";
+import { g_event_error_str } from "../Global";
 
-    @property(cc.Label)
-    lb_error: cc.Label = null;
+import { _decorator,Component,Label } from 'cc';
+const {ccclass, property} = _decorator;
+@ccclass("ErrorPrint")
+export default class ErrorPrint extends Component{
+
+    @property(Label)
+    lb_error: Label = null;
 
 
     // use this for initialization
@@ -19,11 +22,11 @@ export default class App extends cc.Component{
     };
 
     onEnable() {
-        this.lb_error.string = global.g_event_error_str;
+        this.lb_error.string = g_event_error_str;
     };
 
     onRestart() {
         //todo ddz
-        cc.game.restart();
+        App.restart();
     };
 };

@@ -7,8 +7,12 @@ export default class MapInit extends Init {
     cmd:Command;
     
     init(){
+        this.moduleName = "map";
         this.proxy = new Proxy(Proxy);
-        this.cmd = new Command();
+        this.cmd = new Command();        
+    }
+
+    onMsg(): void {
         //监听服务端消息        
     }
 }

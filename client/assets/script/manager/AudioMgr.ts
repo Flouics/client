@@ -1,14 +1,50 @@
-﻿import App from "../App";
+﻿import { AudioSource, director, Node, resources } from "cc";
+import App from "../App";
 import BaseClass from "../zero/BaseClass";
+import Debug from "../utils/Debug";
 
 var basePath = '/resources/music/';
 var AUDIO_TYPE = '.mp3';
-var global = window;
+
 export default class AudioMgr extends BaseClass {
     _curMusic: any = null;
     _urls: string[] = [];
     _audioClip: any[] = [];
     settingData: any = null;
+    private _audioSource: AudioSource;
+
+    
+    init() {
+        let audioMgr = new Node();
+        audioMgr.name = '__audioMgr__';
+
+        //@en add to the scene.
+        //@zh 添加节点到场景
+        director.getScene().addChild(audioMgr);
+
+        //@en make it as a persistent node, so it won't be destroied when scene change.
+        //@zh 标记为常驻节点，这样场景切换的时候就不会被销毁了
+        director.addPersistRootNode(audioMgr);
+
+        //@en add AudioSource componrnt to play audios.
+        //@zh 添加 AudioSource 组件，用于播放音频。
+        this._audioSource = audioMgr.addComponent(AudioSource);
+
+        this.settingData = this.getSettingData();
+        if (this.settingData) {
+            this.setMusicOpen(this.settingData.isMusicOpen == 1);
+            this.setEffectOpen(this.settingData.isEffectOpen == 1);
+        } else {
+            this.setMusicOpen(true);
+            this.setEffectOpen(true);
+        }
+
+        return this;
+    };
+
+    public get audioSource() {
+        return this._audioSource;
+    }
 
     getSettingData() {
         var ret = {
@@ -32,25 +68,12 @@ export default class AudioMgr extends BaseClass {
         App.dbMgr._setJsonItem(App.dbMgr.Enum.AUDIO_SETTING, this.settingData);
     };
 
-    init() {
-        this.settingData = this.getSettingData();
-        if (this.settingData) {
-            this.setMusicOpen(this.settingData.isMusicOpen == 1);
-            this.setEffectOpen(this.settingData.isEffectOpen == 1);
-        } else {
-            this.setMusicOpen(true);
-            this.setEffectOpen(true);
-        }
-
-        return this;
-    };
-
     getUrl(_name: string) {
         var name = _name.toString() + AUDIO_TYPE;
         if (this._urls[name]) {
             return this._urls[name];
         } else {
-            var url = cc.url.raw(basePath + name);
+            var url = url.raw(basePath + name);
             this._urls[name] = url;
             return url;
         }
@@ -61,9 +84,9 @@ export default class AudioMgr extends BaseClass {
             if (!!cb) cb(this._audioClip[url]);
         } else {
             var self = this;
-            cc.loader.load(url, function (error, audioClip) {
+            resources.load(url, function (error, audioClip) {
                 if (!!error) {
-                    cc.warn('load audio failed:', error);
+                    Debug.warn('load audio failed:', error);
                     if (!!cb) cb(null);
                     return;
                 }
@@ -76,7 +99,7 @@ export default class AudioMgr extends BaseClass {
     //背景音乐。单轨
     playMusicUrl(url: string, loop: boolean = true) {
         if (this._curMusic) {
-            cc.log('there has been a music to play when it try to play', url, ";\tcurMusic is " + this._curMusic)
+            Debug.log('there has been a music to play when it try to play', url, ";\tcurMusic is " + this._curMusic)
         }
         //todo 检查音乐是否正在播放。
         this._curMusic = url;
@@ -84,8 +107,11 @@ export default class AudioMgr extends BaseClass {
         if (this.settingData.isMusicOpen == 0) {
             return;
         }
+        var self = this;
         this.getAudioClip(url, function (audioClip: any) {
-            cc.audioEngine.playMusic(audioClip, loop);
+            self._audioSource.loop = true;
+            self._audioSource.clip = audioClip;
+            self._audioSource.play();
         });
         return true
     };
@@ -98,7 +124,7 @@ export default class AudioMgr extends BaseClass {
 
     stopMusic() {
         this._curMusic = null;
-        return cc.audioEngine.stopMusic();
+        return this._audioSource.stop();
     };
 
     //开、关音乐
@@ -116,15 +142,15 @@ export default class AudioMgr extends BaseClass {
 
     //设置音乐的音量
     setMusicVolume(volume: number) {
-        return cc.audioEngine.setMusicVolume(volume);
+        return this._audioSource.volume = volume;
     };
 
     pauseMusic() {
-        return cc.audioEngine.pauseMusic();
+        return this._audioSource.pause();
     };
 
-    resumeMusic() {
-        return cc.audioEngine.resumeMusic();
+    resumeMusic() {       
+        return this._audioSource.play();
     };
 
     rewindMusic(loop: boolean = true) {
@@ -140,9 +166,12 @@ export default class AudioMgr extends BaseClass {
             return;
         }
         if (loop == undefined) loop = false;
+        var self = this;
         this.getAudioClip(url, function (audioClip) {
-            var audioId = cc.audioEngine.playEffect(audioClip, loop);
-            if (!!cb) cb(audioId);
+            self._audioSource.loop = loop;
+            self._audioSource.clip = audioClip;
+            self._audioSource.playOneShot(audioClip);
+            if (!!cb) cb(url);
         });
         return true;
     };
@@ -156,19 +185,11 @@ export default class AudioMgr extends BaseClass {
         if (audioId == undefined) {
             return;
         }
-        return cc.audioEngine.stopEffect(audioId);
+        return this._audioSource.stop();
     };
 
     stopAllEffects() {
-        if (cc.sys.os == cc.sys.OS_ANDROID || cc.sys.isBrowser) {
-            cc.audioEngine.stopAll();
-            this.rewindMusic();
-        } else {
-            if (cc.sys.os == cc.sys.OS_IOS) {
-                cc.audioEngine.stopAllEffects();
-                this.rewindMusic();
-            }
-        }
+        //todo
     };
 
     //开、关音效
@@ -182,24 +203,12 @@ export default class AudioMgr extends BaseClass {
 
     //设置音效的音量
     setEffectsVolume(volume: number) {
-        return cc.audioEngine.setEffectsVolume(volume);
+        this._audioSource.volume = volume;
     };
 
     preload(name: string, cb: Function) {
-        if (!cc.audioEngine.preload) {
-            if (!!cb) {
-                cb(false)
-            }
-            return;
-        }
         var url = this.getUrl(name);
         this.getAudioClip(url, cb);
-        /*   return cc.audioEngine.preload(url, function (data) {
-         //todo 回调再确认。
-         if (!!cb) {
-         cb(data)
-         }
-         });*/
     };
 
 };

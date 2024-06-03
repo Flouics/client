@@ -1,12 +1,15 @@
+import { nullfun } from "../Global";
+import Debug from "../utils/Debug";
+
 /**
  * Expose `Emitter`.
  */
 class EventCallBack {
     tag:string|Function = ""
     name:string = ""
-    cb:Function = null
-    errorCb:Function = null
-    constructor(tag:string,cb:Function,errorCb:Function){
+    cb:Function ;
+    errorCb:Function ;
+    constructor(tag:string,cb:Function = nullfun,errorCb:Function = nullfun){
         this.tag = tag;
         this.cb = cb;
         this.errorCb = errorCb;
@@ -15,6 +18,10 @@ class EventCallBack {
 }
 export default class Emitter {
     _callbacks = {}
+
+    clear() {
+        this._callbacks = {};
+    }
 
     /**
      * 监听“event”事件，回调函数存储在this._callbacks 里
@@ -46,13 +53,13 @@ export default class Emitter {
     * @param {Function} cb
     * @api public
     */
-    once(event:string, cb:Function) {
+    once(event:string, cb:Function = nullfun) {
         var self = this;
         function on() {
-            self.off(event, on,null);
+            self.off(event, on);
             cb.apply(this, arguments);
         }
-        this.on(event, cb.toString(),on,null);
+        this.on(event, cb.toString(),on);
     };
 
     /**
@@ -64,11 +71,11 @@ export default class Emitter {
     * @param {Function} cb
     * @api public
     */
-    off (event:string = null, tag:string | Function = null, cb:string|Function = null) {
+    off (event:string = "", tag?:string | Function , cb?:Function) {
         this._callbacks = this._callbacks || {};
 
         // 【如果参数数量为0】 清空所有事件
-        if (event == null) {
+        if (event == "") {
             return;
         }
 
@@ -77,14 +84,14 @@ export default class Emitter {
         if (!callbacks) return ;
 
         // 【如果参数数量为1】 清除指定的event对应的事件
-        if (tag == null && cb == null) {
+        if (tag == undefined && cb == undefined) {
             delete this._callbacks[event];
             return this;
         }
 
         // 【如果参数数量为2】 清除指定的tag、fn对应的事件
-        if (cb == null) {
-            cb = tag;
+        if (cb != undefined) {
+            cb = tag as Function;
             tag = cb.toString();
         }
 
@@ -112,7 +119,7 @@ export default class Emitter {
         //var time1 = new Date();
         if (callbacks) {
             callbacks = callbacks.slice(0);
-            //cc.log('callbacks', callbacks.length);
+            //Debug.log('callbacks', callbacks.length);
             for (var i = 0, len = callbacks.length; i < len; ++i) {
                 try {
                     callbacks[i].apply(this, data);//在this的环境下运行函数： callback[i]（args）
@@ -120,11 +127,11 @@ export default class Emitter {
                     var callback = callbacks[i];
                     var name = 'null';
                     if (callback) name = callback.name;
-                    cc.error("Emitter call back error", event, name);
-                    cc.error(e);
+                    Debug.error("Emitter call back error", event, name);
+                    Debug.error(e);
                 }
             }
-            //cc.log('callbacks cost time', new Date() - time1);
+            //Debug.log('callbacks cost time', new Date() - time1);
         }
 
         return this;
@@ -154,7 +161,7 @@ export default class Emitter {
             if (callbacks[i].errcb) {
                 callbacks[i].errcb(data);
             } else {
-                cc.log('emitter error', data);
+                Debug.log('emitter error', data);
             }
         }
 

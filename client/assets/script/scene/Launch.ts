@@ -1,27 +1,28 @@
 import App from "../App";
 import SceneBase from "../zero/SceneBase";
 
-var global = window;
-const {ccclass, property} = cc._decorator;
-@ccclass
+
+import { _decorator,Node,Label, director} from 'cc';
+const {ccclass, property} = _decorator;
+@ccclass("Launch")
 export default class Launch extends SceneBase{
 
-    @property(cc.Node)
-    nd_login: cc.Node = null;
-    @property(cc.Label)
-    lb_version: cc.Label = null;
+    @property(Node)
+    nd_login: Node = null;
+    @property(Label)
+    lb_version: Label = null;
 
     loadEvents:{[key:string]:any} = {}
 
     // use this for initialization
     onLoad () {
+        super.onLoad();
         this.nd_login.active = false;
     };
 
     onEnable () {
         super.onEnable();
-        this.nd_login.active = false;
-        this.setVersion();
+        this.nd_login.active = false;       
     };
 
     hotUpdateCheck () {
@@ -36,6 +37,7 @@ export default class Launch extends SceneBase{
     start () {
         this.hotUpdateCheck();
         this.preLoad();
+        this.setVersion();
     };
 
     preLoad () {
@@ -45,7 +47,7 @@ export default class Launch extends SceneBase{
         
         ];
         App.loadingMgr.preLoadPrefab(prefabs);
-        cc.director.preloadScene('game');
+        director.preloadScene('game');
     };
 
     setVersion () {

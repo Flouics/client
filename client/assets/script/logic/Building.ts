@@ -3,6 +3,8 @@ import MapUtils from "./MapUtils";
 import UIBuilding from "../modules/map/UIBuilding";
 import BoxBase from "./BoxBase";
 import { serialize } from "./../utils/Decorator";
+import { assetManager, instantiate, loader, Node, Prefab, resources, v2, Vec2 } from "cc";
+import Debug from "../utils/Debug";
 
 var BUILDING_VALUE_ENUM = {
     EMPTY:0,
@@ -13,10 +15,10 @@ var BUILDING_VALUE_ENUM = {
 export default class Building extends BoxBase {
 
     @serialize()
-    area:cc.Vec2[] = [cc.v2(0,0)];
+    area:Vec2[] = [v2(0,0)];
     @serialize()
-    realArea:cc.Vec2[] = [cc.v2(0,0)];   // 实际坐标系
-    node: cc.Node = null; // 
+    realArea:Vec2[] = [v2(0,0)];   // 实际坐标系
+    node: Node = null; // 
     mapMainView: MapMainView = null;    //地图
     ui:UIBuilding = null
     @serialize()
@@ -28,16 +30,16 @@ export default class Building extends BoxBase {
         this.mapMainView = mapMainView;
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         let self = this;
         if(this._pb_url == "") {
             return;
         }
-        cc.loader.loadRes(this._pb_url, cc.Prefab, function (err: any, prefab: any) {
+        resources.load(this._pb_url, Prefab, function (err: any, prefab: any) {
             if (err) {
-                cc.error(self._pb_url, err);
+                Debug.error(self._pb_url, err);
             }else{
-                let node = cc.instantiate(prefab);
+                let node = instantiate(prefab);
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
                 node.parent = parent;
                 node.position = viewPos;
@@ -50,8 +52,8 @@ export default class Building extends BoxBase {
         this.mapMainView.unschedule(this.update.bind(this));
         this.mapMainView.schedule(this.update.bind(this),0.05);
     }
-    createBuilding(toPos:cc.Vec2){
-        cc.log("createBuilding",toPos)
+    createBuilding(toPos:Vec2){
+        Debug.log("createBuilding",toPos)
         this.setIdx(Building);       
         this.x = toPos.x;
         this.y = toPos.y;        

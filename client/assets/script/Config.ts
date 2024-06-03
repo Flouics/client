@@ -23,7 +23,7 @@ export default class Config {
      * 设备ID
      * 微信登录用
      */
-    device_id:string = "aa.bb.cc.ddc004";
+    device_id:string = "aa.bb.ddc004";
 
 };
 

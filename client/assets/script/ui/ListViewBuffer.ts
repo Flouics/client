@@ -5,31 +5,33 @@
  //当父节点的底部快达到的边界的时候进行加载。
  */
 
- const { ccclass, property } = cc._decorator;
- @ccclass
- export default class ListViewBuffer extends cc.Component{
+import { _decorator,Prefab,ScrollView,Node,NodePool, Layout,Component,instantiate, UITransform} from 'cc';
+import Debug from '../utils/Debug';
+const {ccclass, property} = _decorator;
+ @ccclass("ListViewBuffer")
+ export default class ListViewBuffer extends Component{
 
-    @property(cc.Prefab)
+    @property(Prefab)
     itemTemplate = null;
 
-    @property(cc.ScrollView)
+    @property(ScrollView)
     scrollView = null;
-    @property(cc.Node)
+    @property(Node)
     nd_itemRoot = null;
 
     onceLoadCount:number = 0;           // 每次加载的item数量
     //totalCount:number = 0;            // 总共的item数量。
     bottomDistance:number = 500;        //距离下边距多远开始刷。
-    content:cc.Node = null;
+    content:Node = null;
     initCount:number = 0;
     updateTimer:number = 0;
     updateInterval:number = 0;
     bounceTop:boolean = false;
     hasInit:boolean = false;
     scriptName:any = null;
-    itemPool:cc.NodePool = null;
+    itemPool:NodePool = null;
     data:any = null;
-    _items:cc.Node[] = [];
+    _items:Node[] = [];
 
     // use this for initialization
     onLoad() {
@@ -46,16 +48,16 @@
 
     //data为对象数组，对象需要包含id
     //
-    init(scriptName:any) {
+    init(scriptName?:any) {
         this.scriptName = scriptName;
-        this.itemPool = new cc.NodePool(this.scriptName);
+        this.itemPool = new NodePool(this.scriptName);
         this.initialize();
         this.hasInit = true;
     }
 
     initialize() {
         for (let i = 0; i < this.onceLoadCount; ++i) {
-            let item = cc.instantiate(this.itemTemplate);
+            let item = instantiate(this.itemTemplate);
             this.itemPool.put(item);
         }
     }
@@ -92,7 +94,7 @@
                 }
             } else {
                 var node = this._items[index];
-                if (node instanceof cc.Node) {
+                if (node instanceof Node) {
                     this.itemPool.put(node);
                     this._items[index] = null;
                 }
@@ -140,14 +142,14 @@
         var self = this;
         var item = null;
         if (!data) {
-            cc.log('ListViewBuffer createItem failed by null');
+            Debug.log('ListViewBuffer createItem failed by null');
             return;
         }
 
         if (this.itemPool.size() > 0) {
             item = this.itemPool.get(data, index);
         } else {
-            item = cc.instantiate(this.itemTemplate);
+            item = instantiate(this.itemTemplate);
             if (this.scriptName != 'null') {
                 item.getComponent(this.scriptName).reuse(data, index);
             }
@@ -174,20 +176,20 @@
         if (this._items) {
             for (var i = 0; i < this._items.length; i++) {
                 var node = this._items[i];
-                if (node instanceof cc.Node) {
+                if (node instanceof Node) {
                     this.itemPool.put(node);
                 }
             }
         }
-        var layout = this.content.getComponent(cc.Layout);
+        var layout = this.content.getComponent(Layout);
         if (layout) (layout as any)._doLayout();
         this._items = [];
         this.initCount = 0;
     }
 
     getPositionInView(item) {
-        let worldPos = item.parent.convertToWorldSpaceAR(item.position);
-        let viewPos = this.scrollView.node.convertToNodeSpaceAR(worldPos);
+        let worldPos = item.parent.getComponent(UITransform).convertToNodeSpaceAR(item.position);
+        let viewPos = this.scrollView.node.getComponent(UITransform).convertToNodeSpaceAR(worldPos);
         return viewPos;
     }
 

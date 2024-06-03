@@ -1,5 +1,7 @@
 import Lunar from "../utils/Lunar";
 import BaseClass from "../zero/BaseClass";
+import App from "../App";
+import { getTimeProxy } from "../modules/time/TimeProxy";
 
 /**
  * Created by Administrator on 2017/8/1.
@@ -14,8 +16,13 @@ var timeNumFormatString = function (num: number) {
     }
 };
 
+var DateGMT = function (timestamp:number){
+    return new Date(timestamp + App.timeMgr._timeZone * 60)
+}
+
 export default class TimeMgr extends BaseClass {
     _server_time_diff = 0;
+    _timeZone:number = 8;
     lunar = new Lunar()
     DAY_DESC = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -23,7 +30,7 @@ export default class TimeMgr extends BaseClass {
     //服务端和客户端时间差
     updateServerTimeDiff(server_timestamp: number) {
         if (!server_timestamp) return;
-        var now_time = new Date().getTime();
+        var now_time = getTimeProxy().getTime();
         this._server_time_diff = now_time - server_timestamp;
     };
 
@@ -75,7 +82,7 @@ export default class TimeMgr extends BaseClass {
     };
 
     getYearMonthDayBySplit(split_str: string, time_stamp?: number) {
-        var date = time_stamp == undefined ? new Date() : new Date(time_stamp);
+        var date = time_stamp == undefined ? DateGMT (getTimeProxy().getTime()) : DateGMT(time_stamp);
         var year = date.getFullYear();
         var month = timeNumFormatString(date.getMonth() + 1);
         var day = timeNumFormatString(date.getDate());
@@ -107,7 +114,7 @@ export default class TimeMgr extends BaseClass {
     // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
     format(fmt: string, time_stamp?: number) {
         //author: meizz
-        var d = time_stamp == undefined ? new Date() : new Date(time_stamp);
+        var d = time_stamp == undefined ? DateGMT (getTimeProxy().getTime()) : DateGMT(time_stamp);
         var o = {
             "M+": d.getMonth() + 1,                 //月份
             "d+": d.getDate(),                    //日

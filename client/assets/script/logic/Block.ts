@@ -1,10 +1,12 @@
 import MapMainView from "../modules/map/MapMainView";
 import UIBlock from "../modules/map/UIBlock";
-import ToolKit from "../utils/ToolKit";
+
 import Building from "./Building";
 import BoxBase from "./BoxBase";
 import { serialize } from "../utils/Decorator";
 import TouchUtils from "../utils/TouchUtils";
+import { instantiate, Node, Vec2 } from "cc";
+import { toolKit } from "../utils/ToolKit";
 var BLOCK_VALUE_ENUM = {
     EMPTY:0,
     BLOCK:1,
@@ -45,7 +47,7 @@ export default class Block extends BoxBase {
         this._event = value;
     }
     
-    node: cc.Node = null;
+    node: Node = null;
     floor_1: number = 0;   //第一层，基础层
     mapMainView: MapMainView = null;    //地图组件
     ui:UIBlock = null;
@@ -56,21 +58,22 @@ export default class Block extends BoxBase {
         this.mapMainView = mapMainView;
     }
     initUI() {
-        let node = cc.instantiate(this.mapMainView.pb_block);
+        let node = instantiate(this.mapMainView.pb_block);
         node.parent = this.mapMainView.nd_mapRoot;
         node.x = this.x * this.mapMainView._blockSize.width;
         node.y = this.y * this.mapMainView._blockSize.height;
         node.scale = 0.95;
         if(this.id == null){
-            this.id = ToolKit.getInstance(ToolKit).getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
+            this.id = toolKit.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         }        
         this.bindUI(node.getComponent(UIBlock));
         this.updateUI();
     }
 
-    move(offsetPos:cc.Vec2){
-        this.node.x = this.x * this.mapMainView._blockSize.width + offsetPos.x;
-        this.node.y = this.y * this.mapMainView._blockSize.height + offsetPos.y;
+    move(offsetPos:Vec2){
+        var x = this.x * this.mapMainView._blockSize.width + offsetPos.x;
+        var y = this.y * this.mapMainView._blockSize.height + offsetPos.y;
+        this.node.setPosition(x,y);
     }
     createBuilding(building:Building){
         this.buildingId = building.idx; 

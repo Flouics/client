@@ -5,6 +5,11 @@ import { serialize } from "../utils/Decorator";
 import UIMine from "../modules/map/UIMine";
 import DataMgr from "../manager/DataMgr";
 import Item from "./Item";
+import { instantiate, Node, Prefab, resources } from "cc";
+import App from "../App";
+import Debug from "../utils/Debug";
+import { empty, getProxy } from "../Global";
+import { getTimeProxy } from "../modules/time/TimeProxy";
 
 export default class Mine extends BoxBase {
     @serialize()
@@ -21,7 +26,7 @@ export default class Mine extends BoxBase {
         this._id = value;
         this.initData();     
     }
-    node: cc.Node = null; // 
+    node: Node = null; // 
     mapMainView: MapMainView = null;    //地图
     ui:UIMine = null
     @serialize()
@@ -38,22 +43,22 @@ export default class Mine extends BoxBase {
     }
 
     initData(){
-        this.data = DataMgr.findById("mine",this.id);
+        this.data = App.dataMgr.findById("mine",this.id);
         if(this.data){
             
         }
     }
 
-    initUI(parent:cc.Node,cb?:Function) {
+    initUI(parent:Node,cb?:Function) {
         let self = this;
         if(this._pb_url == "") {
             return;
         }
-        cc.loader.loadRes(this._pb_url, cc.Prefab, function (err: any, prefab: any) {
+        resources.load(this._pb_url, Prefab, function (err: any, prefab: any) {
             if (err) {
-                cc.error(this._pb_url, err);
+                Debug.error(this._pb_url, err);
             }else{
-                let node = cc.instantiate(prefab);
+                let node = instantiate(prefab);
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
                 node.parent = parent;
                 node.position = viewPos;
@@ -92,8 +97,7 @@ export default class Mine extends BoxBase {
         if(empty(this.data)){
             return
         }
-        let timeProxy = getProxy("time");
-        let nowTime = timeProxy.getTime();
+        let nowTime = getTimeProxy().getTime();
         if(this.produceTimeLast == null){
             this.produceTimeLast = nowTime;
             return;

@@ -2,6 +2,7 @@ import Hero from "../logic/Hero";
 import MapMainView from "../modules/map/MapMainView";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
+import { Node } from "cc";
 
 
 // 角色管理器
@@ -9,7 +10,7 @@ export default class HeroMgr extends BaseClass{
     @serialize()
     heroMap:{[key:number]:Hero} = {};
     _mapMainView:MapMainView = null;
-    _nodeRoot:cc.Node = null;
+    _nodeRoot:Node = null;
     _scheduleId:number  = null;    
     
     init(mapMainView:MapMainView){
@@ -48,7 +49,7 @@ export default class HeroMgr extends BaseClass{
         }
     }
 
-    clear(idx:number){
+    clearHero(idx:number){
         let obj = this.heroMap[idx];
         if(obj){
             obj.destory();

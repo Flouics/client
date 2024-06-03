@@ -1,5 +1,5 @@
 import App from "../../App";
-import BaseView from "../../zero/BaseView";
+import { nullfun } from "../../Global";
 import Proxy from "./Proxy";
 
 export default class Command{
@@ -19,5 +19,15 @@ export default class Command{
             winRes = "prefab/" + this.moduleName + "/" + name;
         }
         App.windowMgr.open(winRes, cb);
+    }
+
+    hideView(name:string){
+        var winRes = name;
+        if (name.startsWith("prefab") || name.startsWith("/prefab")){
+            winRes = name;
+        }else{
+            winRes = "prefab/" + this.moduleName + "/" + name;
+        }
+        App.windowMgr.close(winRes);
     }
 }

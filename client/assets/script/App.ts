@@ -1,6 +1,5 @@
 ﻿import Emitter from "./zero/Emitter";
 import Config from "./Config";
-import ToolKit from "./utils/ToolKit";
 import LoadingMgr from "./manager/LoadingMgr";
 import DBMgr from "./manager/DBMgr";
 import HttpMgr from "./manager/HttpMgr";
@@ -16,12 +15,12 @@ import LoginMgr from "./manager/LoginMgr";
 import SoundMgr from "./manager/SoundMgr";
 import BaseClass from "./zero/BaseClass";
 import AppView from "./AppView";
-import TouchUtils from "./utils/TouchUtils";
-import Proxy from "./modules/base/Proxy";
-import EffetMgr from "./manager/EffectMgr";
 import EffectMgr from "./manager/EffectMgr";
-import TimeProxy from "./modules/time/TimeProxy";
-import * as i18n from './i18n/i18n';
+import { AppInit } from "./AppInit";
+import { empty, GlobalInit, GlobalInitDependency} from "./Global";
+import { AnimationManager, director, find, Font, Game, game, Node, resources } from "cc";
+import Debug from "./utils/Debug";
+import KeyWordMgr from "./manager/KeyWordMgr";
 
 /**
  * 全局唯一的游戏管理器,每个场景都可以持有
@@ -32,52 +31,12 @@ enum EventEnum {
     ,EVENT_SHOW = 2
 };
 
-//global
-let empty = function(value:any){
-    if(!!value){
-        return false
-    }
-    if(typeof(value) == "string"){
-        return value.length == 0;
-    }else{
-        return !value
-    }
-
-}
-let deepCopy = function <T>(obj: T): T {
-    if (obj === null || typeof obj !== 'object') {
-        return obj;
-    }
-    
-    const newObj: any = Array.isArray(obj) ? [] : {};
-    
-    for (let key in obj) {
-        newObj[key] = deepCopy(obj[key]);
-    }
-    
-    return newObj;
-}
-let getProxy = function (moduleName:string): Proxy {
-    return  App.moduleMgr.getProxy(moduleName);
-}
-
-let nullfun = function () {}
-
-let lang = function(key:string,...params:any[]){
-    return i18n.t(key,params);
-}
-
 //全局函数
-window.empty = empty;
-window.deepCopy = deepCopy;
-window.clone  = deepCopy;
-window.getProxy = getProxy;
-window.nullfun = nullfun;
-window.lang = lang;
+GlobalInit();
 
 
 
-//全局太麻烦了，老是有红线，直接静态处理吧。App只会有一个。
+//App只会有一个。
 export default class App extends BaseClass{
     
     static scheduleTask:any = null;
@@ -85,43 +44,33 @@ export default class App extends BaseClass{
     static emitter:Emitter = new Emitter()
 
     //mamager
-    static config:Config = null;
-    static toolKit:ToolKit = null;
-    static loadingMgr:LoadingMgr = null;
-    static dbMgr:DBMgr = null;
+    static config:Config;
+    static loadingMgr:LoadingMgr;
+    static dbMgr:DBMgr;
 
-    static httpMgr:HttpMgr = null;
-    static sceneMgr:SceneMgr = null; 
-    static windowMgr:WindowMgr = null;
-    static audioMgr:AudioMgr = null;
-    static asyncTaskMgr:AsyncTaskMgr = null;
-    static poolMgr:PoolMgr = null;
-    static moduleMgr:ModuleMgr = null;
+    static httpMgr:HttpMgr;
+    static sceneMgr:SceneMgr; 
+    static windowMgr:WindowMgr;
+    static audioMgr:AudioMgr;
+    static asyncTaskMgr:AsyncTaskMgr;
+    static poolMgr:PoolMgr;
+    static moduleMgr:ModuleMgr;
 
-    static timeMgr:TimeMgr = null;
-    static dataMgr:DataMgr = null;
-    static loginMgr:LoginMgr = null;
-    static soundMgr:SoundMgr = null;
-    static effectMgr:EffectMgr = null;
+    static timeMgr:TimeMgr;
+    static dataMgr:DataMgr;
+    static loginMgr:LoginMgr;
+    static soundMgr:SoundMgr;
+    static effectMgr:EffectMgr;
+    static keyWordMgr:KeyWordMgr;
 
-    static RES_WINDOW:{[key:string]:any} = {}
-    static RES_ITEM:{[key:string]:any} = {};
-    static RES_EFFECT:{[key:string]:any} = {};
-    static game:{[key:string]:any} = {};
 
-    static ui:AppView = null; 
+    static ui:AppView; 
+    static font:Font;
+    
 
     // use App for initialization
     static onLoad () {
         App.onMsg();
-
-        // 通用窗口
-        App.RES_WINDOW = {
-            loadingAm: "prefab/dialog/loadingAm",
-            msgBox: "prefab/dialog/msgBox",
-            tips: "prefab/dialog/tips",
-            setting:"prefab/dialog/setting"
-        }
     }
 
     static appInit (ui?:AppView) {
@@ -133,7 +82,6 @@ export default class App extends BaseClass{
         window["App"] = App;    
                 
         App.config = new Config();
-        App.toolKit = App.getInstance(ToolKit);        
         
         App.loadingMgr = App.getInstance(LoadingMgr);
 
@@ -153,28 +101,25 @@ export default class App extends BaseClass{
         App.soundMgr = App.getInstance(SoundMgr);   
         App.effectMgr = App.getInstance(EffectMgr);  
 
-        
-        App.RES_WINDOW= {};
-        App.RES_ITEM = {};
-        App.RES_EFFECT = {};
-        App.game = {};
+        App.keyWordMgr = App.getInstance(KeyWordMgr);
+
+
 
         //需要初始化的模块
-        App.moduleMgr.init();
+        AppInit();
         
         //全局变量
-        window.timeProxy = getProxy("time") as TimeProxy;
+        GlobalInitDependency();
         
         //重新加载数据
         App.reloadFromDb();
     }
 
     static clear(){
-        App.config = null;
-        App.clearInstance(ToolKit);
+        App.config = new Config();
+        App.clearInstance(HttpMgr);
         App.clearInstance(LoadingMgr);
         App.clearInstance(DBMgr);
-        App.clearInstance(HttpMgr);
         App.clearInstance(SceneMgr);
         App.clearInstance(WindowMgr);
         App.clearInstance(AudioMgr);
@@ -185,14 +130,18 @@ export default class App extends BaseClass{
         App.clearInstance(LoginMgr);
         App.clearInstance(SoundMgr);
         App.clearInstance(EffectMgr);
+
+        App.clearInstance(KeyWordMgr);
+
+        App.font = null;
     }
 
     static onMsg () {
         //action管理器的问题。
-        cc.game.off(cc.game.EVENT_SHOW);
-        cc.game.off(cc.game.EVENT_HIDE);
-        cc.game.on(cc.game.EVENT_SHOW, App.onEventShow.bind(App));
-        cc.game.on(cc.game.EVENT_HIDE, App.onEventHide.bind(App));
+        game.off(Game.EVENT_SHOW);
+        game.off(Game.EVENT_HIDE);
+        game.on(Game.EVENT_SHOW, App.onEventShow.bind(App));
+        game.on(Game.EVENT_HIDE, App.onEventHide.bind(App));
     }
 
     static onEventHide () {
@@ -201,8 +150,9 @@ export default class App extends BaseClass{
 
     static onEventShow () {
         App.emitter.emit(App.eventEnum.EVENT_SHOW);
-        if (cc.director.getScheduler().isTargetPaused(cc.director.getActionManager())) {
-            cc.director.getScheduler().resumeTarget(cc.director.getActionManager());
+        var animationMgr = director.getSystem(AnimationManager.ID)
+        if (director.getScheduler().isTargetPaused(animationMgr)) {
+            director.getScheduler().resumeTarget(animationMgr);
         }
     }
 
@@ -218,27 +168,25 @@ export default class App extends BaseClass{
             App.ui.restart();
         }
         //有BUG先屏蔽。
-        cc.game.restart();
+        game.restart();
     }
 
     static exit () {
         if (App.ui){
             App.ui.exit();
         }
-        cc.game.end();
+        game.end();
     }
 
     //简单重写就好了。
-    static task (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
+    static task (cb:Function, interval:number, key:string) {
         if (!App.ui) {
             return false
         }
-        if (isRepeatDo == undefined) isRepeatDo = false;
 
-        if (App.scheduleTask[key]) {
-            if (!isRepeatDo) {
-                cc.warn("scheduleTask has exist.", key);
-            }
+
+        if (App.scheduleTask[key]) { 
+            Debug.warn("scheduleTask has exist.", key);
             App.delTask(key);
         }
         App.scheduleTask[key] = cb;
@@ -246,14 +194,14 @@ export default class App extends BaseClass{
         return true
     }
 
-    static taskOnce (cb:Function, interval:number, key:string, isRepeatDo:boolean) {
+    static taskOnce (cb:Function, interval:number, key:string) {
         if (!App.ui) {
             return false
         }
         App.task(function () {
             App.delTask(key)
             if (!!cb) cb();
-        }, interval, key, isRepeatDo)
+        }, interval, key)
     }
 
     static delTask (key:string) {
@@ -271,7 +219,7 @@ export default class App extends BaseClass{
         App.ui.onViewResize();
     }
 
-    static updateNodeWidget (node:cc.Node) {
+    static updateNodeWidget (node:Node) {
         if (!App.ui) {
             return false
         }
@@ -298,19 +246,42 @@ export default class App extends BaseClass{
     };
 
     static getUIRoot() {
-        var canvas = cc.find('Canvas');
-        var uiRoot = cc.find('uiRoot', canvas);
+        var canvas = find('Canvas');
+        var uiRoot = find('uiRoot', canvas);
         return uiRoot || canvas;
     };
 
+    //加载字体
+    static initFont(cb?:Function){
+        if(App.font){
+            if (!!cb) {
+                cb(App.font);
+            }
+            return;
+        }
+        resources.load("font/base", function (err, font) {
+            App.font = font;
+            if (!!cb) {
+                cb(App.font);
+            }
+        });
+    }
+
+    static getUUID() {
+        return ""
+    }
+
+    static setLang(lang:string) {
+        // todo 
+        //i18n.init(lang);
+    }
     static dumpToDb(){       
         App.moduleMgr.dumpToDb()
-        cc.log("保存成功")
+        Debug.log("保存成功")
     }
 
     static reloadFromDb(){
         App.moduleMgr.reloadFromDb();
-        App.moduleMgr.command("map","reloadMapView");
-        cc.log("加载成功")
+        Debug.log("加载成功")
     }
 }

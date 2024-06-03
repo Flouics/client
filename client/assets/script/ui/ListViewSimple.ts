@@ -2,19 +2,22 @@
  //要求父节点不能是layout，因为排布会自己处理。
  */
 
- const { ccclass, property } = cc._decorator;
- @ccclass
- export default class ListViewSimple extends cc.Component{
+import { nullfun } from "../Global";
 
-    @property(cc.Prefab) //item template to instantiate other items
+import { _decorator,Prefab,ScrollView,Node,NodePool, Layout, UITransform, Button, Component,instantiate, CCBoolean} from 'cc';
+const {ccclass, property} = _decorator;
+ @ccclass("ListViewSimple")
+ export default class ListViewSimple extends Component{
+
+    @property(Prefab) //item template to instantiate other items
     itemTemplate = null;
-    @property(cc.Node)
+    @property(Node)
     itemNode = null;
-    @property(cc.ScrollView)
+    @property(ScrollView)
     scrollView = null;
-    @property(cc.Node)
+    @property(Node)
     nd_itemRoot = null;
-    @property(cc.Boolean)
+    @property(CCBoolean)
     isVert = true;
 
     spawnCount:number =  0;
@@ -22,8 +25,7 @@
     offset:number =  200;
     isResetTop: boolean = true;
     itemFn:Function = nullfun;
-    itemHandle:Function = nullfun;
-    items:cc.Node[] = [];
+    items:Node[] = [];
     updateTimer:number = 0;
     updateInterval:number = 0;
     lastContentPosY:number = 0;
@@ -46,7 +48,7 @@
         }        
     }
 
-    init (itemFn:Function) {
+    init (itemFn:Function = nullfun) {
         this.itemFn = itemFn;
         this.items = [];
         this.updateTimer = 0;
@@ -57,7 +59,7 @@
 
     initialize (){
         for (let i = 0; i < this.spawnCount; ++i) { // spawn items, we only need to do this once
-            let item = cc.instantiate(this.itemTemplate);
+            let item = instantiate(this.itemTemplate);
             item.parent = this.nd_itemRoot;
             item.tag_index = i;
             this.items.push(item);
@@ -99,62 +101,34 @@
     initItems() {
         for (let i = 0; i < this.spawnCount; ++i) {
             let item = this.items[i];
-            this.updateItem(item as cc.Node, i);
+            this.updateItem(item as Node, i);
         }
     };
 
-    updateItem(item:cc.Node, index:number) {
+    updateItem(item:Node, index:number) {
         var data = this.data[index];
         if (!data) {
             item.active = false;
             return;
         }
         (item as any).tag_index = index;
+        var itemUITransform = item.getComponent(UITransform)
         if (this.isVert) {
-            item.setPosition(0, -item.height * (0.5 + index) - this.spacing * (index + 1));
+            item.setPosition(0, - itemUITransform.height * (0.5 + index) - this.spacing * (index + 1));
         }else{
-            item.setPosition(0, -item.width * (0.5 + index) - this.spacing * (index + 1));
+            item.setPosition(0, -itemUITransform.width * (0.5 + index) - this.spacing * (index + 1));
         }
         
         item.active = true;
         if (!!this.itemFn && typeof this.itemFn == 'function') {
-            this.itemFn(item, data);
+            this.itemFn(item, data,index);
         }
-        this.initItemHandle(item, index);
     };
 
-    getPositionInView(item:cc.Node) { // get item position in scrollview's node space
-        let worldPos = item.parent.convertToWorldSpaceAR(item.position);
-        let viewPos = this.scrollView.node.convertToNodeSpaceAR(worldPos);
+    getPositionInView(item:Node) { // get item position in scrollview's node space
+        let worldPos = item.parent.getComponent(UITransform).convertToNodeSpaceAR(item.position);
+        let viewPos = this.scrollView.node.getComponent(UITransform).convertToNodeSpaceAR(worldPos);
         return viewPos;
-    };
-
-    initItemHandle(item:cc.Node, index:number) {
-        if (!item) return;
-        var button = item.getComponent(cc.Button);
-        if (!button) return;
-
-        var clickEventHandler = button.clickEvents[0];
-        if (clickEventHandler) {
-            clickEventHandler.customEventData = (item as any).tag_index;
-        } else {
-            clickEventHandler = new cc.Component.EventHandler();
-            clickEventHandler.target = this.node; //这个 node 节点是你的事件处理代码组件所属的节点
-            clickEventHandler.component = "ListViewSimple";//这个是代码文件名
-            clickEventHandler.handler = "onItemClickEvent";
-            clickEventHandler.customEventData = (item as any).tag_index;
-            button.clickEvents.push(clickEventHandler);
-        }
-    };
-
-    onItemClickEvent(event:cc.Event, data:any) {
-        if (this.itemHandle) {
-            this.itemHandle(event.target, data);
-        }
-    };
-
-    setItemClickHandle(cb:Function) {
-        this.itemHandle = cb;
     };
 
     update(dt:number) {
@@ -183,7 +157,7 @@
             let viewPos = this.getPositionInView(item);
             if (isDown) {
                 // if away from buffer zone and not reaching top of content
-                if (viewPos.y < -buffer_bottom && item.y + this.scrollView.node.height < 0) {
+                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.height < 0) {
                     let index = (item as any).tag_index - items.length; // update item id
                     this.updateItem(item, index);
                 }
@@ -207,11 +181,12 @@
         var itemsHeight = (this.itemTemplate.width + this.spacing) * items.length;
         for (let i = 0; i < items.length; ++i) {
             let item = items[i];
+            let itemUITransform = item.getComponent(UITransform);
             item.active = this.data[(item as any).tag_index] != undefined;
             let viewPos = this.getPositionInView(item);
             if (isDown) {
                 // if away from buffer zone and not reaching top of content
-                if (viewPos.y < -buffer_bottom && item.y + this.scrollView.node.width < 0) {
+                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.width < 0) {
                     let index = (item as any).tag_index - items.length; // update item id
                     this.updateItem(item, index);
                 }

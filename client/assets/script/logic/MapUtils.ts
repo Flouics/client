@@ -1,29 +1,32 @@
+import { js, Size, v2, Vec2, Vec3 } from "cc";
+import Debug from "../utils/Debug";
+
 /* 
     计算地图的辅助工具，所有方法均为静态。
     // viewPos 基于mapView的地图坐标系，默认描点为(0.5,0.5)
  */
 export default class MapUtils {
-    static size: cc.Size = new cc.Size(1, 1);   //砖块的尺寸
-    static sizeVec2: cc.Vec2 = new cc.Vec2(1, 1);
+    static size: Size = new Size(1, 1);   //砖块的尺寸
+    static sizeVec2: Vec2 = new Vec2(1, 1);
     static perDis:number = 1;
-    static mapSize: cc.Size = new cc.Size(600, 600);   //地图的尺寸
+    static mapSize: Size = new Size(600, 600);   //地图的尺寸
     static margin_x: number = 10;
     static margin_y: number = 10;
 
-    static initBlockData(size: cc.Size) {
+    static initBlockData(size: Size) {
         MapUtils.size = size;
-        MapUtils.sizeVec2 = new cc.Vec2(size.width, size.height);
+        MapUtils.sizeVec2 = new Vec2(size.width, size.height);
         MapUtils.perDis = size.width;
     }
 
-    static initMapData(size: cc.Size,margin_x?:number,margin_y?:number) {
+    static initMapData(size: Size,margin_x?:number,margin_y?:number) {
         MapUtils.mapSize = size;
         MapUtils.margin_x = margin_x || MapUtils.margin_x;
         MapUtils.margin_y = margin_y || MapUtils.margin_y;
     }
 
-    static getTilePosByViewPos(viewPos: cc.Vec2) {
-        var size = new cc.Size(MapUtils.size.width / 2,MapUtils.size.height / 2)
+    static getTilePosByViewPos(viewPos: Vec3|Vec2) {
+        var size = new Size(MapUtils.size.width / 2,MapUtils.size.height / 2)
         var x = viewPos.x;
         var y = viewPos.y;
         x = (x % MapUtils.mapSize.width)
@@ -43,17 +46,17 @@ export default class MapUtils {
         x = Math.floor((x + size.width) / MapUtils.size.width);
         y = Math.floor((y + size.height) / MapUtils.size.height);
     
-        cc.log(cc.js.formatStr("viewPos (x:%s,y:%s) -> tilePos (x:%s,y:%s)",viewPos.x,viewPos.y,x,y));        
-        return cc.v2(x, y)
+        Debug.log(js.formatStr("viewPos (x:%s,y:%s) -> tilePos (x:%s,y:%s)",viewPos.x,viewPos.y,x,y));        
+        return v2(x, y)
     }
 
-    static getViewPosByTilePos(tilePos: cc.Vec2) {
-        return tilePos.scale(this.sizeVec2);
+    static getViewPosByTilePos(tilePos: Vec2) {
+        return tilePos.multiply(this.sizeVec2);
     }
 
     // 获取最近的坐标点
-    static getNearByPos(area: cc.Vec2[],toPos:cc.Vec2):cc.Vec2 {
-        var shortest:cc.Vec2 = null;
+    static getNearByPos(area: Vec2[],toPos:Vec2):Vec2 {
+        var shortest:Vec2 = null;
         var tempDis = 0
         area.forEach((fromPos)=>{
             if (shortest == null || MapUtils.getDis(fromPos,toPos) < tempDis){
@@ -64,33 +67,33 @@ export default class MapUtils {
         return shortest;
     }
 
-    static getAngle(fromPos: cc.Vec2,toPos:cc.Vec2){
-        var angle = toPos.sub(fromPos).angle(cc.v2(1,0))    //和水平夹角的弧度
+    static getAngle(fromPos: Vec2,toPos:Vec2){
+        var angle = toPos.subtract(fromPos).angle(v2(1,0))    //和水平夹角的弧度
         return angle * 180 / Math.PI; //转成角度
     }
 
-    static getDis(fromPos: cc.Vec2,toPos:cc.Vec2){
+    static getDis(fromPos: Vec2,toPos:Vec2){
         return Math.abs(toPos.x - fromPos.x) + Math.abs(toPos.y - fromPos.y)
     }
-    static getLineDis(fromPos: cc.Vec2,toPos:cc.Vec2){
-        return fromPos.sub(toPos).mag();
+    static getLineDis(fromPos: Vec2,toPos:Vec2){
+        return fromPos.subtract(toPos).length();
     }
-    static getUILineDis(fromViewPos: cc.Vec2,toViewPos:cc.Vec2){
-        return fromViewPos.sub(toViewPos).mag();
+    static getUILineDis(fromViewPos: Vec2,toViewPos:Vec2){
+        return fromViewPos.subtract(toViewPos).length();
     }
 
-    static isNearBy(fromPos: cc.Vec2,toPos:cc.Vec2){
+    static isNearBy(fromPos: Vec2,toPos:Vec2){
         return Math.abs(toPos.x - fromPos.x) <= 1 && Math.abs(toPos.y - fromPos.y) <= 1;
     }
     
-    static getKey(pos:cc.Vec2){
+    static getKey(pos:Vec2){
         return pos.x + "_" + pos.y;
     }
     // 获取最短路径
-    static getRouteList(fromPos: cc.Vec2, toPos: cc.Vec2, checkFun: Function = () => { return true }) {
-        var getKey = (pos: cc.Vec2) => { return MapUtils.getKey(pos) }
-        var getDis = (pos: cc.Vec2) => { return MapUtils.getDis(pos,toPos) }
-        var ret: cc.Vec2[] = []
+    static getRouteList(fromPos: Vec2, toPos: Vec2, checkFun: Function = () => { return true }) {
+        var getKey = (pos: Vec2) => { return MapUtils.getKey(pos) }
+        var getDis = (pos: Vec2) => { return MapUtils.getDis(pos,toPos) }
+        var ret: Vec2[] = []
         var dis = getDis(fromPos)
         if (checkFun(toPos) ){
             if (dis == 0){
@@ -117,7 +120,7 @@ export default class MapUtils {
             y: number;
             last: Route;
             step: number;
-            constructor(pos: cc.Vec2, route?: Route) {
+            constructor(pos: Vec2, route?: Route) {
                 this.key = getKey(pos);
                 this.x = pos.x;
                 this.y = pos.y;
@@ -127,13 +130,13 @@ export default class MapUtils {
                 this.disWeight = getDis(pos) + this.step;
             }
         }
-        var isFilter = (pos: cc.Vec2) => { return !!filterMap[getKey(pos)] }
+        var isFilter = (pos: Vec2) => { return !!filterMap[getKey(pos)] }
         var getCorners = (route: Route) => {
             var ret = []
-            var temp: cc.Vec2;
+            var temp: Vec2;
             var tempRoute: Route;
             dirs.forEach(data => {
-                temp = cc.v2(route.x + data[0], route.y + data[1]);
+                temp = v2(route.x + data[0], route.y + data[1]);
                 if (checkFun(temp) && !isFilter(temp)) {
                     filterMap[getKey(temp)] = true;
                     tempRoute = new Route(temp, route)
@@ -166,7 +169,7 @@ export default class MapUtils {
                 //无路可走
                 return null;
             }
-            var dis = getDis(cc.v2(curRoute.x,curRoute.y))
+            var dis = getDis(v2(curRoute.x,curRoute.y))
             if (checkFun(toPos) ){
                 if (dis == 0){
                     return curRoute
@@ -189,7 +192,7 @@ export default class MapUtils {
         }
         
         while (result) {
-            ret.push(cc.v2(result.x, result.y))
+            ret.push(v2(result.x, result.y))
             result = result.last
         }
         return ret

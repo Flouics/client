@@ -1,22 +1,18 @@
 import App from "../App";
-import BaseClass from "../zero/BaseClass";
+import BaseClass from "../base/BaseClass";
+import MsgBox from "../common/MsgBox";
+import Tips from "../common/Tips";
+import { lang, nullfun, RES_WINDOW } from "../Global";
+import { assetManager, js, Label, macro, Node, resources, Sprite, SpriteAtlas, SpriteFrame, sys, Texture2D, UITransform, v2, v3, Vec3 } from "cc";
+import Debug from "./Debug";
 
-export default class ToolKit extends BaseClass{
-    
-    /**
-     * 是否有效的字符串
-     * @param str
-     * @return true or false
-     *
-     */
-    isValidString(str: string) {
-        return str && str != "";
-    };
+class ToolKit extends BaseClass {   
 
     /**
      *获得一个范围的随机值
-     * @param min：最小值 max:最大值(包含)
-     * @return int
+     * @param min：最小值 
+     * @param max:最大值(包含)
+     * @return integer
      *
      */
     getRand(min: number, max: number): number {
@@ -64,7 +60,7 @@ export default class ToolKit extends BaseClass{
      * @return 角度
      *
      */
-    get2PosAngle(pos1: cc.Vec2, pos2: cc.Vec2): number {
+    get2PosAngle(pos1: Vec3, pos2: Vec3): number {
         var rad = 90 - Math.atan2(pos2.y - pos1.y, pos2.x - pos1.x) * 180 / Math.PI;
         return rad;
     };
@@ -75,9 +71,9 @@ export default class ToolKit extends BaseClass{
      * @return number
      *
      */
-    get2PosDistance(pos1: cc.Vec2, pos2: cc.Vec2) :any{
+    get2PosDistance(pos1: Vec3, pos2: Vec3) :any{
         var v = pos1.add(pos2);
-        return v.mag();
+        return v.length();
     };
 
     /**
@@ -86,7 +82,7 @@ export default class ToolKit extends BaseClass{
      * @return 节点
      *
      */
-    getChildByName(name: string, root: cc.Node) {
+    getChildByName(name: string, root: Node) {
         if (!root) return null;
 
         var nd_find = root.getChildByName(name);
@@ -102,6 +98,9 @@ export default class ToolKit extends BaseClass{
                 return nd_find;
         }
     };
+    getChild(name: string, root: Node){
+        return this.getChildByName(name, root);
+    }
 
     // 判断是否是数字
     isNum(s: any) {
@@ -118,17 +117,14 @@ export default class ToolKit extends BaseClass{
         }
         return false;
     };
+    
     //精确到小数点N位。
-    roundround(number: number, precision: number) {
+    round(number: number, precision: number) {
         var inter = Math.floor(number);
         var decimal = number - inter;
         return inter + Math.round(decimal * Math.pow(10, precision)) / Math.pow(10, precision);
     };
 
-    //特别处理Money
-    roundMoneyround(number: number) {
-        return Math.round(number / 100) / 10;
-    };
 
     /*
      * 移除arrar 中val的值
@@ -194,22 +190,12 @@ export default class ToolKit extends BaseClass{
         }
         return ret_list;
     };
-    //排列组合
-    combineCount(total:number, count:number) {
-        if (count < 1 || total < count) return 0;
-        var v1 = 1, v2 = 1;
-        for (var i = 1; i <= count; i++) {
-            v1 *= (total + 1 - i);
-            v2 *= i;
-        }
-        return v1 / v2;
-    };
 
     /*
      * 获得头像自适应缩放
      * @param pic大小  framsize框大小 scale 指定缩放大小
      */
-    getHandScale(picSize:any, framSize:any, scale:number) {
+    getHeadScale(picSize:any, framSize:any, scale:number) {
         var wid = picSize.width;
         var hei = picSize.height;
         if (wid > hei) {
@@ -259,7 +245,7 @@ export default class ToolKit extends BaseClass{
      * 返回存储截图路径
      */
     screenShot(callBack?:Function) {
-        this.createScreenShotTexture(function (texture:cc.Texture2D) {
+        this.createScreenShotTexture(function (texture:Texture2D) {
             if(!!callBack)  callBack()
         });
     };
@@ -271,66 +257,40 @@ export default class ToolKit extends BaseClass{
 
     //简单的tip提示
     showTip(content:string) {
-        App.windowMgr.open(App.RES_WINDOW.tips, function (uiNode:cc.Node) {
-            var tip = uiNode.getComponent("Tips");
+        App.windowMgr.open(RES_WINDOW.tips, function (uiNode:Node) {
+            var tip = uiNode.getComponent(Tips);
             if (tip) {
                 tip.open(content);
             }
         });
     };
-    
-    //弹窗提示
-    showMsgBox(content:string,cb_ok:Function = nullfun, cb_cancel?:Function) {
-        App.windowMgr.open(App.RES_WINDOW.msgBox, function (uiNode:cc.Node) {
-            var msgBox = uiNode.getComponent("MsgBox");
-            if (msgBox) {
-                msgBox.open(content,cb_ok,cb_cancel);
+
+    showMsgBox(content:string,cb_comfirm:Function = nullfun,cb_cancel:Function=nullfun) {
+        App.windowMgr.open(RES_WINDOW.msgBox,function(uiNode:Node){
+            var msgBox = uiNode.getComponent(MsgBox);
+            if (msgBox){
+                msgBox.open(content,cb_comfirm,cb_cancel);
             }
         });
     };
 
     //从网络获取图片
-    loadWebImg(url:string, spt:cc.Sprite) {
-        function load_texture(_spt) {
-            var image = new Image();
-            image.src = url;
-            image.crossOrigin = "anonymous";
-            image.onload = function () {
-                try {
-                    var texture = new cc.Texture2D();                   
-                    texture.initWithElement(image);
-                    texture.handleLoadedTexture();
-                    _spt.spriteFrame = new cc.SpriteFrame(texture);
-                } catch (e) {
-                    cc.error(' image.onload error', e);
+    loadWebImg(url:string, spt:Sprite) {
+        var reg = /\?/;
+        var url_2 = reg.test(url) ? url + '&temp=temp.jpg' : url + '?temp=temp.jpg';
+        //var url_2 = url;
+        assetManager.loadRemote(url_2, function (error, texture) {
+            if (!error) {
+                if (typeof texture == 'object') {
+                    const spriteFrame = new SpriteFrame();
+                    spriteFrame.texture = texture as any;
+                    spt.spriteFrame = spriteFrame;
                 }
-            };
-            image.onerror = function(e:any) {
-                cc.error(' image.onerror', e);
-            };
-        };
-
-        //ios 临时解决方案
-        if (!cc.sys.isMobile || cc.sys.os == cc.sys.OS_IOS) {
-            var reg = /\?/;
-            var url_2 = reg.test(url) ? url + '&temp=temp.jpg' : url + '?temp=temp.jpg';
-            //var url_2 = url;
-            cc.loader.load(url_2, function (error, texture) {
-                if (!error) {
-                    if (typeof texture == 'object') {
-                        spt.spriteFrame = new cc.SpriteFrame(texture);
-                    } else {
-                        load_texture(spt);
-                    }
-                } else {
-                    load_texture(spt);
-                }
-            });
-        } else {
-            load_texture(spt);
-        }
+            } else {
+                Debug.error("loadWebImg failed",url);
+            }
+        });
     };
-
 
     //获取数字
     stringToNum(s:string) {
@@ -344,44 +304,45 @@ export default class ToolKit extends BaseClass{
 
     //获取target位于node父节点坐标系中的坐标。
     //主要用于将node在自己坐标系中，将坐标改成为target的坐标。
-    getTargetPos(node:cc.Node, target:cc.Node) {
+    getTargetPos(node:Node, target:Node) {
         if (!node || !target) {
-            cc.error('target or node is null.');
-            return cc.p(0, 0);
+            Debug.error('target or node is null.');
+            return v2(0, 0);
         }
         if (!node.parent || !target.parent) {
-            cc.error('parent of target or node is null.');
-            return cc.p(0, 0);
+            Debug.error('parent of target or node is null.');
+            return v2(0, 0);
         }
-        var worldSpacePos = target.parent.convertToWorldSpaceAR(target.getPosition());
-        var nodeSpacePos = node.parent.convertToNodeSpaceAR(worldSpacePos);
+
+        var worldSpacePos = target.parent.getComponent(UITransform).convertToNodeSpaceAR(target.getPosition());
+        var nodeSpacePos = node.parent.getComponent(UITransform).convertToNodeSpaceAR(worldSpacePos);
         return nodeSpacePos;
     };
 
     //判断两个节点是否相交。
-    interTarget(node:cc.Node, target:cc.Node) {
+    interTarget(node:Node, target:Node) {
         if (!node || !target) {
-            cc.error('target or node is null.');
+            Debug.error('target or node is null.');
             return false;
         }
         if (!node.parent || !target.parent) {
-            cc.error('parent of target or node is null.');
+            Debug.error('parent of target or node is null.');
             return false;
         }
-        var rect_node = node.getBoundingBox();
-        var rect_target = target.getBoundingBox();
-        var world_pos = node.parent.convertToWorldSpaceAR(cc.v2(rect_node.x, rect_node.y));
-        var node_pos = target.parent.convertToNodeSpaceAR(world_pos);
+        var rect_node = node.getComponent(UITransform).getBoundingBox();
+        var rect_target = target.getComponent(UITransform).getBoundingBox();
+        var world_pos = node.parent.getComponent(UITransform).convertToNodeSpaceAR(v3(rect_node.x, rect_node.y));
+        var node_pos = target.parent.getComponent(UITransform).convertToNodeSpaceAR(world_pos);
         rect_node.x = node_pos.x;
         rect_node.y = node_pos.y;
         return rect_node.intersects(rect_target);
     };
 
     //label上数值累加到目标值
-    labelAccumulator(label:cc.Label, formateStr:string = null, startValue:number = 0, finalValue:number = 0, delta?:number, cb?:Function) {
+    labelAccumulator(label:Label, formateStr:string = null, startValue:number = 0, finalValue:number = 0, delta?:number, cb?:Function) {
         if (!delta || delta == 0) {
             if (delta) {
-                cc.warn("labelAccumulator : deltadelta is 0.");
+                Debug.warn("labelAccumulator : deltadelta is 0.");
             }
             delta = 1;
         }
@@ -398,10 +359,10 @@ export default class ToolKit extends BaseClass{
         label.accumulatorFunction = function () {
             startValue += delta;
             if ((startValue + delta) <= finalValue) {
-                label.string = cc.js.formatStr(formateStr, startValue);
+                label.string = js.formatStr(formateStr, startValue);
             } else {
                 startValue = finalValue;
-                label.string = cc.js.formatStr(formateStr, startValue);
+                label.string = js.formatStr(formateStr, startValue);
                 label.unschedule(label.accumulatorFunction);
                 label.accumulatorFunction = undefined;
             }
@@ -409,13 +370,13 @@ export default class ToolKit extends BaseClass{
                 cb(startValue);
             }
         };
-        label.schedule(label.accumulatorFunction, 0.1, cc.macro.REPEAT_FOREVE);
+        label.schedule(label.accumulatorFunction, 0.1, macro.REPEAT_FOREVER);
     };
 
     //加载图片
-    loadResSpriteFrame(res_url:string = null, spt:cc.Sprite, cb?:Function) {
+    loadResSpriteFrame(res_url:string = null, spt:Sprite, cb?:Function) {
         if (!res_url) return;
-        cc.loader.loadRes(res_url, cc.SpriteFrame, function (err, spriteFrame) {
+        resources.load(res_url, SpriteFrame, function (err, spriteFrame) {
             if (!err && spt && spt.node) {
                 spt.spriteFrame = spriteFrame;
                 if (!!cb) cb(err, spriteFrame);
@@ -424,9 +385,9 @@ export default class ToolKit extends BaseClass{
     };
 
     //加载图集
-    loadResSpriteAtlas(res_url:string, name:string, spt:cc.Sprite, cb?:Function) {
+    loadResSpriteAtlas(res_url:string, name:string, spt:Sprite, cb?:Function) {
         if (!res_url) return;
-        cc.loader.loadRes(res_url, cc.SpriteAtlas, function (err, atlas) {
+        resources.load(res_url, SpriteAtlas, function (err, atlas) {
             if (!err && spt && spt.node) {
                 var spriteFrame = atlas.getSpriteFrame(name);
                 spt.spriteFrame = spriteFrame
@@ -435,14 +396,13 @@ export default class ToolKit extends BaseClass{
         });
     };
 
-
     //json解析
     parseJson(json_str:string) {
         var ret = null;
         try {
             ret = JSON.parse(json_str);
         } catch (e) {
-            cc.error("could not parseJson:", json_str);
+            Debug.error("could not parseJson:", json_str);
         }
 
         return ret;
@@ -451,7 +411,7 @@ export default class ToolKit extends BaseClass{
     //地址解析
     getQueryString(name:string) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-        var r = window.location.search.substr(1).match(reg);
+        var r = window.location.search.substring(1).match(reg);
         if (r != null) return r[2];
         return null;
     };
@@ -463,7 +423,7 @@ export default class ToolKit extends BaseClass{
         if (index == -1) {
             return null;
         }
-        var r = url.substr(index + 1).match(reg);
+        var r = url.substring(index + 1).match(reg);
         if (r != null) return r[2];
         return null;
     };
@@ -471,31 +431,13 @@ export default class ToolKit extends BaseClass{
     //打开新地址。
     openUrl(url:string) {
         if (!url) return;
-        return cc.sys.openURL(url);
+        return sys.openURL(url);
     };
 
     //剪贴板功能
     copyTextToClipboard(content:string) {
-        if (cc.sys.isNative) {
-            jsb.copyTextToClipboard(content);
-            return true;
-        } else {
-            var success = true;
-            //todo h5的有报错，有需要在说
-            return success;
-        }
-    };
-
-    //剪贴板功能 浏览器模式 cocos论坛推荐
-    copyTextToClipboardBrower_1(content:string) {
-        //todo h5的有报错，有需要在说
+        //todo 
         return false;
-    };
-
-
-    //剪贴板功能 浏览器模式 Sari需要用这种
-    copyTextToClipboardBrower_2(content:string) {
-        return false
     };
 
     empty(value:any){
@@ -509,8 +451,8 @@ export default class ToolKit extends BaseClass{
         }else{
             return !value
         }
-
     };
+
     limitNum(value:number,min?:number,max?:number){
         if(min && value < min){
             value = min;
@@ -520,10 +462,54 @@ export default class ToolKit extends BaseClass{
         }
         return value;
     };
-/*     保持队列索引始终在范围内
-    超出范围的，会重新修正 如-1 ,则在在队尾 */
+
+    /*     
+    保持队列索引始终在范围内
+    超出范围的，会重新修正 如-1 ,则在在队尾
+    */
     queueIndexd(index:number,len:number){
         var i = index % len;
         return (i + len - 1) % len  + 1
     }
+
+    tableToMap(t:Array<any>,key:string="id",parseFunc:Function=nullfun):Map<any,any>{
+        var map = new Map();
+        if(this.empty(t)){
+            return map;
+        };
+        for(var i=0;i<t.length;i++){
+            let v = t[i];
+            if (v instanceof Object){
+                map[v[key]] = v
+            }else{
+                map[v] = v
+            }
+            parseFunc(map,v,key);
+        }
+        return map;
+    }
+
+    ArrayToMap(t:Array<any>,key:string="id",parseFunc:Function=nullfun):Map<any,any>{
+       return this.tableToMap(t,key,parseFunc);
+    }
+
+    logBase(x:number,base:number):number {
+        return Math.log10(x)/Math.log10(base);
+    }
+
+    parseNum(value:number):string{
+        var unitNum = 10000;      // 进制单位
+        var index = Math.floor(this.logBase(value,unitNum));
+        var baseNum = Math.pow(unitNum,this.limitNum(index - 1,0));
+        var num:any = value / baseNum;
+        var precision = 5;
+        if (num == Math.floor(num)){
+            num = num.toPrecision(precision)      // 整数
+        }else{
+            num = num.toPrecision(precision -1)   // 含有小数点
+        }
+        return "" + num + lang("common.unit_" + index);
+    }
 };
+
+export var toolKit = new ToolKit(ToolKit);

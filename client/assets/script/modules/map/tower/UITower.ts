@@ -1,8 +1,9 @@
 import UIBuilding from "../UIBuilding";
 
-const { ccclass, property } = cc._decorator;
+import { _decorator} from 'cc';
+const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UITower")
 export default class UITower extends UIBuilding {
     _baseUrl = "texture/map/";
 

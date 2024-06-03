@@ -1,22 +1,31 @@
 
+import { EDITOR } from "cc/env";
 import BoxBase from "../logic/BoxBase";
 
-const { ccclass, property } = cc._decorator;
-var global = window;
-@ccclass
-export default class BaseUI extends cc.Component {
+import { _decorator,resources,Sprite,SpriteFrame,Component } from 'cc';
+const {ccclass, property} = _decorator;
+
+@ccclass("BaseUI")
+export default class BaseUI extends Component {
     _bindData: { [key: string]: any } = {};
     _baseUrl: string = "";
     _logicObj: BoxBase = null;
-    init(){
-        
-    }
+
+    @property({
+        tooltip: '切换场景的时候是否直接destroy'
+    })
+    is_destroy: boolean = true;    
+
     getId(){        
         return this.uuid
     }
 
     bindBox(box: BoxBase) {
-        this._logicObj = box     
+        if(this._logicObj == box){
+            return;
+        }
+        this._logicObj = box
+        this._bindData = {}     
     }
     setBaseUrl(baseUrl:string){
         this._baseUrl = baseUrl;        
@@ -37,12 +46,36 @@ export default class BaseUI extends cc.Component {
         }
     }
 
-    show() {
+    init(...args: any[]){
+        
+    }
+
+    show (...args: any[]) {
 
     }
-    hide() {
+
+
+    hide (...args: any[]) {
 
     }
+
+    _show (...args: any[]) {
+        this.node.active = true;
+    }
+
+
+    _hide (...args: any[]) {
+        this.node.active = false;
+        var self = this;
+        if(this.is_destroy){    // 30秒后销毁
+            this.scheduleOnce(()=>{
+                if(self.node.isValid && self.node.active == true){
+                    this.node.removeFromParent();
+                }
+            },30.0)
+        }
+    }
+
     onEnable() {
         if (this._logicObj){
             this._logicObj.onEnable(this)
@@ -67,22 +100,19 @@ export default class BaseUI extends cc.Component {
         }
     } 
 
-    loadSpt(spt: cc.Sprite, res_url: string = null, cb?: Function) {
-        if (!res_url) return;
-        cc.loader.loadRes(this._baseUrl + res_url, cc.SpriteFrame, function (err, spriteFrame) {
-            if (!err && spt && spt.node) {
-                spt.spriteFrame = spriteFrame;
-                if (!!cb) cb(err, spriteFrame);
-            }
-        });
-    };
+    getResUrl(res_url:string){
+        return this._baseUrl + res_url;
+    }
 
+    loadSpt(spt: Sprite, res_url: string = null, cb?: Function) {
+        this.loadSptEx(spt,this.getResUrl(res_url),cb);
+    };
     
-    loadSptEx(spt: cc.Sprite, res_url: string = null, cb?: Function) {
+    loadSptEx(spt: Sprite, res_url: string = null, cb?: Function) {
         if (!res_url) return;
-        cc.loader.loadRes(res_url, cc.SpriteFrame, function (err, spriteFrame) {
+        resources.load(res_url, SpriteFrame, function (err, spriteFrame) {
             if (!err && spt && spt.node) {
-                spt.spriteFrame = spriteFrame;
+                spt.spriteFrame = spriteFrame ;
                 if (!!cb) cb(err, spriteFrame);
             }
         });
@@ -112,6 +142,8 @@ export default class BaseUI extends cc.Component {
     }
 
     update(dt:number){
-        this.updateUI();
+        if(!EDITOR){
+            this.updateUI();
+        }        
     }
 }

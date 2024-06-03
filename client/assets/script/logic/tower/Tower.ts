@@ -9,6 +9,8 @@ import MonsterMgr from "../../manager/MonsterMgr";
 import TowerMgr from "../../manager/TowerMgr";
 import TimeMgr from "../../manager/TimeMgr";
 import { serialize } from "../../utils/Decorator";
+import App from "../../App";
+import { v2 } from "cc";
 
 export default class Tower extends Building {
     @serialize()
@@ -34,7 +36,7 @@ export default class Tower extends Building {
 
     async setBullet(bulletId:number){
         this.bulletId = bulletId;
-        this.bulletCfg = await DataMgr.findById("bullet_type",this.bulletId);
+        this.bulletCfg = await App.dataMgr.findById("bullet_type",this.bulletId);
     }
 
     atkTarget(){
@@ -55,7 +57,7 @@ export default class Tower extends Building {
         if (!this.ui){
             return
         }
-        var angle = MapUtils.getAngle(cc.v2(this.x,this.y),cc.v2(target.x,target.y));
+        var angle = MapUtils.getAngle(v2(this.x,this.y),v2(target.x,target.y));
         var deltaAngle = angle - this.ui.node.angle;
         if (Math.abs(deltaAngle) > 180){
             if(deltaAngle > 0){
@@ -104,7 +106,7 @@ export default class Tower extends Building {
         return false;
     }
     clear(){
-        this.towerMgr.clear(this.idx);        
+        this.towerMgr.clearTower(this.idx);        
     }    
     update(){
         if(this.target){

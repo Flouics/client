@@ -4,6 +4,10 @@ import MapMainView from "../modules/map/MapMainView";
 import BaseClass from "../zero/BaseClass";
 import { serialize } from "../utils/Decorator";
 import App from "../App";
+import { Node, Vec2 } from "cc";
+import { nullfun } from "../Global";
+import TimeProxy, { getTimeProxy } from "../modules/time/TimeProxy";
+import Debug from "../utils/Debug";
 
 // 怪物管理器
 class ScheduleTask  {
@@ -17,14 +21,14 @@ class ScheduleTask  {
         this.interval = interval;
         this.data = data;
         this.task = task;
-        this.lastUpdateTimeStamp = timeProxy.getTime();
+        this.lastUpdateTimeStamp = getTimeProxy().getTime();
     }
 }
 export default class MonsterMgr extends BaseClass {
     @serialize()
     monsterMap:{[key:number]:Monster} = {};
     _mapMainView:MapMainView = null;
-    _nodeRoot:cc.Node = null;
+    _nodeRoot:Node = null;
     _scheduleTask:ScheduleTask[] = [];
 
     init(mapMainView:MapMainView){
@@ -48,8 +52,8 @@ export default class MonsterMgr extends BaseClass {
         this.initSchedule();
     }
 
-    create(monsterType:number = 0,pos:cc.Vec2,task?:Function){
-        cc.log("createMoster",monsterType,pos)
+    create(monsterType:number = 0,pos:Vec2,task?:Function){
+        Debug.log("createMoster",monsterType,pos)
         let monster = new Monster(this._mapMainView,monsterType,pos.x,pos.y);
         monster.initUI(this._nodeRoot,()=>{
             if(!!task) task(monster);    
@@ -58,7 +62,7 @@ export default class MonsterMgr extends BaseClass {
         return monster;
     }
 
-    createMultiple(monsterType:number = 0,count:number = 1,pos:cc.Vec2,data = {},task?:Function){
+    createMultiple(monsterType:number = 0,count:number = 1,pos:Vec2,data = {},task?:Function){
         var self = this;
         for (let i = 0; i < count; i++) {
             App.asyncTaskMgr.newAsyncTask(()=>{
@@ -70,14 +74,14 @@ export default class MonsterMgr extends BaseClass {
     addScheduleTask(count:number = 1,interval: number,data:any = {},task:Function,key?:string){
         key = key || task.name;
         if (this._scheduleTask[key]){
-            cc.warn(this.getClassName(),"hasScheduleTask by key:",key);
+            Debug.warn(this.getClassName(),"hasScheduleTask by key:",key);
         }
         var scheduleTask = new ScheduleTask(count,interval,data,task);
         this._scheduleTask[key] = scheduleTask;
     }
 
     updateScheduleTask(){
-        var timeProxy = App.moduleMgr.getProxy("time");
+        var timeProxy = App.moduleMgr.getProxy("time") as TimeProxy;
         var nowTime = timeProxy.getTime();
         
         for (const key in this._scheduleTask) {
@@ -101,7 +105,7 @@ export default class MonsterMgr extends BaseClass {
         }
     }
     
-    clear(idx:number){
+    clearMonster(idx:number){
         let obj = this.monsterMap[idx];
         if(obj){
             obj.destory();

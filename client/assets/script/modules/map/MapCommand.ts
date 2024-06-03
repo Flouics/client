@@ -6,6 +6,7 @@ import App from "../../App";
 import MapProxy from "./MapProxy";
 import Block from "../../logic/Block";
 import TaskBase from "../../logic/TaskBase";
+import { toolKit } from "../../utils/ToolKit";
 
 export default class MapCommand extends BaseCommand{
     proxy:MapProxy;
@@ -16,11 +17,11 @@ export default class MapCommand extends BaseCommand{
     }
 
     onClickBuild(){
-        App.toolKit.showTip("onClickBuild")
+        toolKit.showTip("onClickBuild")
     }
 
     onClickDig(){
-        App.toolKit.showTip("onClickDig")
+        toolKit.showTip("onClickDig")
     }    
     pushTask(task:TaskBase){
         this.proxy.pushTask(task)
