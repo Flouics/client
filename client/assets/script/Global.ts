@@ -52,7 +52,7 @@ export let parseNum = function(num:number):string {
     return toolKit.parseNum(num);
 }
 
-export let winSize = new Size(750,1334)
+export let winSize = new Size(1334,750)
 
 export let RES_WINDOW = Enum( {
     loadingAm: "prefab/dialog/loadingAm",
