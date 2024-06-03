@@ -2,58 +2,122 @@
   "ver": "1.0.26",
   "importer": "image",
   "imported": true,
-  "uuid": "59ede3fa-75bf-4986-ab60-ab1d9c2cc0dc",
+  "uuid": "7916e4d1-4292-4368-a362-f78bee4c38bd",
   "files": [
     ".json",
     ".png"
   ],
   "subMetas": {
-    "10003": {
-      "ver": "1.0.4",
-      "uuid": "1aabd68a-1ca1-4bf2-b0e4-e1c70f457023",
-      "rawTextureUuid": "59ede3fa-75bf-4986-ab60-ab1d9c2cc0dc",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 12.5,
-      "offsetY": 0,
-      "trimX": 47,
-      "trimY": 32,
-      "width": 171,
-      "height": 146,
-      "rawWidth": 240,
-      "rawHeight": 210,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "subMetas": {},
-      "importer": "*",
-      "imported": false,
-      "files": [],
-      "userData": {},
-      "displayName": "",
-      "id": "",
-      "name": ""
-    },
     "6c48a": {
       "importer": "texture",
-      "uuid": "59ede3fa-75bf-4986-ab60-ab1d9c2cc0dc@6c48a",
+      "uuid": "7916e4d1-4292-4368-a362-f78bee4c38bd@6c48a",
       "displayName": "10003",
       "id": "6c48a",
       "name": "texture",
       "userData": {
-        "wrapModeS": "repeat",
-        "wrapModeT": "repeat",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "7916e4d1-4292-4368-a362-f78bee4c38bd",
+        "isUuid": true,
+        "visible": false,
         "minfilter": "linear",
         "magfilter": "linear",
         "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "59ede3fa-75bf-4986-ab60-ab1d9c2cc0dc",
-        "visible": false
+        "anisotropy": 0
       },
       "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "7916e4d1-4292-4368-a362-f78bee4c38bd@f9941",
+      "displayName": "10003",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 12.5,
+        "offsetY": 0,
+        "trimX": 47,
+        "trimY": 32,
+        "width": 171,
+        "height": 146,
+        "rawWidth": 240,
+        "rawHeight": 210,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -85.5,
+            -73,
+            0,
+            85.5,
+            -73,
+            0,
+            -85.5,
+            73,
+            0,
+            85.5,
+            73,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            47,
+            178,
+            218,
+            178,
+            47,
+            32,
+            218,
+            32
+          ],
+          "nuv": [
+            0.19583333333333333,
+            0.1523809523809524,
+            0.9083333333333333,
+            0.1523809523809524,
+            0.19583333333333333,
+            0.8476190476190476,
+            0.9083333333333333,
+            0.8476190476190476
+          ],
+          "minPos": [
+            -85.5,
+            -73,
+            0
+          ],
+          "maxPos": [
+            85.5,
+            73,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "7916e4d1-4292-4368-a362-f78bee4c38bd@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
       "imported": true,
       "files": [
         ".json"
@@ -62,9 +126,9 @@
     }
   },
   "userData": {
+    "type": "sprite-frame",
     "hasAlpha": true,
-    "type": "texture",
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "59ede3fa-75bf-4986-ab60-ab1d9c2cc0dc@6c48a"
+    "redirect": "7916e4d1-4292-4368-a362-f78bee4c38bd@f9941"
   }
 }

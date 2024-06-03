@@ -2,58 +2,122 @@
   "ver": "1.0.26",
   "importer": "image",
   "imported": true,
-  "uuid": "676c728b-b813-48af-9f20-70edade42f06",
+  "uuid": "bc243640-94da-4f48-ac3f-365e12fda00d",
   "files": [
     ".json",
     ".png"
   ],
   "subMetas": {
-    "envelope": {
-      "ver": "1.0.4",
-      "uuid": "34de0deb-e7e1-431b-89fa-83f2d96afcb4",
-      "rawTextureUuid": "676c728b-b813-48af-9f20-70edade42f06",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0.5,
-      "offsetY": -2,
-      "trimX": 26,
-      "trimY": 28,
-      "width": 77,
-      "height": 76,
-      "rawWidth": 128,
-      "rawHeight": 128,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "subMetas": {},
-      "importer": "*",
-      "imported": false,
-      "files": [],
-      "userData": {},
-      "displayName": "",
-      "id": "",
-      "name": ""
-    },
     "6c48a": {
       "importer": "texture",
-      "uuid": "676c728b-b813-48af-9f20-70edade42f06@6c48a",
+      "uuid": "bc243640-94da-4f48-ac3f-365e12fda00d@6c48a",
       "displayName": "envelope",
       "id": "6c48a",
       "name": "texture",
       "userData": {
-        "wrapModeS": "repeat",
-        "wrapModeT": "repeat",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "bc243640-94da-4f48-ac3f-365e12fda00d",
+        "isUuid": true,
+        "visible": false,
         "minfilter": "linear",
         "magfilter": "linear",
         "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "676c728b-b813-48af-9f20-70edade42f06",
-        "visible": false
+        "anisotropy": 0
       },
       "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "bc243640-94da-4f48-ac3f-365e12fda00d@f9941",
+      "displayName": "envelope",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0.5,
+        "offsetY": -2,
+        "trimX": 26,
+        "trimY": 28,
+        "width": 77,
+        "height": 76,
+        "rawWidth": 128,
+        "rawHeight": 128,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -38.5,
+            -38,
+            0,
+            38.5,
+            -38,
+            0,
+            -38.5,
+            38,
+            0,
+            38.5,
+            38,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            26,
+            100,
+            103,
+            100,
+            26,
+            24,
+            103,
+            24
+          ],
+          "nuv": [
+            0.203125,
+            0.1875,
+            0.8046875,
+            0.1875,
+            0.203125,
+            0.78125,
+            0.8046875,
+            0.78125
+          ],
+          "minPos": [
+            -38.5,
+            -38,
+            0
+          ],
+          "maxPos": [
+            38.5,
+            38,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "bc243640-94da-4f48-ac3f-365e12fda00d@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
       "imported": true,
       "files": [
         ".json"
@@ -62,9 +126,9 @@
     }
   },
   "userData": {
+    "type": "sprite-frame",
     "hasAlpha": true,
-    "type": "texture",
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "676c728b-b813-48af-9f20-70edade42f06@6c48a"
+    "redirect": "bc243640-94da-4f48-ac3f-365e12fda00d@f9941"
   }
 }

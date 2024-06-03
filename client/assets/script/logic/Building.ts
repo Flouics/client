@@ -41,8 +41,8 @@ export default class Building extends BoxBase {
             }else{
                 let node = instantiate(prefab);
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
-                node.parent = parent;
-                node.position = viewPos;
+                parent.addChild(node);
+                node.setPosition(viewPos.x, viewPos.y);
                 self.bindUI(node.getComponent(UIBuilding));
             }
         })

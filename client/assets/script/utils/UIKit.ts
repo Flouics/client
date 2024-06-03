@@ -1,9 +1,9 @@
 import App from "../App";
-import BaseClass from "../base/BaseClass";
+import BaseClass from "../zero/BaseClass";
 import { assetManager, js, Label, macro, Node, resources, Sprite, SpriteAtlas, SpriteFrame, sys, Texture2D, UITransform, v2, v3, Vec3 } from "cc";
 import Debug from "./Debug";
 import { empty } from "../Global";
-import TopTitleSub from "../common/TopTitleSub";
+
 
 class UIKit extends BaseClass {
 
@@ -20,13 +20,7 @@ class UIKit extends BaseClass {
         return map;
     }
     
-    initTitle(titleNode:Node,titleResUrl:string,...args: any[]){
-        Debug.assert(empty(titleNode));
-        var comp = titleNode.getComponent(TopTitleSub);
-        if (comp){
-            comp.init(titleResUrl,args);
-        }
-    }
+
     isValid(ui:Node){
         return ui && ui.isValid;
     }

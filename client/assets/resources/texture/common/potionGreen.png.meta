@@ -2,58 +2,122 @@
   "ver": "1.0.26",
   "importer": "image",
   "imported": true,
-  "uuid": "1933cd52-1108-4449-a245-c77b522c9e98",
+  "uuid": "d3c50401-62f2-4899-a950-ec55af35d9f0",
   "files": [
     ".json",
     ".png"
   ],
   "subMetas": {
-    "potionGreen": {
-      "ver": "1.0.4",
-      "uuid": "7067ada9-b6d8-4de5-a460-751b66244543",
-      "rawTextureUuid": "1933cd52-1108-4449-a245-c77b522c9e98",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 2.5,
-      "offsetY": 0.5,
-      "trimX": 37,
-      "trimY": 29,
-      "width": 59,
-      "height": 69,
-      "rawWidth": 128,
-      "rawHeight": 128,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "subMetas": {},
-      "importer": "*",
-      "imported": false,
-      "files": [],
-      "userData": {},
-      "displayName": "",
-      "id": "",
-      "name": ""
-    },
     "6c48a": {
       "importer": "texture",
-      "uuid": "1933cd52-1108-4449-a245-c77b522c9e98@6c48a",
+      "uuid": "d3c50401-62f2-4899-a950-ec55af35d9f0@6c48a",
       "displayName": "potionGreen",
       "id": "6c48a",
       "name": "texture",
       "userData": {
-        "wrapModeS": "repeat",
-        "wrapModeT": "repeat",
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "d3c50401-62f2-4899-a950-ec55af35d9f0",
+        "isUuid": true,
+        "visible": false,
         "minfilter": "linear",
         "magfilter": "linear",
         "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "1933cd52-1108-4449-a245-c77b522c9e98",
-        "visible": false
+        "anisotropy": 0
       },
       "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "d3c50401-62f2-4899-a950-ec55af35d9f0@f9941",
+      "displayName": "potionGreen",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 2.5,
+        "offsetY": 0.5,
+        "trimX": 37,
+        "trimY": 29,
+        "width": 59,
+        "height": 69,
+        "rawWidth": 128,
+        "rawHeight": 128,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -29.5,
+            -34.5,
+            0,
+            29.5,
+            -34.5,
+            0,
+            -29.5,
+            34.5,
+            0,
+            29.5,
+            34.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            37,
+            99,
+            96,
+            99,
+            37,
+            30,
+            96,
+            30
+          ],
+          "nuv": [
+            0.2890625,
+            0.234375,
+            0.75,
+            0.234375,
+            0.2890625,
+            0.7734375,
+            0.75,
+            0.7734375
+          ],
+          "minPos": [
+            -29.5,
+            -34.5,
+            0
+          ],
+          "maxPos": [
+            29.5,
+            34.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "d3c50401-62f2-4899-a950-ec55af35d9f0@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
       "imported": true,
       "files": [
         ".json"
@@ -62,9 +126,9 @@
     }
   },
   "userData": {
+    "type": "sprite-frame",
     "hasAlpha": true,
-    "type": "texture",
     "fixAlphaTransparencyArtifacts": false,
-    "redirect": "1933cd52-1108-4449-a245-c77b522c9e98@6c48a"
+    "redirect": "d3c50401-62f2-4899-a950-ec55af35d9f0@f9941"
   }
 }

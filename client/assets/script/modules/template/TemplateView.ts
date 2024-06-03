@@ -1,6 +1,6 @@
 
 import App from "../../App";
-import BaseView from "../../base/BaseView";
+import BaseView from "../../zero/BaseView";
 
 import { _decorator } from 'cc';
 import TemplateProxy from "./TemplateProxy";

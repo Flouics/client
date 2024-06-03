@@ -8,6 +8,7 @@ import { getTimeProxy } from "../modules/time/TimeProxy";
 
 var proto = {} as any;
 proto.SC = {} as any;
+proto.SC.create = nullfun;
 proto.CS = {} as any;
 var MD5 = {} as any;
 var Base64 = {} as any;

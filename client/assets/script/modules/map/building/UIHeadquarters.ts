@@ -50,6 +50,9 @@ export default class UIHeadquarters extends UIBuilding {
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
+        if(!logicObj){
+            return;
+        }
         var data = {life : logicObj.life,lifeMax : logicObj.lifeMax}
         this.updateDataToUI("headquarters.life",data,()=>{
             var percent = data.life * 100 / data.lifeMax;

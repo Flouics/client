@@ -1,6 +1,6 @@
-import { appendFile } from "fs";
+
 import App from "../App";
-import SceneBase from "../base/SceneBase";
+import SceneBase from "../zero/SceneBase";
 
 
 import { _decorator,Node,Label, director} from 'cc';
@@ -17,7 +17,7 @@ export default class Game extends SceneBase{
     };
 
     start () {
-        App.platformMgr.init();
+
     };
 
 };

@@ -3,7 +3,7 @@ import Debug from "../utils/Debug";
 import { uiKit } from "../utils/UIKit";
 import BaseUI from "./BaseUI";
 
-import { _decorator,CCBoolean,find,js,Node, UITransform} from 'cc';
+import { _decorator,CCBoolean,EventTouch,find,js,Node, UITransform} from 'cc';
 const {ccclass, property} = _decorator;
 
 @ccclass("BaseWin")
@@ -60,14 +60,13 @@ export default class BaseWin extends BaseUI{
     }
     setIndex (){
         if(this.node){
-            var uiTransform = this.node.getComponent(UITransform);
-            uiTransform.priority = this._index;
+            this.node.setSiblingIndex(this._index);
         }
     }    
 
     
-    onBgClick (event:any) {
-        event.stopPropagation();
+    onBgClick (event:EventTouch) {
+        event.propagationStopped = true;
     }
 
     close () {

@@ -1,5 +1,5 @@
 import App from "../App";
-import BaseClass from "../base/BaseClass";
+import BaseClass from "../zero/BaseClass";
 import MsgBox from "../common/MsgBox";
 import Tips from "../common/Tips";
 import { lang, nullfun, RES_WINDOW } from "../Global";

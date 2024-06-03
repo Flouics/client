@@ -31,6 +31,9 @@ export default class Block extends BoxBase {
 
     @serialize() 
     _idPre:number = 0; // 预定的属性 挖掉之后显示
+    get id (){
+        return this._id;
+    }
     set id(value:any){
         this._id = value; 
         if (this.checkType(BLOCK_VALUE_ENUM.BLOCK)){
@@ -60,9 +63,10 @@ export default class Block extends BoxBase {
     initUI() {
         let node = instantiate(this.mapMainView.pb_block);
         node.parent = this.mapMainView.nd_mapRoot;
-        node.x = this.x * this.mapMainView._blockSize.width;
-        node.y = this.y * this.mapMainView._blockSize.height;
-        node.scale = 0.95;
+        var x = this.x * this.mapMainView._blockSize.width;
+        var y = this.y * this.mapMainView._blockSize.height;
+        node.setPosition(x,y);
+        node.setScale(0.95);
         if(this.id == null){
             this.id = toolKit.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         }        

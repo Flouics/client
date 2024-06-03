@@ -73,7 +73,7 @@ export default class AudioMgr extends BaseClass {
         if (this._urls[name]) {
             return this._urls[name];
         } else {
-            var url = url.raw(basePath + name);
+            var url = basePath + name;
             this._urls[name] = url;
             return url;
         }
@@ -168,10 +168,12 @@ export default class AudioMgr extends BaseClass {
         if (loop == undefined) loop = false;
         var self = this;
         this.getAudioClip(url, function (audioClip) {
-            self._audioSource.loop = loop;
-            self._audioSource.clip = audioClip;
-            self._audioSource.playOneShot(audioClip);
-            if (!!cb) cb(url);
+            if(audioClip){
+                self._audioSource.loop = loop;
+                self._audioSource.clip = audioClip;
+                self._audioSource.playOneShot(audioClip);
+                if (!!cb) cb(url);
+            }
         });
         return true;
     };

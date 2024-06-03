@@ -22,6 +22,9 @@ export default class Mine extends BoxBase {
     @serialize()
     produceTimeLast:number = null;    
 
+    get id (){
+        return this._id;
+    }
     set id(value:any){
         this._id = value;
         this.initData();     
@@ -61,7 +64,7 @@ export default class Mine extends BoxBase {
                 let node = instantiate(prefab);
                 let viewPos = MapUtils.getViewPosByTilePos(self.pos);
                 node.parent = parent;
-                node.position = viewPos;
+                node.setPosition(viewPos.x, viewPos.y);
                 self.bindUI(node.getComponent(UIMine));
             }
         })

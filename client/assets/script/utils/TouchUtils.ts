@@ -8,11 +8,11 @@ const {ccclass, property} = _decorator;
 export default class TouchUtils extends Component {
     _touchStartPos: Vec2 = null;
     _touchId:any = null;    //用于处理多点触摸的
-    _deltaPos: Vec2 = Vec2.ZERO;
+    _deltaPos: Vec2 = Vec2.ZERO.clone();
     _speed: Vec2 = new Vec2(1, 1);
     _lastTouchEventTime: number = 0;
-    _touchSize:Size = Size.ZERO;
-    _viewSize:Size = Size.ZERO;
+    _touchSize:Size = Size.ZERO.clone();
+    _viewSize:Size = Size.ZERO.clone();
     onLoad() {
         //this.init();
     }

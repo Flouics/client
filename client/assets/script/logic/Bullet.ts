@@ -38,7 +38,7 @@ export default class Bullet extends BoxBase {
         let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
         node.parent = parent;
-        node.position = this.viewPos;
+        node.setPosition(this.viewPos,this.viewPos.y);
         this.node = node;
         this.ui = this.node.getComponent(UIBullet);
         if(!!cb) cb(this);        

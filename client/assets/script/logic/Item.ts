@@ -18,6 +18,9 @@ export default class Item extends BoxBase {
 
     data:any = {};
 
+    get id (){
+        return this._id;
+    }
     set id(value:any){
         this._id = value;
         this.initData();            
@@ -64,7 +67,7 @@ export default class Item extends BoxBase {
         let node = pool.getItem(this);
         let viewPos = MapUtils.getViewPosByTilePos(this.pos);
         node.parent = parent;
-        node.position = viewPos;
+        node.setPosition(viewPos.x, viewPos.y);
         this.node = node;
         this.ui = this.node.getComponent(UIItem);
         if(!!cb) cb(this);

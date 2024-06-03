@@ -25,7 +25,7 @@ export default class AppView extends BaseView{
         //设置为常驻借点。
         director.addPersistRootNode(this.node);
         //关闭帧数显示。
-        profiler.hideStats();
+        //profiler.hideStats();
 
         //适配相关的
         // 废弃 todo

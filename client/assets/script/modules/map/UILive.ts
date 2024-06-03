@@ -51,14 +51,14 @@ export default class UILive extends BaseUI {
         this._beAtkedAction = tween(this.spt_role.node)
         .to(duration,
             { },{
-                onUpdate(){
-                    self.node.getComponent(Sprite).color = Color.RED;
+                onUpdate(tar:Node){
+                    tar.getComponent(Sprite).color = Color.RED;
                 }
             })
         .to(duration,
             { },{
-                onUpdate(){
-                    self.node.getComponent(Sprite).color = Color.RED;
+                onUpdate(tar:Node){
+                    tar.getComponent(Sprite).color = Color.WHITE;
                 }
             })
         .call(() => {                

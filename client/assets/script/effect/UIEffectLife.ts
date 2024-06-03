@@ -1,8 +1,10 @@
+import { UIOPACITY } from "../../../extensions/plugin-import-2x/creator/components/UIOpacity";
 import UIEffect from "./UIEffect";
 
+import { _decorator, Color, Label, Sprite, tween, UIOpacity, UITransform, Vec3} from 'cc';
 const {ccclass, property} = _decorator;
 
-@ccclass
+@ccclass("UIEffectLife")
 export default class UIEffectLife extends UIEffect {
     @property(Label)
     lb_content:Label = null;
@@ -14,16 +16,20 @@ export default class UIEffectLife extends UIEffect {
     open (param:any) {
         this.lb_content.string = "" + param.value;
         if (param.value > 0){
-            this.lb_content.node.color = Color.GREEN;
+            this.lb_content.color = Color.GREEN;
         }else{
-            this.lb_content.node.color = Color.RED;
+            this.lb_content.color = Color.RED;
         }
         var self = this;
         tween(this.node)
         .by(1.0,
-            { y: 80})
+            {position:new Vec3(0,80,0)})
         .by(0.5,
-            { y: 80,opacity:0})
+            { position:new Vec3(0,80,0)},{
+                onUpdate(taget:Node,ratio:number){
+                    self.node.getComponent(UIOpacity).opacity = 255 - 255 * ratio;
+                }
+            })
         .call(() => {                
             self.close();
         }).start();

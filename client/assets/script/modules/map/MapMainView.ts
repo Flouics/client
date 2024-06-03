@@ -6,7 +6,6 @@ import TouchUtils from "../../utils/TouchUtils";
 import Debug from "../../utils/Debug";
 import Building from "../../logic/Building";
 import Headquarters from "../../logic/building/Headquarters";
-import Live from "../../logic/Live";
 import Monster from "../../logic/Monster";
 import MonsterMgr from "../../manager/MonsterMgr";
 import HeroMgr from "../../manager/HeroMgr";
@@ -14,13 +13,10 @@ import MapProxy from "./MapProxy";
 import DigTask from "../../logic/task/DigTask";
 import TowerMgr from "../../manager/TowerMgr";
 import BulletMgr from "../../manager/BulletMgr";
-import App from "../../App";
 import BaseView from "../../zero/BaseView";
-import BaseUI from "../../zero/BaseUI";
 import BuildTask from "../../logic/task/BuildTask";
 import MineMgr from "../../manager/MineMgr";
 import { _decorator, EventTouch, instantiate, Node, Prefab, Size, UITransform, v2, Vec2, Vec3 } from "cc";
-import { UITRANSFORM } from "../../../../extensions/plugin-import-2x/creator/components/UITransform";
 import MapUtils from "../../logic/MapUtils";
 import { toolKit } from "../../utils/ToolKit";
 
@@ -38,9 +34,9 @@ var OPERATION_ENUM = {
 const {ccclass, property} = _decorator;
 @ccclass("MapMainView")
 export default class MapMainView extends BaseView {
-    @property()
+    @property
     margin_x: number = 10;
-    @property()
+    @property
     margin_y: number = 10;
     @property(Node)
     nd_mapRoot: Node = null;  //基础的地图层
@@ -128,8 +124,9 @@ export default class MapMainView extends BaseView {
     initBlocks() {
         //方块数据
         let node = instantiate(this.pb_block);
-        this.initBlockSize(new Size(node.width, node.height));
-        MapUtils.initBlockData(new Size(node.width, node.height));
+        let uiTransform = node.getComponent(UITransform);
+        this.initBlockSize(new Size(uiTransform.width, uiTransform.height));
+        MapUtils.initBlockData(new Size(uiTransform.width, uiTransform.height));
         this.mapSize = new Size(
             (this.margin_x * 2 + 1) * this._blockSize.width
             , (this.margin_y * 2 + 1) * this._blockSize.height
