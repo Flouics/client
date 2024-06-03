@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "f68ecfa9-b61d-4e3f-851a-dafe205c225f",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "axe_3": {
+      "ver": "1.0.4",
+      "uuid": "8ff3524c-d4ab-4ed4-9404-ebad0d73c6a1",
+      "rawTextureUuid": "f68ecfa9-b61d-4e3f-851a-dafe205c225f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 1.5,
+      "offsetY": -4.5,
+      "trimX": 7,
+      "trimY": 10,
+      "width": 117,
+      "height": 117,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "f68ecfa9-b61d-4e3f-851a-dafe205c225f@6c48a",
+      "displayName": "axe_3",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "f68ecfa9-b61d-4e3f-851a-dafe205c225f",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "f68ecfa9-b61d-4e3f-851a-dafe205c225f@6c48a"
+  }
+}

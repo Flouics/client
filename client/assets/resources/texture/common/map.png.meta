@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "2605d06d-8ec8-4288-be0a-8390c43635ce",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "map": {
+      "ver": "1.0.4",
+      "uuid": "12a3cd57-5f5e-4c62-be85-393d9502717d",
+      "rawTextureUuid": "2605d06d-8ec8-4288-be0a-8390c43635ce",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 1.5,
+      "offsetY": -1,
+      "trimX": 31,
+      "trimY": 22,
+      "width": 69,
+      "height": 86,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "2605d06d-8ec8-4288-be0a-8390c43635ce@6c48a",
+      "displayName": "map",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2605d06d-8ec8-4288-be0a-8390c43635ce",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "2605d06d-8ec8-4288-be0a-8390c43635ce@6c48a"
+  }
+}

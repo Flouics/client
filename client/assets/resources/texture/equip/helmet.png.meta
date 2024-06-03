@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "031b0e2a-9616-4126-92c9-aabb26d04632",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "helmet": {
+      "ver": "1.0.4",
+      "uuid": "4ff36194-9956-4835-80d2-2a3d71e064cb",
+      "rawTextureUuid": "031b0e2a-9616-4126-92c9-aabb26d04632",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 0.5,
+      "trimX": 35,
+      "trimY": 27,
+      "width": 57,
+      "height": 73,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "031b0e2a-9616-4126-92c9-aabb26d04632@6c48a",
+      "displayName": "helmet",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "031b0e2a-9616-4126-92c9-aabb26d04632",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "031b0e2a-9616-4126-92c9-aabb26d04632@6c48a"
+  }
+}

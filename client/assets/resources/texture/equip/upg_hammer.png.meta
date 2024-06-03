@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "2a167368-4c28-46c7-bf38-e5f9a5a23bf9",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "upg_hammer": {
+      "ver": "1.0.4",
+      "uuid": "cf5d13d4-dc67-4a7e-b35f-a95f67bd670c",
+      "rawTextureUuid": "2a167368-4c28-46c7-bf38-e5f9a5a23bf9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 6.5,
+      "trimX": 15,
+      "trimY": 3,
+      "width": 99,
+      "height": 109,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "2a167368-4c28-46c7-bf38-e5f9a5a23bf9@6c48a",
+      "displayName": "upg_hammer",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "2a167368-4c28-46c7-bf38-e5f9a5a23bf9",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "2a167368-4c28-46c7-bf38-e5f9a5a23bf9@6c48a"
+  }
+}

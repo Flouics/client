@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "216afe56-6626-4d34-9cbb-1358a84a741d",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "building_4": {
+      "ver": "1.0.4",
+      "uuid": "8d4e1010-fee4-4290-a4ff-5ebc8c00a575",
+      "rawTextureUuid": "216afe56-6626-4d34-9cbb-1358a84a741d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -7,
+      "offsetY": -27.5,
+      "trimX": 96,
+      "trimY": 56,
+      "width": 253,
+      "height": 577,
+      "rawWidth": 459,
+      "rawHeight": 634,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "216afe56-6626-4d34-9cbb-1358a84a741d@6c48a",
+      "displayName": "building_4",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "216afe56-6626-4d34-9cbb-1358a84a741d",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "216afe56-6626-4d34-9cbb-1358a84a741d@6c48a"
+  }
+}

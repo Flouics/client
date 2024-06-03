@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "af87ba7d-ccb3-49a6-9614-a465e3f5b9a2",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "building_2": {
+      "ver": "1.0.4",
+      "uuid": "180926ed-2713-4acf-b43b-7061d02a6d82",
+      "rawTextureUuid": "af87ba7d-ccb3-49a6-9614-a465e3f5b9a2",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -7,
+      "offsetY": -24,
+      "trimX": 92,
+      "trimY": 49,
+      "width": 261,
+      "height": 584,
+      "rawWidth": 459,
+      "rawHeight": 634,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "af87ba7d-ccb3-49a6-9614-a465e3f5b9a2@6c48a",
+      "displayName": "building_2",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "af87ba7d-ccb3-49a6-9614-a465e3f5b9a2",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "af87ba7d-ccb3-49a6-9614-a465e3f5b9a2@6c48a"
+  }
+}

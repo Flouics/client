@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "1933cd52-1108-4449-a245-c77b522c9e98",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "potionGreen": {
+      "ver": "1.0.4",
+      "uuid": "7067ada9-b6d8-4de5-a460-751b66244543",
+      "rawTextureUuid": "1933cd52-1108-4449-a245-c77b522c9e98",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 2.5,
+      "offsetY": 0.5,
+      "trimX": 37,
+      "trimY": 29,
+      "width": 59,
+      "height": 69,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "1933cd52-1108-4449-a245-c77b522c9e98@6c48a",
+      "displayName": "potionGreen",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "1933cd52-1108-4449-a245-c77b522c9e98",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "1933cd52-1108-4449-a245-c77b522c9e98@6c48a"
+  }
+}

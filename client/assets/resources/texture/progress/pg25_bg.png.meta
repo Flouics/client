@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "48c7024c-8929-4cda-8396-f1c6359c3680",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "pg25_bg": {
+      "ver": "1.0.4",
+      "uuid": "5ed5ec9c-fd5c-4365-a31f-67c0cb4eb04c",
+      "rawTextureUuid": "48c7024c-8929-4cda-8396-f1c6359c3680",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 267,
+      "height": 22,
+      "rawWidth": 267,
+      "rawHeight": 22,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "48c7024c-8929-4cda-8396-f1c6359c3680@6c48a",
+      "displayName": "pg25_bg",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "48c7024c-8929-4cda-8396-f1c6359c3680",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "48c7024c-8929-4cda-8396-f1c6359c3680@6c48a"
+  }
+}

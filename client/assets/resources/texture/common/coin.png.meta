@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "d93b85f5-068d-4b6f-b0de-0e2730f7c6ed",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "coin": {
+      "ver": "1.0.4",
+      "uuid": "275283d0-61cf-4e88-829d-23137f8c0bbb",
+      "rawTextureUuid": "d93b85f5-068d-4b6f-b0de-0e2730f7c6ed",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 13.5,
+      "offsetY": -5.5,
+      "trimX": 45,
+      "trimY": 40,
+      "width": 65,
+      "height": 59,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "d93b85f5-068d-4b6f-b0de-0e2730f7c6ed@6c48a",
+      "displayName": "coin",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "d93b85f5-068d-4b6f-b0de-0e2730f7c6ed",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "d93b85f5-068d-4b6f-b0de-0e2730f7c6ed@6c48a"
+  }
+}

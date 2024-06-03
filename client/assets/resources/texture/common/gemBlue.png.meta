@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "ab3cd9eb-2978-4beb-b4c0-91547ea72e9b",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "gemBlue": {
+      "ver": "1.0.4",
+      "uuid": "3686264a-b6ab-4b54-9614-dd441537db61",
+      "rawTextureUuid": "ab3cd9eb-2978-4beb-b4c0-91547ea72e9b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": -0.5,
+      "trimX": 40,
+      "trimY": 43,
+      "width": 47,
+      "height": 43,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "ab3cd9eb-2978-4beb-b4c0-91547ea72e9b@6c48a",
+      "displayName": "gemBlue",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "ab3cd9eb-2978-4beb-b4c0-91547ea72e9b",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "ab3cd9eb-2978-4beb-b4c0-91547ea72e9b@6c48a"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "676c728b-b813-48af-9f20-70edade42f06",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "envelope": {
+      "ver": "1.0.4",
+      "uuid": "34de0deb-e7e1-431b-89fa-83f2d96afcb4",
+      "rawTextureUuid": "676c728b-b813-48af-9f20-70edade42f06",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": -2,
+      "trimX": 26,
+      "trimY": 28,
+      "width": 77,
+      "height": 76,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "676c728b-b813-48af-9f20-70edade42f06@6c48a",
+      "displayName": "envelope",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "676c728b-b813-48af-9f20-70edade42f06",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "676c728b-b813-48af-9f20-70edade42f06@6c48a"
+  }
+}

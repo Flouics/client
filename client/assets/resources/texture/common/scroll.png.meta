@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "fc564768-720b-4502-bdf9-c2b65b36ffc3",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "scroll": {
+      "ver": "1.0.4",
+      "uuid": "c6493404-bff2-4121-b354-06e16de1547c",
+      "rawTextureUuid": "fc564768-720b-4502-bdf9-c2b65b36ffc3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 2,
+      "trimX": 35,
+      "trimY": 33,
+      "width": 58,
+      "height": 58,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "fc564768-720b-4502-bdf9-c2b65b36ffc3@6c48a",
+      "displayName": "scroll",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "fc564768-720b-4502-bdf9-c2b65b36ffc3",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "fc564768-720b-4502-bdf9-c2b65b36ffc3@6c48a"
+  }
+}

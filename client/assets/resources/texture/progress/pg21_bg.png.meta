@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "1393ff4b-38eb-4bc3-9ebe-cfc6c9ee0db8",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "pg21_bg": {
+      "ver": "1.0.4",
+      "uuid": "22263c72-4579-4ad9-a761-c9e77679067c",
+      "rawTextureUuid": "1393ff4b-38eb-4bc3-9ebe-cfc6c9ee0db8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 168,
+      "height": 17,
+      "rawWidth": 168,
+      "rawHeight": 17,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "1393ff4b-38eb-4bc3-9ebe-cfc6c9ee0db8@6c48a",
+      "displayName": "pg21_bg",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "1393ff4b-38eb-4bc3-9ebe-cfc6c9ee0db8",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "1393ff4b-38eb-4bc3-9ebe-cfc6c9ee0db8@6c48a"
+  }
+}

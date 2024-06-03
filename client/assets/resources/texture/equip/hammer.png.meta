@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "522c8dc6-1f86-41e9-b1d4-2a5344af872e",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "hammer": {
+      "ver": "1.0.4",
+      "uuid": "26bfa916-84a3-4d43-986c-d4fab25bc7c8",
+      "rawTextureUuid": "522c8dc6-1f86-41e9-b1d4-2a5344af872e",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 5.5,
+      "trimX": 15,
+      "trimY": 5,
+      "width": 99,
+      "height": 107,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "522c8dc6-1f86-41e9-b1d4-2a5344af872e@6c48a",
+      "displayName": "hammer",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "522c8dc6-1f86-41e9-b1d4-2a5344af872e",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "522c8dc6-1f86-41e9-b1d4-2a5344af872e@6c48a"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "bc1cf74c-9ce3-4579-993f-0a81dfd21880",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "potionBlue": {
+      "ver": "1.0.4",
+      "uuid": "9e69ff1b-c630-446a-82b5-6a78121c73f3",
+      "rawTextureUuid": "bc1cf74c-9ce3-4579-993f-0a81dfd21880",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 2.5,
+      "offsetY": 0.5,
+      "trimX": 37,
+      "trimY": 29,
+      "width": 59,
+      "height": 69,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "bc1cf74c-9ce3-4579-993f-0a81dfd21880@6c48a",
+      "displayName": "potionBlue",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "bc1cf74c-9ce3-4579-993f-0a81dfd21880",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "bc1cf74c-9ce3-4579-993f-0a81dfd21880@6c48a"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "f3841ecb-5de1-439d-aaf6-f95860890ccb",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "upg_armor": {
+      "ver": "1.0.4",
+      "uuid": "10a80062-daae-4799-90d7-276bfe6efb51",
+      "rawTextureUuid": "f3841ecb-5de1-439d-aaf6-f95860890ccb",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -2,
+      "offsetY": 1.5,
+      "trimX": 0,
+      "trimY": 3,
+      "width": 124,
+      "height": 119,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "f3841ecb-5de1-439d-aaf6-f95860890ccb@6c48a",
+      "displayName": "upg_armor",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "f3841ecb-5de1-439d-aaf6-f95860890ccb",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "f3841ecb-5de1-439d-aaf6-f95860890ccb@6c48a"
+  }
+}

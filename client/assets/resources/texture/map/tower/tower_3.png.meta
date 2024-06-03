@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "e22b2f5b-be7d-46c1-93e0-c27a35603f53",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "tower_3": {
+      "ver": "1.0.4",
+      "uuid": "e9e8222a-8694-48e7-8ef4-a6910bf7cb7f",
+      "rawTextureUuid": "e22b2f5b-be7d-46c1-93e0-c27a35603f53",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -1.5,
+      "offsetY": -32,
+      "trimX": 32,
+      "trimY": 64,
+      "width": 172,
+      "height": 197,
+      "rawWidth": 239,
+      "rawHeight": 261,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "e22b2f5b-be7d-46c1-93e0-c27a35603f53@6c48a",
+      "displayName": "tower_3",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "e22b2f5b-be7d-46c1-93e0-c27a35603f53",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "e22b2f5b-be7d-46c1-93e0-c27a35603f53@6c48a"
+  }
+}

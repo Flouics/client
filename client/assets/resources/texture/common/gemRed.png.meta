@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "a0f68f2d-b88d-4fed-a522-c9989b430b6f",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "gemRed": {
+      "ver": "1.0.4",
+      "uuid": "445dfb46-b2f1-4554-bbee-dc4bdfb7af91",
+      "rawTextureUuid": "a0f68f2d-b88d-4fed-a522-c9989b430b6f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": -0.5,
+      "trimX": 40,
+      "trimY": 43,
+      "width": 47,
+      "height": 43,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "a0f68f2d-b88d-4fed-a522-c9989b430b6f@6c48a",
+      "displayName": "gemRed",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "a0f68f2d-b88d-4fed-a522-c9989b430b6f",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "a0f68f2d-b88d-4fed-a522-c9989b430b6f@6c48a"
+  }
+}

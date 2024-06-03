@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "b3de361f-6de6-424e-9c65-18d748c96f71",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "pg23_bar": {
+      "ver": "1.0.4",
+      "uuid": "96bd5b90-41e9-4182-bda7-047630e6240e",
+      "rawTextureUuid": "b3de361f-6de6-424e-9c65-18d748c96f71",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 429,
+      "height": 11,
+      "rawWidth": 429,
+      "rawHeight": 11,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "b3de361f-6de6-424e-9c65-18d748c96f71@6c48a",
+      "displayName": "pg23_bar",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "b3de361f-6de6-424e-9c65-18d748c96f71",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "b3de361f-6de6-424e-9c65-18d748c96f71@6c48a"
+  }
+}

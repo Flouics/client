@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "c519fe74-6eaf-4183-940f-d4fbe2648fe4",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "upg_wand": {
+      "ver": "1.0.4",
+      "uuid": "8dbdbfee-9b1e-4359-bba1-1ae995af31c8",
+      "rawTextureUuid": "c519fe74-6eaf-4183-940f-d4fbe2648fe4",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -10.5,
+      "offsetY": -1,
+      "trimX": 0,
+      "trimY": 8,
+      "width": 107,
+      "height": 114,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "c519fe74-6eaf-4183-940f-d4fbe2648fe4@6c48a",
+      "displayName": "upg_wand",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "c519fe74-6eaf-4183-940f-d4fbe2648fe4",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "c519fe74-6eaf-4183-940f-d4fbe2648fe4@6c48a"
+  }
+}

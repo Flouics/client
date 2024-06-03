@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "ef670d22-e240-43d8-ad31-df0a71716474",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "little_evil": {
+      "ver": "1.0.4",
+      "uuid": "12784977-78dc-4beb-8c32-a96e94f7ae92",
+      "rawTextureUuid": "ef670d22-e240-43d8-ad31-df0a71716474",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 0,
+      "trimX": 19,
+      "trimY": 4,
+      "width": 93,
+      "height": 104,
+      "rawWidth": 130,
+      "rawHeight": 112,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "ef670d22-e240-43d8-ad31-df0a71716474@6c48a",
+      "displayName": "little_evil",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "ef670d22-e240-43d8-ad31-df0a71716474",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "ef670d22-e240-43d8-ad31-df0a71716474@6c48a"
+  }
+}

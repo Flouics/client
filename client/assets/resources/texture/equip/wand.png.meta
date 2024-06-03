@@ -1,0 +1,70 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "897f08ef-3a78-4684-bd19-288f0500a075",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "wand": {
+      "ver": "1.0.4",
+      "uuid": "ab48d40e-fac2-4bd1-ace0-41beae746125",
+      "rawTextureUuid": "897f08ef-3a78-4684-bd19-288f0500a075",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -10.5,
+      "offsetY": -1,
+      "trimX": 0,
+      "trimY": 8,
+      "width": 107,
+      "height": 114,
+      "rawWidth": 128,
+      "rawHeight": 128,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {},
+      "importer": "*",
+      "imported": false,
+      "files": [],
+      "userData": {},
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "897f08ef-3a78-4684-bd19-288f0500a075@6c48a",
+      "displayName": "wand",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "897f08ef-3a78-4684-bd19-288f0500a075",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "hasAlpha": true,
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "897f08ef-3a78-4684-bd19-288f0500a075@6c48a"
+  }
+}
