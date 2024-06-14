@@ -20,6 +20,9 @@ export default class UIBlock extends BaseUI {
     updateUI(){
         var self = this;
         var logicObj = this._logicObj
+        if(!logicObj){
+            return 
+        }
         var loadBlockSpt = function(){
             let spt = self.spt_item;
             if(logicObj.checkType(Block.BLOCK_VALUE_ENUM.BLOCK) && logicObj.data_1 > 0){

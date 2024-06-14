@@ -4,8 +4,9 @@ import Debug from "../utils/Debug";
 import { toolKit } from "../utils/ToolKit";
 import BaseWin from "./BaseWin";
 
-import { _decorator } from 'cc';
+import { _decorator, EventTouch, find, NodeEventType } from 'cc';
 const {ccclass, property} = _decorator;
+// 需要绑定proxy的需要在此层。
 
 @ccclass("BaseView")
 export default class BaseView extends BaseWin {
@@ -17,7 +18,15 @@ export default class BaseView extends BaseWin {
     onLoad() {
         super.onLoad();
         this.initProxy();
+
+        var nd_close = find('close', this.node);
+        if (nd_close) {
+            nd_close.on(NodeEventType.TOUCH_END, this.onClose.bind(this));
+        }
+
+        this.node.on(NodeEventType.TOUCH_END, this.onBgClick.bind(this));
     }
+
     initProxy() {
         if (!toolKit.empty(this.moduleName)){
             this.proxy = App.moduleMgr.getProxy(this.moduleName);
@@ -29,6 +38,11 @@ export default class BaseView extends BaseWin {
         } else{
             Debug.warn("moduleName is null",this.moduleName);
         }
+    }
+
+    onBgClick (event:EventTouch) {
+        //Debug.log("event propagationStopped",this);
+        //event.propagationStopped = true;
     }
 
     getResUrl(res_url:string){

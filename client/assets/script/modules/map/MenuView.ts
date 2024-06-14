@@ -19,6 +19,8 @@ export default class MenuView extends BaseView {
     
     onLoad(){
         super.onLoad()
+        
+        window["menuView"] = this;
     }
 
     onClickBuild(){

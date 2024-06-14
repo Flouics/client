@@ -86,7 +86,7 @@ export default class AudioMgr extends BaseClass {
             var self = this;
             resources.load(url, function (error, audioClip) {
                 if (!!error) {
-                    Debug.warn('load audio failed:', error);
+                    Debug.warn(url,'load audio failed:', error);
                     if (!!cb) cb(null);
                     return;
                 }

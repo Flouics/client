@@ -5,6 +5,7 @@ import BaseUI from "../../zero/BaseUI";
 import BaseView from "../../zero/BaseView";
 
 import { _decorator, Node} from 'cc';
+import CCEvent from "../../zero/CCEvent";
 const {ccclass, property} = _decorator;
 
 @ccclass("BuildView")
@@ -16,6 +17,13 @@ export default class BuildView extends BaseView {
     onLoad(){
         super.onLoad();
         this.initBuildListView();
+        this.initEvents();
+    }
+
+    initEvents(){
+        this.regClickEvent("UIBuildItem.onCLickBtn",(event:CCEvent)=>{
+            var data = event.detail;            
+        });
     }
 
     async initBuildListView(){

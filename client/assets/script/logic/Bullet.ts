@@ -37,8 +37,8 @@ export default class Bullet extends BoxBase {
         //实现基本的子弹逻辑
         let pool = PoolMgr.getInstance(PoolMgr).getPool(this._pb_tag);
         let node = pool.getItem(this);
-        node.parent = parent;
-        node.setPosition(this.viewPos,this.viewPos.y);
+        parent.addChild(node);
+        node.setPosition(this.viewPos.x,this.viewPos.y);
         this.node = node;
         this.ui = this.node.getComponent(UIBullet);
         if(!!cb) cb(this);        
@@ -85,10 +85,9 @@ export default class Bullet extends BoxBase {
         dirV2.normalize();
         dirV2.multiply(v2(moveDis,moveDis));
         // todo 角度。
-        var v3 = this.node.position.clone();
-        v3.x += dirV2.x;
-        v3.y += dirV2.y;
-        this.node.setPosition(v3);
+        var x = this.node.position.x + dirV2.x;
+        var y = this.node.position.y + dirV2.y;
+        this.node.setPosition(x,y);
         if(this.checkTargetIntoRange(this.target)){
             this.doAtk();
         }   

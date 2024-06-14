@@ -3,6 +3,7 @@ import { EDITOR } from "cc/env";
 import BoxBase from "../logic/BoxBase";
 
 import { _decorator,resources,Sprite,SpriteFrame,Component } from 'cc';
+import CCEvent from "./CCEvent";
 const {ccclass, property} = _decorator;
 
 @ccclass("BaseUI")
@@ -145,5 +146,17 @@ export default class BaseUI extends Component {
         if(!EDITOR){
             this.updateUI();
         }        
+    }
+
+    //CC 引擎的事件派发
+    dispatchEvent(key:string,detail:any = this._logicObj){
+        this.node.dispatchEvent(new CCEvent(key,true,detail));
+    }
+
+    regClickEvent(key:string,callback?:Function){
+        this.node.on(key,(event:CCEvent)=>{
+            event.propagationStopped = true;
+            if (callback) callback(event);          
+        });
     }
 }

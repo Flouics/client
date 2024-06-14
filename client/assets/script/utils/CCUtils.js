@@ -45,7 +45,7 @@ cc.Label.prototype.onLoad = function () {
 };
 */
 
-cc.Button.prototype.soundName = {
+/* cc.Button.prototype.soundName = {
     default: 'i18n:COMPONENT.label.string',
     visible: true,
 }
@@ -58,7 +58,7 @@ cc.Button.prototype.onLoad = function () {
             }
         }        
     }, this);
-};
+}; */
 
 
 

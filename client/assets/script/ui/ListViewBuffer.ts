@@ -5,7 +5,7 @@
  //当父节点的底部快达到的边界的时候进行加载。
  */
 
-import { _decorator,Prefab,ScrollView,Node,NodePool, Layout,Component,instantiate, UITransform} from 'cc';
+import { _decorator,Prefab,ScrollView,Node,NodePool, Layout,Component,instantiate, UITransform, EventTouch} from 'cc';
 import Debug from '../utils/Debug';
 const {ccclass, property} = _decorator;
  @ccclass("ListViewBuffer")
@@ -160,7 +160,7 @@ const {ccclass, property} = _decorator;
         this.initCount++;
     }
 
-    onItemRecycledSelf(event) {
+    onItemRecycledSelf(event:EventTouch) {
         var node = event.target;
         var index = this._items.indexOf(node);
         if(index > -1) {
@@ -169,7 +169,7 @@ const {ccclass, property} = _decorator;
         }       
         this.node.emit('onItemRecycledSelf', {node: node});
         //停止事件继续传递
-        event.stopPropagation();
+        event.propagationStopped = true;
     }
 
     clearContent() {
@@ -200,10 +200,9 @@ const {ccclass, property} = _decorator;
 
         //引擎的BUG，先绕过去
         var conentHeight = this.scrollView.content.height;
-        if (conentHeight < this.scrollView.node.height) {
+        if (conentHeight < this.scrollView.node.getComponent(UITransform).height) {
             this.scrollView.content.y = 0;
-        }
-        ;
+        };
 
         if (!this.data || this.data.length < 1) {
             return;
@@ -215,7 +214,7 @@ const {ccclass, property} = _decorator;
         this.updateInterval = 0.1;
         //判断下目前节点是否有到scrollView下边界。
         var itemRootPos = this.getPositionInView(this.nd_itemRoot);
-        var bottom = -this.scrollView.node.height * this.scrollView.node.anchorY;
+        var bottom = -this.scrollView.node.getComponent(UITransform).height * this.scrollView.node.anchorY;
         if (itemRootPos.y - this.nd_itemRoot.height > bottom - this.bottomDistance) {
             this.updateInterval = 0.25;//开始加载资源时刷新间隔时间拉长。
             this.addContent();

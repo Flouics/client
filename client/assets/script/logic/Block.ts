@@ -5,8 +5,9 @@ import Building from "./Building";
 import BoxBase from "./BoxBase";
 import { serialize } from "../utils/Decorator";
 import TouchUtils from "../utils/TouchUtils";
-import { instantiate, Node, Vec2 } from "cc";
+import { instantiate, Node, Vec2, Vec3 } from "cc";
 import { toolKit } from "../utils/ToolKit";
+import { uiKit } from "../utils/UIKit";
 var BLOCK_VALUE_ENUM = {
     EMPTY:0,
     BLOCK:1,
@@ -61,12 +62,12 @@ export default class Block extends BoxBase {
         this.mapMainView = mapMainView;
     }
     initUI() {
-        let node = instantiate(this.mapMainView.pb_block);
+        let node = instantiate(this.mapMainView.pb_block) as Node;
         node.parent = this.mapMainView.nd_mapRoot;
         var x = this.x * this.mapMainView._blockSize.width;
         var y = this.y * this.mapMainView._blockSize.height;
         node.setPosition(x,y);
-        node.setScale(0.95);
+        uiKit.setScale(node,0.95);
         if(this.id == null){
             this.id = toolKit.getRand(1,10) > 8 ? Block.BLOCK_VALUE_ENUM.BLOCK : 0;
         }        

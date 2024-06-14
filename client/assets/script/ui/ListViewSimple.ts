@@ -5,6 +5,7 @@
 import { nullfun } from "../Global";
 
 import { _decorator,Prefab,ScrollView,Node,NodePool, Layout, UITransform, Button, Component,instantiate, CCBoolean} from 'cc';
+import Debug from "../utils/Debug";
 const {ccclass, property} = _decorator;
  @ccclass("ListViewSimple")
  export default class ListViewSimple extends Component{
@@ -146,10 +147,13 @@ const {ccclass, property} = _decorator;
         
     };
     updateV(dt:number){
+        if(!this.scrollView.content){
+            return;
+        }
         let items = this.items;
-        let isDown = this.scrollView.content.y < this.lastContentPosY; // scrolling direction
-        var buffer_top = this.scrollView.node.height * (1 - this.scrollView.node.anchorY) + this.offset;
-        var buffer_bottom = this.scrollView.node.height * this.scrollView.node.anchorY + this.offset;
+        let isDown = this.scrollView.content.position.y < this.lastContentPosY; // scrolling direction
+        var buffer_top = this.scrollView.node.getComponent(UITransform).height * (1 - this.scrollView.node.anchorY) + this.offset;
+        var buffer_bottom = this.scrollView.node.getComponent(UITransform).height * this.scrollView.node.anchorY + this.offset;
         var itemsHeight = (this.itemTemplate.height + this.spacing) * items.length;
         for (let i = 0; i < items.length; ++i) {
             let item = items[i];
@@ -157,7 +161,7 @@ const {ccclass, property} = _decorator;
             let viewPos = this.getPositionInView(item);
             if (isDown) {
                 // if away from buffer zone and not reaching top of content
-                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.height < 0) {
+                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.getComponent(UITransform).height < 0) {
                     let index = (item as any).tag_index - items.length; // update item id
                     this.updateItem(item, index);
                 }
@@ -170,14 +174,17 @@ const {ccclass, property} = _decorator;
             }
         }
         // update lastContentPosY
-        this.lastContentPosY = this.scrollView.content.y;
+        this.lastContentPosY = this.scrollView.content.position.y;
 
     }
     updateH(dt:number){
+        if(!this.scrollView.content){
+            return;
+        }
         let items = this.items;
-        let isDown = this.scrollView.content.x < this.lastContentPosX; // scrolling direction
-        var buffer_top = this.scrollView.node.width * (1 - this.scrollView.node.anchorX) + this.offset;
-        var buffer_bottom = this.scrollView.node.width * this.scrollView.node.anchorX + this.offset;
+        let isDown = this.scrollView.content.position.x < this.lastContentPosX; // scrolling direction
+        var buffer_top = this.scrollView.node.getComponent(UITransform).width * (1 - this.scrollView.node.anchorX) + this.offset;
+        var buffer_bottom = this.scrollView.node.getComponent(UITransform).width * this.scrollView.node.anchorX + this.offset;
         var itemsHeight = (this.itemTemplate.width + this.spacing) * items.length;
         for (let i = 0; i < items.length; ++i) {
             let item = items[i];
@@ -186,7 +193,7 @@ const {ccclass, property} = _decorator;
             let viewPos = this.getPositionInView(item);
             if (isDown) {
                 // if away from buffer zone and not reaching top of content
-                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.width < 0) {
+                if (viewPos.y < -buffer_bottom && item.position.y + this.scrollView.node.getComponent(UITransform).width < 0) {
                     let index = (item as any).tag_index - items.length; // update item id
                     this.updateItem(item, index);
                 }
@@ -199,6 +206,6 @@ const {ccclass, property} = _decorator;
             }
         }
         // update lastContentPosY
-        this.lastContentPosX = this.scrollView.content.x;
+        this.lastContentPosX = this.scrollView.content.position.x;
     }
 };

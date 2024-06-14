@@ -3,8 +3,9 @@ import Debug from "../utils/Debug";
 import { uiKit } from "../utils/UIKit";
 import BaseUI from "./BaseUI";
 
-import { _decorator,CCBoolean,EventTouch,find,js,Node, UITransform} from 'cc';
+import { _decorator,CCBoolean,EventTouch,find,js,Node, NodeEventType, UITransform} from 'cc';
 const {ccclass, property} = _decorator;
+//无需绑定proxy的在此层。
 
 @ccclass("BaseWin")
 export default class BaseWin extends BaseUI{
@@ -40,15 +41,6 @@ export default class BaseWin extends BaseUI{
         super.onLoad();
         this._baseInit();
         this.setIndex();
-
-        var nd_close = find('close', this.node);
-        if (nd_close) {
-            nd_close.on(Node.EventType.TOUCH_END, this.onClose.bind(this));
-            //nd_close.on(Node.EventType.MOUSE_UP, this.onClose.bind(this));
-            //App.windowMgr.control.closeAllOpen();
-        }
-
-        this.node.on(Node.EventType.TOUCH_END, this.onBgClick.bind(this));
         this.uiMap = uiKit.uiMap(this.node);
     }
 
@@ -62,12 +54,7 @@ export default class BaseWin extends BaseUI{
         if(this.node){
             this.node.setSiblingIndex(this._index);
         }
-    }    
-
-    
-    onBgClick (event:EventTouch) {
-        event.propagationStopped = true;
-    }
+    }       
 
     close () {
         App.windowMgr.closeUI(this);

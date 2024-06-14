@@ -34,8 +34,7 @@ export default class ScrollWorld extends Component{
     @property
     distance_x:number;
     @property
-    distance_y:number;
-    
+    distance_y:number;    
 
     onLoad(): void {
         this.node.on(NodeEventType.TOUCH_START,this.onTouchStart.bind(this),this);
@@ -70,7 +69,7 @@ export default class ScrollWorld extends Component{
         var startPos = event.getStartLocation();
         var endPos = event.getLocation();
         var distance = endPos.subtract(startPos).length();
-        if(distance > 10){
+        if(distance > 20){
             event.propagationStopped = true;    //停止事件派发
             this.endPos = endPos;
         }

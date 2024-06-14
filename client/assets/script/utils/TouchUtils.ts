@@ -1,7 +1,8 @@
 
 
 
-import { _decorator, Size, Vec2,Component, UITransform, view, Node, Event, EventTouch} from 'cc';
+import { _decorator, Size, Vec2,Component, UITransform, view, Node, Event, EventTouch, NodeEventType, js} from 'cc';
+import Debug from './Debug';
 const {ccclass, property} = _decorator;
 
 @ccclass("TouchUtils")
@@ -13,10 +14,18 @@ export default class TouchUtils extends Component {
     _lastTouchEventTime: number = 0;
     _touchSize:Size = Size.ZERO.clone();
     _viewSize:Size = Size.ZERO.clone();
+    _x_min:number = 0;
+    _x_max:number = 0;
+    _y_min:number = 0;
+    _y_max:number = 0;
     onLoad() {
         //this.init();
     }
     init(touchSize?: Size) {
+        this.setSize(touchSize);
+        this.addListener();
+    }
+    setSize(touchSize?:Size){
         if (!touchSize) {
             touchSize = this.node.getComponent(UITransform).contentSize;
         }else{
@@ -25,13 +34,16 @@ export default class TouchUtils extends Component {
         this._touchSize.width = touchSize.width;
         this._touchSize.height = touchSize.height;
         this._viewSize = view.getVisibleSize();
-        this.addListener();
+        this._x_min = -this._touchSize.width/2 + this._viewSize.width/2;
+        this._x_max = this._touchSize.width/2 - this._viewSize.width/2;
+        this._y_min = -this._touchSize.height/2 + this._viewSize.height/2;
+        this._y_max =  this._touchSize.height/2 - this._viewSize.height/2;
     }
     addListener() {
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.node.on(Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        this.node.on(NodeEventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(NodeEventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.node.on(NodeEventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.on(NodeEventType.TOUCH_CANCEL, this.onTouchEnd, this);
     }
 
     onTouchStart(event: EventTouch) {
@@ -47,10 +59,12 @@ export default class TouchUtils extends Component {
         if(this._touchId != event.getID()){
             return
         }
+        
         var nowTimeStamp = new Date().getTime();
         var dt = (nowTimeStamp - this._lastTouchEventTime)/1000;        
-        this.calcSpeed(event, dt)
-        this._lastTouchEventTime = nowTimeStamp;
+        if(this.calcSpeed(event, dt)){
+            this._lastTouchEventTime = nowTimeStamp;
+        }   
     }
     onTouchEnd(event: EventTouch) {
         if(this._touchId != event.getID()){
@@ -63,52 +77,56 @@ export default class TouchUtils extends Component {
             this.node.emit("map_click",event);
         }else{
             var dt = (nowTimeStamp - this._lastTouchEventTime)/1000;
-            this.calcSpeed(event, dt);
+            if(this.calcSpeed(event, dt)){
+                this._lastTouchEventTime = nowTimeStamp;
+            }            
         }
-        this._lastTouchEventTime = nowTimeStamp;
+        
     }
     calcSpeed(event: EventTouch, dt: number) {
+        if(dt == 0){
+            return false;
+        }
         var deltaPos = event.getDelta();
-        var lastDeltaPos = this._deltaPos;
-        this._deltaPos = this._deltaPos.add(deltaPos as Vec2);
-        // x坐标速度变化
-        var x = this._deltaPos.x / ((this._speed.x == 0 ? 0 : lastDeltaPos.x / this._speed.x) + dt);
-        var y = this._deltaPos.y / ((this._speed.y == 0 ? 0 : lastDeltaPos.y / this._speed.y) + dt);
-        this._speed = new Vec2(x, y);
+        if(deltaPos.length() < 10 ){
+            return false; // 防止抖动
+        }
+        var deltaSpeed = deltaPos.multiplyScalar(1/dt);
+        this._speed.x = this._speed.x * 0.5 + deltaSpeed.x * 0.5;
+        this._speed.y = this._speed.y * 0.5 + deltaSpeed.y * 0.5;
+        return true;
     }
 
     update(dt: number) {
-        if (this._deltaPos.length() < 20) {
-            return
+        if(Math.abs(this._speed.x) < 0.1 && Math.abs(this._speed.y) < 0.1){
+            return;
         }
-        var deltaPos = this._speed.multiplyScalar(dt)
-        this._deltaPos = this._deltaPos.add(deltaPos.negative())
-        if (this._speed.x * this._deltaPos.x < 0) {
-            this._speed.x = 0;
-            this._deltaPos.x = 0;
-        }
-        if (this._speed.y * this._deltaPos.y < 0) {
-            this._speed.y = 0;
-            this._deltaPos.y = 0;
-        }
-        this.updateNodePosition(deltaPos)
+        var deltaPos = this._speed.multiplyScalar(dt);        
+        this.updateNodePosition(deltaPos);
+        this._speed = this._speed.multiplyScalar(0.95);
     }
 
-    updateNodePosition(deltaPos:Vec2 = Vec2.ZERO){
+    updateNodePosition(deltaPos:Vec2 = Vec2.ZERO.clone()){
         var x = this.node.position.x + deltaPos.x;
         var y = this.node.position.y + deltaPos.y;
-        if (this.node.position.x < (-this._touchSize.width/2 + this._viewSize.width/2)){
-            x =  -this._touchSize.width/2 + this._viewSize.width/2;
+
+        if (x < this._x_min){
+            x =  this._x_min;
+            this._speed.x = 0;
         }
-        if (this.node.position.x > (this._touchSize.width/2 - this._viewSize.width/2)){
-            x =  this._touchSize.width/2 - this._viewSize.width/2;
+        if (x > this._x_max){
+            x =  this._x_max;
+            this._speed.x = 0;
         }
-        if (this.node.position.y < (-this._touchSize.height/2 + this._viewSize.height/2)){
-            y =  -this._touchSize.height/2 + this._viewSize.height/2;
+        if (y < this._y_min){
+            y =  this._y_min;
+            this._speed.y = 0;
         }
-        if (this.node.position.y > (this._touchSize.height/2 - this._viewSize.height/2)){
-            y =  this._touchSize.height/2 - this._viewSize.height/2;
+        if (y > this._y_max){
+            y =  this._y_max;
+            this._speed.y = 0;
         }
+        
         this.node.setPosition(x, y);
     }
 

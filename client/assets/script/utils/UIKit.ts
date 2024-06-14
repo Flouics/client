@@ -24,6 +24,10 @@ class UIKit extends BaseClass {
     isValid(ui:Node){
         return ui && ui.isValid;
     }
+
+    setScale(node:Node, scale:number){
+        node.setScale(new Vec3(scale, scale, scale));
+    }
 };
 
 export var uiKit = new UIKit(UIKit);

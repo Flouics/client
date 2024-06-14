@@ -17,7 +17,7 @@ export default class MapCommand extends BaseCommand{
     }
 
     onClickBuild(){
-        toolKit.showTip("onClickBuild")
+        this.showView("buildView")
     }
 
     onClickDig(){
